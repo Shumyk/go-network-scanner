@@ -1,0 +1,48 @@
+1. The application will be written in go
+2. It will run on windows, mac or linux
+3. It will provide Web service that runs from the application (like flask) so a web server is not required
+4. The application will on first execution ask the following
+    1. Name of session
+    2. Name of sqlite database (default to scans)
+    3. First ip range to scan (required)
+    4. Second ip range scan (optional)
+    5. Third ip range to scan (optional)
+    6. Enable socks proxy button and the ip address of the socks proxy, with a different proxy available for each ip range above
+    
+5. Scans will be performed and then reoccur 5 seconds after the last scan finished.
+6. If three networks are configured to be scanned all three will be scanned simultaneously.
+7. Scan results will be written to the sqlte database
+
+8. The database will have a tables that record
+    1. The configuration entered
+    2. The results of the scan (ip, port, time if first discovery, time when it stopped being found, service banner)
+    3. The unique ips found (ip, time of first discovery, time when it stopped being found, operating system type, hostname label and custom label)
+
+9. The web UI displays a resizable grid of icons that represent computer systems that have been scanned
+10. Computer system icons will be displayed dynamically as they are discovered in network scans
+11. Computer systems icons will be marked will grow and blink red for 5 seconds and then shrink and stay red if they are no longer available after being successfully scanned before
+12. If a new computer system is found after the initial scan it will grow and blink green for 5 seconds and then shrink back to it’s normal size
+13. Computers will be ordered by their network address
+14. Each service found accessible will be displayed with an icon of the port number on, under or around the computer icon.
+15. If new services are discovered in subsequent scan their port icon will grow and blink green for 5 seconds and then return to normal
+16. If a previously discovered service is no longer available it’s icon color will change to red
+17. The operating system type will be icon that can be set on the computer system icon (windows or linux)
+18. The computer system icon will display it’s ip address underneath it
+19. The computer system icon will have a label for the hostname
+20. The computer system icon will have a label for a custom name
+21. Results are stored in a local database and can be reloaded if requested on start
+22. Nmap or a similar tool/library will be used on the backend for network scanning
+23. If an icon of a port number is clicked it’s service banner will be displayed
+
+
+Thus, we would have UI components in one module and another for 'backend' code.
+The backend part would consist of modules:
+- Config - everything related to configuration, parsing input or reading from a config file, etc.
+- Database - interaction with database (model, queries, repositories, etc.).
+- Nmap - interaction with the library (wrapper, scan/proxy configuration, data extraction).
+- Handlers/Notifiers - functionality that processes events from UI and pushes updates to UI (node found/lost).
+- Manager-Workers - the core part of the application. The worker does a scan of one IP range and propagates this data into the database. Workers (max 3) are governed by the Manager. The manager contains logic to trigger each worker at defined time intervals in a concurrent fashion.
+- Main - entry point which initializes application, loads configuration, opens UI, wakes up Manager.
+- Utils - various reusable stuff. Helpers, error handling, logging, parsers.
+If code quality is important I'd suggest using dependency injection.
+Also, for better-structured concurrency, we could utilize the conc library [https://github.com/sourcegraph/conc\].
