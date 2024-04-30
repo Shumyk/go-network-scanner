@@ -2,8 +2,8 @@ package main
 
 import (
 	"go-network-scanner/db"
+	"go-network-scanner/nmap"
 	"go-network-scanner/util"
-	"log/slog"
 
 	"github.com/webui-dev/go-webui/v2"
 )
@@ -11,19 +11,16 @@ import (
 func main() {
 	databaseName, config := util.AskInput()
 	db.Init(databaseName, &config)
-	configs, err := db.Configs.All()
-	if nil != err {
-		panic(err)
-	}
-	slog.Info("Configs: ", configs)
 
-	configsStr := "["
-	for _, config := range configs {
-		configsStr += config.Name + ", " + config.IpRange1 + ", " + config.IpRange2 + ", " + config.IpRange3 + ", " + config.CreatedAt.String() + "\n"
+	nmap.Scan(config.IpRange1)
+	if len(config.IpRange2) > 0 {
+		nmap.Scan(config.IpRange2)
 	}
-	configsStr += "]"
+	if len(config.IpRange3) > 0 {
+		nmap.Scan(config.IpRange3)
+	}
 
 	w := webui.NewWindow()
-	w.Show("<html><body><h1>Hello, folks!</h1>" + configsStr + "</body></html>")
-	webui.Wait()
+	w.Show("<html><body><h1>Hello, folks!</h1>" + "</body></html>")
+	// webui.Wait()
 }

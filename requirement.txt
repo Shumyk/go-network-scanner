@@ -30,6 +30,7 @@
 18. The computer system icon will display it’s ip address underneath it
 19. The computer system icon will have a label for the hostname
 20. The computer system icon will have a label for a custom name
+
 21. Results are stored in a local database and can be reloaded if requested on start
 22. Nmap or a similar tool/library will be used on the backend for network scanning
 23. If an icon of a port number is clicked it’s service banner will be displayed
