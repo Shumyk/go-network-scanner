@@ -33,7 +33,7 @@ func askDatabaseName() string {
 	var databaseName string
 	fmt.Scanln(&databaseName)
 	if len(databaseName) == 0 {
-		return "scans"
+		return "test_db" // TODO: change to scans
 	}
 	return databaseName
 }

@@ -22,22 +22,19 @@ const (
 			port             INTEGER  NOT NULL,
 			first_discovered DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
 			last_seen        DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-			service_banner   TEXT     NOT NULL,
-			created_at   DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+			service_banner   TEXT     NOT NULL
 		);
 	`
 	// The unique ips found (ip, time of first discovery, time when it stopped being found, operating system type, hostname label and custom label)
 	create_table_host = `
 		CREATE TABLE IF NOT EXISTS host
 		(
-			id               INTEGER PRIMARY KEY,
-			ip               TEXT     NOT NULL,
+			ip               TEXT     PRIMARY KEY,
 			first_discovered DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
 			last_seen        DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
 			os_type          TEXT     NOT NULL,
 			hostname_label   TEXT     NOT NULL,
-			custom_label     TEXT     NOT NULL,
-			created_at   DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+			custom_label     TEXT     NOT NULL
 		);
 	`
 
