@@ -3,7 +3,8 @@ package util
 import (
 	"fmt"
 	"go-network-scanner/api"
-	log "log/slog"
+	"os"
+	"strings"
 )
 
 func AskInput() (databaseName string, config api.Config) {
@@ -16,20 +17,19 @@ func AskInput() (databaseName string, config api.Config) {
 	// 3. First ip range to scan (required)
 	askIpRange(&config)
 	// 4. Second ip range scan (optional)
-	log.Info("Enter the second IP range to scan, optional: ")
+	fmt.Println("Enter the second IP range to scan, optional: ")
 	fmt.Scanln(&config.IpRange2)
 	// 5. Third ip range to scan (optional)
-	log.Info("Enter the third IP range to scan, optional: ")
+	fmt.Println("Enter the third IP range to scan, optional: ")
 	fmt.Scanln(&config.IpRange3)
 	// 6. Enable socks proxy button and the ip address of the socks proxy, with a different proxy available for each ip range above
-	log.Info("Enable SOCKS proxy? (y/n): ")
-	fmt.Scanln(&config.EnableProxy)
+	askSocksProxyEnabled(&config)
 
 	return
 }
 
 func askDatabaseName() string {
-	log.Info("Enter the name of the sqlite database (defaults to 'scans'): ")
+	fmt.Println("Enter the name of the sqlite database (defaults to 'scans'): ")
 	var databaseName string
 	fmt.Scanln(&databaseName)
 	if len(databaseName) == 0 {
@@ -39,19 +39,28 @@ func askDatabaseName() string {
 }
 
 func askSessionName(config *api.Config) {
-	log.Info("Enter the name of the session: ")
+	fmt.Println("Enter the name of the session: ")
 	fmt.Scanln(&config.Name)
 	if len(config.Name) == 0 {
-		log.Error("Session name is required")
+		fmt.Fprintln(os.Stderr, "Session name is required")
 		askSessionName(config)
 	}
 }
 
 func askIpRange(config *api.Config) {
-	log.Info("Enter the first IP range to scan: ")
+	fmt.Println("Enter the first IP range to scan: ")
 	fmt.Scanln(&config.IpRange1)
 	if len(config.IpRange1) == 0 {
-		log.Error("First IP range is required")
+		fmt.Fprintln(os.Stderr, "First IP range is required")
 		askIpRange(config)
 	}
+}
+
+func askSocksProxyEnabled(config *api.Config) {
+	fmt.Println("Enable SOCKS proxy? (y/n): ")
+	var enabled string
+	fmt.Scanln(&enabled)
+
+	enabled = strings.ToLower(strings.TrimSpace(enabled))
+	config.EnableProxy = enabled[0] == 'y'
 }

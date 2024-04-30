@@ -22,7 +22,6 @@ func main() {
 		configsStr += config.Name + ", " + config.IpRange1 + ", " + config.IpRange2 + ", " + config.IpRange3 + ", " + config.CreatedAt.String() + "\n"
 	}
 	configsStr += "]"
-	slog.Info("Configs: ", configsStr)
 
 	w := webui.NewWindow()
 	w.Show("<html><body><h1>Hello, folks!</h1>" + configsStr + "</body></html>")
