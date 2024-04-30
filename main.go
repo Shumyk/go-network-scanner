@@ -6,21 +6,34 @@ import (
 	"go-network-scanner/util"
 
 	"github.com/webui-dev/go-webui/v2"
+	"go.uber.org/fx"
 )
 
 func main() {
+	// nmap.Scan("192.168.0.0/24")
 	databaseName, config := util.AskInput()
-	db.Init(databaseName, &config)
 
-	nmap.Scan(config.IpRange1)
+	app := fx.New(
+		fx.Provide(
+			fx.Supply(&config),
+			db.NewDb(databaseName),
+			db.NewConfigRepo,
+		),
+		fx.Invoke(db.Bootstrap),
+	)
+
+	go nmap.Scan(config.IpRange1)
 	if len(config.IpRange2) > 0 {
-		nmap.Scan(config.IpRange2)
+		go nmap.Scan(config.IpRange2)
 	}
 	if len(config.IpRange3) > 0 {
-		nmap.Scan(config.IpRange3)
+		go nmap.Scan(config.IpRange3)
 	}
+
+	app.Run()
+	<-app.Done()
 
 	w := webui.NewWindow()
 	w.Show("<html><body><h1>Hello, folks!</h1>" + "</body></html>")
-	// webui.Wait()
+	webui.Wait()
 }

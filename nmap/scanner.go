@@ -7,6 +7,7 @@ import (
 	"github.com/Ullaakut/nmap/v3"
 )
 
+// nmap -Av 192.168.0.0/24
 func Scan(ip string) {
 	scanner, err := nmap.NewScanner(
 		context.Background(),
@@ -24,7 +25,7 @@ func Scan(ip string) {
 		log.Warn("Warnings while scanning: %v", warnings)
 	}
 	if err != nil {
-		log.Error("Error scanning: %v", err)
+		log.Error("Error scanning: %v", log.String("ip", ip), log.Any("err", err))
 		return
 	}
 

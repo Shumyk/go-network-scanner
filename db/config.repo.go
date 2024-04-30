@@ -1,23 +1,18 @@
 package db
 
 import (
+	"database/sql"
 	"go-network-scanner/api"
 )
 
 type ConfigRepo struct {
-	// DB *sql.DB
-	Current api.Config
-}
-
-func NewConfigRepo(current api.Config) *ConfigRepo {
-	repo := &ConfigRepo{Current: current}
-	repo.Insert(current)
-	return repo
+	db      *sql.DB
+	Current *api.Config
 }
 
 func (c *ConfigRepo) Get(name string) (api.Config, error) {
 	var config api.Config
-	err := db.
+	err := c.db.
 		QueryRow(CONFIG_SELECT_BY_NAME, name).
 		Scan(&config.Name, &config.EnableProxy, &config.IpRange1, &config.IpRange2, &config.IpRange3)
 	if err != nil {
@@ -28,7 +23,7 @@ func (c *ConfigRepo) Get(name string) (api.Config, error) {
 }
 
 func (c *ConfigRepo) All() ([]api.Config, error) {
-	rows, err := db.Query(CONFIG_SELECT_ALL)
+	rows, err := c.db.Query(CONFIG_SELECT_ALL)
 	if err != nil {
 		return nil, err
 	}
@@ -48,7 +43,7 @@ func (c *ConfigRepo) All() ([]api.Config, error) {
 }
 
 func (c *ConfigRepo) Insert(config api.Config) (int, error) {
-	result, err := db.Exec(CONFIG_INSERT, config.Name, config.EnableProxy, config.IpRange1, config.IpRange2, config.IpRange3)
+	result, err := c.db.Exec(CONFIG_INSERT, config.Name, config.EnableProxy, config.IpRange1, config.IpRange2, config.IpRange3)
 	if err != nil {
 		return 0, err
 	}
