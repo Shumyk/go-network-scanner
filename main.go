@@ -22,5 +22,5 @@ func main() {
 
 	w := webui.NewWindow()
 	w.Show("<html><body><h1>Hello, folks!</h1>" + "</body></html>")
-	// webui.Wait()
+	webui.Wait()
 }

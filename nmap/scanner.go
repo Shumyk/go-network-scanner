@@ -24,7 +24,7 @@ func Scan(ip string) {
 		log.Warn("Warnings while scanning: %v", warnings)
 	}
 	if err != nil {
-		log.Error("Error scanning: %v", err)
+		log.Error("Error scanning: %v", log.String("ip", ip), log.Any("err", err))
 		return
 	}
 
