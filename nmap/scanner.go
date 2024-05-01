@@ -7,8 +7,10 @@ import (
 	"github.com/Ullaakut/nmap/v3"
 )
 
+type Scanner struct{}
+
 // nmap -Av 192.168.0.0/24
-func Scan(ip string) {
+func (s *Scanner) Scan(ip string) {
 	scanner, err := nmap.NewScanner(
 		context.Background(),
 		nmap.WithTargets(ip),

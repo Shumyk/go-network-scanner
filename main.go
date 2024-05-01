@@ -3,6 +3,7 @@ package main
 import (
 	"go-network-scanner/db"
 	"go-network-scanner/nmap"
+	"go-network-scanner/pool"
 	"go-network-scanner/util"
 
 	"github.com/webui-dev/go-webui/v2"
@@ -14,21 +15,19 @@ func main() {
 	databaseName, config := util.AskInput()
 
 	app := fx.New(
+		fx.Supply(&config),
 		fx.Provide(
-			fx.Supply(&config),
 			db.NewDb(databaseName),
 			db.NewConfigRepo,
+			nmap.NewScanner,
+			pool.NewHub,
+			pool.NewWorkers,
 		),
-		fx.Invoke(db.Bootstrap),
+		fx.Invoke(
+			db.Bootstrap,
+			pool.Start,
+		),
 	)
-
-	go nmap.Scan(config.IpRange1)
-	if len(config.IpRange2) > 0 {
-		go nmap.Scan(config.IpRange2)
-	}
-	if len(config.IpRange3) > 0 {
-		go nmap.Scan(config.IpRange3)
-	}
 
 	app.Run()
 	<-app.Done()
