@@ -8,16 +8,13 @@ import (
 	log "log/slog"
 )
 
-func NewHub(c *api.Config, workers []*Worker) *Hub {
-	return &Hub{
-		c,
-		workers,
-	}
+func NewHub(workers []*Worker) *Hub {
+	return &Hub{workers}
 }
 
 func NewWorkers(c *api.Config, nmap *nmap.Scanner) []*Worker {
 	ipRanges := c.IpRanges()
-	log.Info("Creating workers", log.Any("ipRanges", ipRanges))
+	log.Debug("Creating workers", log.Any("ipRanges", ipRanges))
 
 	workers := make([]*Worker, len(ipRanges))
 	for x, ip := range ipRanges {
@@ -25,7 +22,7 @@ func NewWorkers(c *api.Config, nmap *nmap.Scanner) []*Worker {
 	}
 
 	workers = slices.Clip(workers)
-	log.Info("Workers created", log.Any("workers", workers), log.Int("count", len(workers)))
+	log.Debug("Workers created", log.Any("workers", workers), log.Int("count", len(workers)))
 	return workers
 }
 

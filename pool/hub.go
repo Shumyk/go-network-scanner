@@ -1,7 +1,6 @@
 package pool
 
 import (
-	"go-network-scanner/api"
 	log "log/slog"
 	"time"
 
@@ -9,7 +8,6 @@ import (
 )
 
 type Hub struct {
-	conf    *api.Config // TODO: is this needed?
 	workers []*Worker
 }
 
