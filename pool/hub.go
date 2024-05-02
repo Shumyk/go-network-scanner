@@ -2,7 +2,7 @@ package pool
 
 import (
 	"go-network-scanner/api"
-	"log/slog"
+	log "log/slog"
 	"time"
 
 	"github.com/sourcegraph/conc/pool"
@@ -10,7 +10,6 @@ import (
 
 type Hub struct {
 	conf    *api.Config // TODO: is this needed?
-	pool    *pool.ResultPool[api.Scan]
 	workers []*Worker
 }
 
@@ -19,14 +18,22 @@ func Start(h *Hub) {
 }
 
 func (h *Hub) start() {
-	ticker := time.NewTicker(5 * time.Second) // TODO: take time from config
+	// TODO: take time from config
+	for range time.NewTicker(5 * time.Second).C {
+		log.Info("New pool cycle started")
+		start := time.Now()
+		pool := pool.New().WithMaxGoroutines(len(h.workers))
+		poolCreationDur := time.Since(start)
 
-	for range ticker.C {
 		for _, w := range h.workers {
-			h.pool.Go(w.Do)
+			pool.Go(w.Do)
 		}
-		scans := h.pool.Wait()
-		slog.Info("Retrieved scans", slog.Any("scans", scans), slog.Int("count", len(scans)))
-		// TODO: save scans to db
+		pool.Wait()
+
+		log.Info(
+			"Pool finished",
+			log.Duration("poolCreationDur", poolCreationDur),
+			log.Duration("poolDur", time.Since(start)),
+		)
 	}
 }

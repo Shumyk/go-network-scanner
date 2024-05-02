@@ -5,27 +5,28 @@ import (
 	"go-network-scanner/nmap"
 	"slices"
 
-	"github.com/sourcegraph/conc/pool"
+	log "log/slog"
 )
 
 func NewHub(c *api.Config, workers []*Worker) *Hub {
 	return &Hub{
 		c,
-		pool.
-			NewWithResults[api.Scan]().
-			WithMaxGoroutines(c.IpRangesCount()),
 		workers,
 	}
 }
 
 func NewWorkers(c *api.Config, nmap *nmap.Scanner) []*Worker {
 	ipRanges := c.IpRanges()
+	log.Info("Creating workers", log.Any("ipRanges", ipRanges))
+
 	workers := make([]*Worker, len(ipRanges))
-	for _, ip := range ipRanges {
-		w := newWorker(ip, c.EnableProxy, nmap)
-		workers = append(workers, w)
+	for x, ip := range ipRanges {
+		workers[x] = newWorker(ip, c.EnableProxy, nmap)
 	}
-	return slices.Clip(workers)
+
+	workers = slices.Clip(workers)
+	log.Info("Workers created", log.Any("workers", workers), log.Int("count", len(workers)))
+	return workers
 }
 
 func newWorker(ipRange string, proxy bool, nmap *nmap.Scanner) *Worker {

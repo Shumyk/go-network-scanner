@@ -62,5 +62,5 @@ func askSocksProxyEnabled(config *api.Config) {
 	fmt.Scanln(&enabled)
 
 	enabled = strings.ToLower(strings.TrimSpace(enabled))
-	config.EnableProxy = enabled[0] == 'y'
+	config.EnableProxy = len(enabled) > 0 && enabled[0] == 'y'
 }

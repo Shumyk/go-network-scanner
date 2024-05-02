@@ -3,6 +3,9 @@ package db
 import (
 	"database/sql"
 	"go-network-scanner/api"
+	log "log/slog"
+
+	"github.com/kataras/go-events"
 )
 
 // Constructors
@@ -20,4 +23,9 @@ func NewConfigRepo(db *sql.DB, conf *api.Config) *ConfigRepo {
 // Functions
 func Bootstrap(db *sql.DB) {
 	initSchema(db)
+	// TODO: implement persistence
+	events.On("scan", func(data ...interface{}) {
+		scan := data[0].(api.ScanFound)
+		log.Info("Scan received", log.Any("scan", scan))
+	})
 }
