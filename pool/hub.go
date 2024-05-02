@@ -20,7 +20,6 @@ func Start(h *Hub) {
 
 func (h *Hub) start() {
 	ticker := time.NewTicker(5 * time.Second) // TODO: take time from config
-	// defer ticker.Stop()
 
 	for range ticker.C {
 		for _, w := range h.workers {

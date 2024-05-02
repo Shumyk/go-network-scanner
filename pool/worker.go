@@ -11,7 +11,7 @@ type Worker struct {
 	nmap        *nmap.Scanner
 }
 
-func (w *Worker) Do() api.Scan { // TODO: implement
+func (w *Worker) Do() api.Scan { // TODO: implement mapping
 	w.nmap.Scan(w.ipRange)
 	return api.Scan{}
 }
