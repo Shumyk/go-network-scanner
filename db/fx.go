@@ -25,8 +25,12 @@ func NewScanRepo(db *sql.DB) *ScanRepo {
 	return &ScanRepo{db: db}
 }
 
-func NewDbListener(s *ScanRepo, h *HostRepo) api.Listener {
-	return &DbListener{scans: s, hosts: h}
+func NewDbHostListener(s *ScanRepo) api.Listener {
+	return &ScanListener{scans: s}
+}
+
+func NewDbScanListener(h *HostRepo) api.Listener {
+	return &HostListener{hosts: h}
 }
 
 // Functions

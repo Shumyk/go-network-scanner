@@ -29,8 +29,12 @@ func main() {
 			pool.NewWorkers,
 
 			fx.Annotate(
-				db.NewDbListener,
-				fx.ResultTags(`group:"listener"`, `name:"db"`),
+				db.NewDbScanListener,
+				fx.ResultTags(`group:"listener"`, `name:"db.scan"`),
+			),
+			fx.Annotate(
+				db.NewDbHostListener,
+				fx.ResultTags(`group:"listener"`, `name:"db.host"`),
 			),
 			fx.Annotate(
 				ui.NewUiListener,
