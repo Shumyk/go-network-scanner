@@ -21,7 +21,7 @@ func (l *HostListener) Listen(i ...interface{}) {
 
 func (l *HostListener) process(scan api.ScanFound) {
 	log.Info("Host received", log.Any("scan", scan))
-	// Persist the host in the database
+
 	host := api.HostOf(scan)
 	id, err := l.hosts.Insert(host)
 	if err != nil {

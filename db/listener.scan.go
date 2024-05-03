@@ -22,7 +22,6 @@ func (l *ScanListener) Listen(i ...interface{}) {
 func (l *ScanListener) process(found api.ScanFound) {
 	log.Info("Scan received", log.Any("scan", found))
 
-	// Persist the scan in the database
 	scan := api.ScanOf(found)
 	id, err := l.scans.Insert(scan)
 	if err != nil {
