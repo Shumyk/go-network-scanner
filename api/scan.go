@@ -3,7 +3,6 @@ package api
 import "time"
 
 type Scan struct {
-	Id              int
 	Ip              string
 	Port            uint16
 	FirstDiscovered time.Time

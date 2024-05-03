@@ -17,12 +17,12 @@ const (
 	create_table_scan = `
 		CREATE TABLE IF NOT EXISTS scan
 		(
-			id               INTEGER PRIMARY KEY,
 			ip               TEXT     NOT NULL,
 			port             INTEGER  NOT NULL,
 			first_discovered DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
 			last_seen        DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-			service_banner   TEXT     NOT NULL
+			service_banner   TEXT     NOT NULL,
+			PRIMARY KEY (ip, port)
 		);
 	`
 	// The unique ips found (ip, time of first discovery, time when it stopped being found, operating system type, hostname label and custom label)
