@@ -20,6 +20,14 @@ func NewConfigRepo(db *sql.DB, conf *api.Config) *ConfigRepo {
 	return repo
 }
 
+func NewHostRepo(db *sql.DB) *HostRepo {
+	return &HostRepo{db: db}
+}
+
+func NewScanRepo(db *sql.DB) *ScanRepo {
+	return &ScanRepo{db: db}
+}
+
 // Functions
 func Bootstrap(db *sql.DB) {
 	initSchema(db)

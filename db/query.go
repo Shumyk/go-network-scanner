@@ -41,4 +41,10 @@ const (
 	CONFIG_SELECT_ALL     = "SELECT name, enable_proxy, ip_range1, ip_range2, ip_range3 FROM config;"
 	CONFIG_SELECT_BY_NAME = "SELECT name, enable_proxy, ip_range1, ip_range2, ip_range3 FROM config WHERE name = ?;"
 	CONFIG_INSERT         = "INSERT INTO config (name, enable_proxy, ip_range1, ip_range2, ip_range3) VALUES (?, ?, ?, ?, ?);"
+
+	SCAN_SELECT_ALL = "SELECT id, ip, port, first_discovered, last_seen, service_banner FROM scan;"
+	SCAN_INSERT     = "INSERT INTO scan (ip, port, last_seen, service_banner) VALUES (?, ?, datetime(), ?);"
+
+	HOST_SELECT_ALL = "SELECT ip, first_discovered, last_seen, os_type, hostname_label, custom_label FROM host;"
+	HOST_INSERT     = "INSERT INTO host (ip, last_seen, os_type, hostname_label, custom_label) VALUES (?, datetime(), ?, ?, ?);"
 )

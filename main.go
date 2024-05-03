@@ -20,6 +20,8 @@ func main() {
 		fx.Provide(
 			db.NewDb(databaseName),
 			db.NewConfigRepo,
+			db.NewHostRepo,
+			db.NewScanRepo,
 			nmap.NewScanner,
 			pool.NewHub,
 			pool.NewWorkers,

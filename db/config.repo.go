@@ -38,7 +38,6 @@ func (c *ConfigRepo) All() ([]api.Config, error) {
 		}
 		configs = append(configs, config)
 	}
-
 	return configs, nil
 }
 
