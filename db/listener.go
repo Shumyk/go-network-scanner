@@ -18,5 +18,6 @@ func (l *DbListener) Topic() events.EventName {
 
 func (l *DbListener) Listen(i ...interface{}) {
 	scan := i[0].(api.ScanFound)
-	log.Info("Scan received", log.Any("scan", scan))
+	log.Info("Scan received in DB listener", log.Any("scan", scan))
+	// TODO: implement persisting scan
 }

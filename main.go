@@ -5,6 +5,7 @@ import (
 	"go-network-scanner/db"
 	"go-network-scanner/nmap"
 	"go-network-scanner/pool"
+	"go-network-scanner/ui"
 	"go-network-scanner/util"
 
 	"github.com/webui-dev/go-webui/v2"
@@ -27,6 +28,7 @@ func main() {
 			nmap.NewScanner,
 			pool.NewHub,
 			pool.NewWorkers,
+			ui.NewUiListener,
 		),
 		fx.Invoke(
 			db.Bootstrap,
