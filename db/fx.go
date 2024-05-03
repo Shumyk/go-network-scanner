@@ -28,6 +28,10 @@ func NewScanRepo(db *sql.DB) *ScanRepo {
 	return &ScanRepo{db: db}
 }
 
+func NewDbListener(s ScanRepo, h HostRepo) api.Listener {
+	return &DbListener{scans: s, hosts: h}
+}
+
 // Functions
 func Bootstrap(db *sql.DB) {
 	initSchema(db)

@@ -1,6 +1,7 @@
 package main
 
 import (
+	"go-network-scanner/api"
 	"go-network-scanner/db"
 	"go-network-scanner/nmap"
 	"go-network-scanner/pool"
@@ -22,12 +23,14 @@ func main() {
 			db.NewConfigRepo,
 			db.NewHostRepo,
 			db.NewScanRepo,
+			db.NewDbListener,
 			nmap.NewScanner,
 			pool.NewHub,
 			pool.NewWorkers,
 		),
 		fx.Invoke(
 			db.Bootstrap,
+			api.SubscribeListeners,
 			pool.Start,
 		),
 	)
