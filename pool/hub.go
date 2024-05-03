@@ -29,9 +29,9 @@ func (h *Hub) start() {
 		pool.Wait()
 
 		log.Info(
-			"Pool finished",
-			log.Duration("poolCreationDur", poolCreationDur),
-			log.Duration("poolDur", time.Since(start)),
+			"Pool cycle finished",
+			log.Duration("poolCreation", poolCreationDur),
+			log.Duration("poolCycle", time.Since(start)),
 		)
 	}
 }

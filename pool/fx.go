@@ -3,6 +3,7 @@ package pool
 import (
 	"go-network-scanner/api"
 	"go-network-scanner/nmap"
+	"go-network-scanner/util"
 	"slices"
 
 	log "log/slog"
@@ -31,5 +32,6 @@ func newWorker(ipRange string, proxy bool, nmap *nmap.Scanner) *Worker {
 		ipRange:     ipRange,
 		enableSocks: proxy,
 		nmap:        nmap,
+		log:         util.LoggerWith("worker", log.String("range", ipRange)),
 	}
 }
