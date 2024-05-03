@@ -18,12 +18,12 @@ type Worker struct {
 }
 
 func (w *Worker) Do() {
-	w.log.Info("Starting scan", log.String("ipRange", w.ipRange))
+	w.log.Info("Starting scan")
 	scanResult, err := w.nmap.Scan(w.ipRange)
-	w.log.Info("Finished scan", log.String("ipRange", w.ipRange))
+	w.log.Info("Finished scan")
 
 	if err != nil {
-		w.log.Error("Error scanning", log.String("ipRange", w.ipRange), log.Any("err", err))
+		w.log.Error("Error scanning", log.Any("err", err))
 		panic(err)
 	}
 

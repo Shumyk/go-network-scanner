@@ -8,8 +8,8 @@ import (
 )
 
 type DbListener struct {
-	hosts HostRepo
-	scans ScanRepo
+	hosts *HostRepo
+	scans *ScanRepo
 }
 
 func (l *DbListener) Topic() events.EventName {

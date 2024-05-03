@@ -14,7 +14,7 @@ import (
 
 func main() {
 	go util.SetupLogger()
-	// nmap.Scan("192.168.0.0/24")
+	// 192.168.0.0/24
 	databaseName, config := util.AskInput()
 
 	app := fx.New(
@@ -24,15 +24,25 @@ func main() {
 			db.NewConfigRepo,
 			db.NewHostRepo,
 			db.NewScanRepo,
-			db.NewDbListener,
 			nmap.NewScanner,
 			pool.NewHub,
 			pool.NewWorkers,
-			ui.NewUiListener,
+
+			fx.Annotate(
+				db.NewDbListener,
+				fx.ResultTags(`group:"listener"`, `name:"db"`),
+			),
+			fx.Annotate(
+				ui.NewUiListener,
+				fx.ResultTags(`group:"listener"`, `name:"ui"`),
+			),
 		),
 		fx.Invoke(
 			db.Bootstrap,
-			api.SubscribeListeners,
+			fx.Annotate(
+				api.SubscribeListeners,
+				fx.ParamTags(`group:"listener"`),
+			),
 			pool.Start,
 		),
 	)
