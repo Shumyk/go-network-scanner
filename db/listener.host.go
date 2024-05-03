@@ -19,21 +19,17 @@ func (l *HostListener) Listen(i ...interface{}) {
 	go l.process(i[0].(api.ScanFound))
 }
 
-func (l *HostListener) process(found api.ScanFound) {
+func (l *HostListener) process(scan api.ScanFound) {
+	log.Info("Host received", log.Any("scan", scan))
 	// Persist the host in the database
-	host := api.Host{
-		Ip:            found.Ip,
-		OsType:        found.OsType,
-		HostnameLabel: found.HostnameLabel,
-		CustomLabel:   found.CustomLabel,
-	}
+	host := api.HostOf(scan)
 	id, err := l.hosts.Insert(host)
 	if err != nil {
 		log.Error("Failed to persist host in DB", log.Any("error", err))
 		return
 	}
 	log.Info(
-		"Host persisted in DB listener",
+		"Host persisted",
 		log.Any("host.ip", host.Ip),
 		log.Int("id", id),
 	)

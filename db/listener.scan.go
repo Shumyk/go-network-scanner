@@ -20,21 +20,17 @@ func (l *ScanListener) Listen(i ...interface{}) {
 }
 
 func (l *ScanListener) process(found api.ScanFound) {
-	log.Info("Scan received in DB listener", log.Any("scan", found))
+	log.Info("Scan received", log.Any("scan", found))
 
 	// Persist the scan in the database
-	scan := api.Scan{
-		Ip:            found.Ip,
-		Port:          found.Port,
-		ServiceBanner: found.ServiceBanner,
-	}
+	scan := api.ScanOf(found)
 	id, err := l.scans.Insert(scan)
 	if err != nil {
-		log.Error("Failed to persist scan in DB", log.Any("error", err))
+		log.Error("Failed to persist scan", log.Any("error", err))
 		return
 	}
 	log.Info(
-		"Scan persisted in DB listener",
+		"Scan persisted",
 		log.Any("scan.ip", scan.Id),
 		log.Int("id", id),
 	)
