@@ -31,7 +31,8 @@ func (l *ScanListener) process(found api.ScanFound) {
 	}
 	log.Info(
 		"Scan persisted",
-		log.Any("scan.ip", scan.Id),
+		log.Any("ip", scan.Ip),
+		log.Any("port", scan.Port),
 		log.Int("id", id),
 	)
 }

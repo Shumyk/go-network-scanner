@@ -19,7 +19,7 @@ func (s *ScanRepo) All() ([]api.Scan, error) {
 	var scans []api.Scan
 	for rows.Next() {
 		var scan api.Scan
-		err := rows.Scan(&scan.Id, &scan.Ip, &scan.Port, &scan.FirstDiscovered, &scan.LastSeen, &scan.ServiceBanner)
+		err := rows.Scan(&scan.Ip, &scan.Port, &scan.FirstDiscovered, &scan.LastSeen, &scan.ServiceBanner)
 		if err != nil {
 			return nil, err
 		}
