@@ -3,6 +3,7 @@ package ui
 import (
 	"go-network-scanner/api"
 	log "log/slog"
+	"time"
 
 	"github.com/kataras/go-events"
 )
@@ -14,6 +15,11 @@ func (l *UiListener) Topic() events.EventName {
 }
 
 func (l *UiListener) Listen(i ...interface{}) {
-	scan := i[0].(api.ScanFound)
-	log.Info("Scan received in UI listener", log.Any("scan", scan))
+	go process(i[0].(api.ScanFound))
+}
+
+func process(s api.ScanFound) {
+	log.Info("Scan received in UI listener", log.Any("scan", s))
+	time.Sleep(2 * time.Second)
+	log.Info("Scan displayed in UI listener", log.Any("scan", s))
 }
