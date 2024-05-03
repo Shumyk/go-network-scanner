@@ -17,8 +17,10 @@ func (h *HostRepo) Upsert(host api.Host) (int, error) {
 	return Upsert(
 		h.db,
 		HOST_UPSERT,
-		host.Ip, host.OsType,
-		host.HostnameLabel, host.CustomLabel,
+		sql.Named("ip", host.Ip),
+		sql.Named("osType", host.OsType),
+		sql.Named("hostnameLabel", host.HostnameLabel),
+		sql.Named("customLabel", host.CustomLabel),
 	)
 }
 

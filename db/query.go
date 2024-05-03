@@ -52,7 +52,7 @@ const (
 	HOST_SELECT_ALL = "SELECT ip, first_discovered, last_seen, os_type, hostname_label, custom_label FROM host;"
 	HOST_INSERT     = "INSERT INTO host (ip, last_seen, os_type, hostname_label, custom_label) VALUES (?, datetime(), ?, ?, ?);"
 	HOST_UPSERT     = `
-	INSERT INTO host (ip, last_seen, os_type, hostname_label, custom_label) VALUES (?, datetime(), ?, ?, ?)
- 	   ON CONFLICT(ip) DO UPDATE SET last_seen = datetime(), os_type = ?, hostname_label = ?, custom_label = ?;
+	INSERT INTO host (ip, last_seen, os_type, hostname_label, custom_label) VALUES (:ip, datetime(), :osType, :hostnameLabel, :customLabel)
+ 	   ON CONFLICT(ip) DO UPDATE SET last_seen = datetime(), os_type = :osType, hostname_label = :hostnameLabel, custom_label = :customLabel;
 `
 )
