@@ -44,7 +44,15 @@ const (
 
 	SCAN_SELECT_ALL = "SELECT id, ip, port, first_discovered, last_seen, service_banner FROM scan;"
 	SCAN_INSERT     = "INSERT INTO scan (ip, port, last_seen, service_banner) VALUES (?, ?, datetime(), ?);"
+	SCAN_UPSERT     = `
+		INSERT INTO scan (ip, port, last_seen, service_banner) VALUES (?, ?, datetime(), ?)
+			ON CONFLICT(ip, port) DO UPDATE SET last_seen = datetime(), service_banner = ?;
+	`
 
 	HOST_SELECT_ALL = "SELECT ip, first_discovered, last_seen, os_type, hostname_label, custom_label FROM host;"
 	HOST_INSERT     = "INSERT INTO host (ip, last_seen, os_type, hostname_label, custom_label) VALUES (?, datetime(), ?, ?, ?);"
+	HOST_UPSERT     = `
+	INSERT INTO host (ip, last_seen, os_type, hostname_label, custom_label) VALUES (?, datetime(), ?, ?, ?)
+ 	   ON CONFLICT(ip) DO UPDATE SET last_seen = datetime(), os_type = ?, hostname_label = ?, custom_label = ?;
+`
 )
