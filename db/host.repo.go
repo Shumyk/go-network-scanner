@@ -28,8 +28,8 @@ func (h *HostRepo) All() ([]api.Host, error) {
 	return hosts, nil
 }
 
-func (h *HostRepo) Insert(host api.Host) (int, error) {
-	result, err := h.db.Exec(HOST_INSERT, host.Ip, host.OsType, host.HostnameLabel, host.CustomLabel)
+func (h *HostRepo) Upsert(host api.Host) (int, error) {
+	result, err := h.db.Exec(HOST_UPSERT, host.Ip, host.OsType, host.HostnameLabel, host.CustomLabel)
 	if err != nil {
 		return 0, err
 	}

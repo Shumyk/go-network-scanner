@@ -28,8 +28,8 @@ func (s *ScanRepo) All() ([]api.Scan, error) {
 	return scans, nil
 }
 
-func (s *ScanRepo) Insert(scan api.Scan) (int, error) {
-	result, err := s.db.Exec(SCAN_INSERT, scan.Ip, scan.Port, scan.ServiceBanner)
+func (s *ScanRepo) Upsert(scan api.Scan) (int, error) {
+	result, err := s.db.Exec(SCAN_UPSERT, scan.Ip, scan.Port, scan.ServiceBanner)
 	if err != nil {
 		return 0, err
 	}

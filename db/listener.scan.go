@@ -23,7 +23,7 @@ func (l *ScanListener) process(found api.ScanFound) {
 	log.Info("Scan received", log.Any("scan", found))
 
 	scan := api.ScanOf(found)
-	id, err := l.scans.Insert(scan)
+	id, err := l.scans.Upsert(scan)
 	if err != nil {
 		log.Error("Failed to persist scan", log.Any("error", err))
 		return

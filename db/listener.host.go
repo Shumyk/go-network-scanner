@@ -23,7 +23,7 @@ func (l *HostListener) process(scan api.ScanFound) {
 	log.Info("Host received", log.Any("scan", scan))
 
 	host := api.HostOf(scan)
-	id, err := l.hosts.Insert(host)
+	id, err := l.hosts.Upsert(host)
 	if err != nil {
 		log.Error("Failed to persist host in DB", log.Any("error", err))
 		return
