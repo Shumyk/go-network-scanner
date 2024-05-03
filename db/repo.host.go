@@ -10,33 +10,27 @@ type HostRepo struct {
 }
 
 func (h *HostRepo) All() ([]api.Host, error) {
-	rows, err := h.db.Query(HOST_SELECT_ALL)
-	if err != nil {
-		return nil, err
-	}
-	defer rows.Close()
-
-	var hosts []api.Host
-	for rows.Next() {
-		var h api.Host
-		err := rows.Scan(&h.Ip, &h.FirstDiscovered, &h.LastSeen, &h.OsType, &h.HostnameLabel, &h.CustomLabel)
-		if err != nil {
-			return nil, err
-		}
-		hosts = append(hosts, h)
-	}
-	return hosts, nil
+	return All(h.db, HOST_SELECT_ALL, hostMap)
 }
 
 func (h *HostRepo) Upsert(host api.Host) (int, error) {
-	result, err := h.db.Exec(HOST_UPSERT, host.Ip, host.OsType, host.HostnameLabel, host.CustomLabel)
-	if err != nil {
-		return 0, err
-	}
+	return Upsert(
+		h.db,
+		HOST_UPSERT,
+		host.Ip, host.OsType,
+		host.HostnameLabel, host.CustomLabel,
+	)
+}
 
-	id, err := result.LastInsertId()
-	if err != nil {
-		return 0, err
-	}
-	return int(id), nil
+func hostMap(f func(...any) error) (api.Host, error) {
+	var h api.Host
+	err := f(
+		&h.Ip,
+		&h.FirstDiscovered,
+		&h.LastSeen,
+		&h.OsType,
+		&h.HostnameLabel,
+		&h.CustomLabel,
+	)
+	return h, err
 }

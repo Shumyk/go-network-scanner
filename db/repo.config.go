@@ -11,45 +11,34 @@ type ConfigRepo struct {
 }
 
 func (c *ConfigRepo) Get(name string) (api.Config, error) {
-	var config api.Config
-	err := c.db.
-		QueryRow(CONFIG_SELECT_BY_NAME, name).
-		Scan(&config.Name, &config.EnableProxy, &config.IpRange1, &config.IpRange2, &config.IpRange3)
-	if err != nil {
-		return api.Config{}, err
-	}
-	return config, nil
-
+	return Get(c.db, CONFIG_SELECT_BY_NAME, mapConfig, name)
 }
 
 func (c *ConfigRepo) All() ([]api.Config, error) {
-	rows, err := c.db.Query(CONFIG_SELECT_ALL)
-	if err != nil {
-		return nil, err
-	}
-	defer rows.Close()
-
-	var configs []api.Config
-	for rows.Next() {
-		var config api.Config
-		err := rows.Scan(&config.Name, &config.EnableProxy, &config.IpRange1, &config.IpRange2, &config.IpRange3)
-		if err != nil {
-			return nil, err
-		}
-		configs = append(configs, config)
-	}
-	return configs, nil
+	return All(
+		c.db,
+		CONFIG_SELECT_ALL,
+		mapConfig,
+	)
 }
 
 func (c *ConfigRepo) Insert(config api.Config) (int, error) {
-	result, err := c.db.Exec(CONFIG_INSERT, config.Name, config.EnableProxy, config.IpRange1, config.IpRange2, config.IpRange3)
-	if err != nil {
-		return 0, err
-	}
+	return Upsert(
+		c.db,
+		CONFIG_INSERT,
+		config.Name, config.EnableProxy,
+		config.IpRange1, config.IpRange2, config.IpRange3,
+	)
+}
 
-	id, err := result.LastInsertId()
-	if err != nil {
-		return 0, err
-	}
-	return int(id), nil
+func mapConfig(f func(...any) error) (api.Config, error) {
+	var c api.Config
+	err := f(
+		&c.Name,
+		&c.EnableProxy,
+		&c.IpRange1,
+		&c.IpRange2,
+		&c.IpRange3,
+	)
+	return c, err
 }

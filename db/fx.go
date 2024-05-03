@@ -11,9 +11,8 @@ func NewDb(databaseName string) any {
 }
 
 func NewConfigRepo(db *sql.DB, conf *api.Config) *ConfigRepo {
-	repo := &ConfigRepo{db: db}
+	repo := &ConfigRepo{db, conf}
 	repo.Insert(*conf)
-	repo.Current = conf
 	return repo
 }
 
