@@ -17,7 +17,9 @@ func (s *ScanRepo) Upsert(scan api.Scan) (int, error) {
 	return Upsert(
 		s.db,
 		SCAN_UPSERT,
-		scan.Ip, scan.Port, scan.ServiceBanner,
+		sql.Named("ip", scan.Ip),
+		sql.Named("port", scan.Port),
+		sql.Named("serviceBanner", scan.ServiceBanner),
 	)
 }
 

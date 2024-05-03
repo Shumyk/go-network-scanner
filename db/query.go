@@ -45,8 +45,8 @@ const (
 	SCAN_SELECT_ALL = "SELECT id, ip, port, first_discovered, last_seen, service_banner FROM scan;"
 	SCAN_INSERT     = "INSERT INTO scan (ip, port, last_seen, service_banner) VALUES (?, ?, datetime(), ?);"
 	SCAN_UPSERT     = `
-		INSERT INTO scan (ip, port, last_seen, service_banner) VALUES (?, ?, datetime(), ?)
-			ON CONFLICT(ip, port) DO UPDATE SET last_seen = datetime(), service_banner = ?;
+		INSERT INTO scan (ip, port, last_seen, service_banner) VALUES (:ip, :port, datetime(), :serviceBanner)
+			ON CONFLICT(ip, port) DO UPDATE SET last_seen = datetime(), service_banner = :serviceBanner;
 	`
 
 	HOST_SELECT_ALL = "SELECT ip, first_discovered, last_seen, os_type, hostname_label, custom_label FROM host;"
