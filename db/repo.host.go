@@ -6,8 +6,8 @@ import (
 )
 
 type HostRepo struct {
-	conf *api.Config
 	db   *sql.DB
+	conf *api.Config
 }
 
 func (h *HostRepo) All() ([]api.Host, error) {

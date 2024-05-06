@@ -15,12 +15,12 @@ func NewConfigRepo(db *sql.DB, conf *api.Config) *ConfigRepo {
 	return repo
 }
 
-func NewHostRepo(db *sql.DB) *HostRepo {
-	return &HostRepo{db: db}
+func NewHostRepo(db *sql.DB, conf *api.Config) *HostRepo {
+	return &HostRepo{db, conf}
 }
 
-func NewScanRepo(db *sql.DB) *ScanRepo {
-	return &ScanRepo{db: db}
+func NewScanRepo(db *sql.DB, conf *api.Config) *ScanRepo {
+	return &ScanRepo{db, conf}
 }
 
 func NewDbHostListener(s *ScanRepo) api.Listener {

@@ -6,8 +6,8 @@ import (
 )
 
 type ScanRepo struct {
-	conf *api.Config
 	db   *sql.DB
+	conf *api.Config
 }
 
 func (s *ScanRepo) All() ([]api.Scan, error) {
