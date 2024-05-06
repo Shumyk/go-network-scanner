@@ -6,7 +6,8 @@ import (
 )
 
 type ScanRepo struct {
-	db *sql.DB
+	conf *api.Config
+	db   *sql.DB
 }
 
 func (s *ScanRepo) All() ([]api.Scan, error) {
@@ -17,6 +18,7 @@ func (s *ScanRepo) Upsert(scan api.Scan) (int, error) {
 	return upsert(
 		s.db,
 		SCAN_UPSERT,
+		sql.Named("session", s.conf.Name),
 		sql.Named("ip", scan.Ip),
 		sql.Named("port", scan.Port),
 		sql.Named("serviceBanner", scan.ServiceBanner),

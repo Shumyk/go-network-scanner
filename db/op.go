@@ -9,9 +9,9 @@ import (
 )
 
 func initSchema(db *sql.DB) {
-	exec(db, create_table_config)
-	exec(db, create_table_scan)
-	exec(db, create_table_host)
+	exec(db, CREATE_TABLE_CONFIG)
+	exec(db, CREATE_TABLE_SCAN)
+	exec(db, CREATE_TABLE_HOST)
 }
 
 func exec(db *sql.DB, query string) {

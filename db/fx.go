@@ -12,7 +12,6 @@ func NewDb(databaseName string) any {
 
 func NewConfigRepo(db *sql.DB, conf *api.Config) *ConfigRepo {
 	repo := &ConfigRepo{db, conf}
-	repo.Insert(*conf)
 	return repo
 }
 
@@ -33,6 +32,7 @@ func NewDbScanListener(h *HostRepo) api.Listener {
 }
 
 // Functions
-func Bootstrap(db *sql.DB) {
+func Bootstrap(db *sql.DB, confRepo *ConfigRepo) {
 	initSchema(db)
+	confRepo.Insert(*confRepo.Current)
 }

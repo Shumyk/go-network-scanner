@@ -6,7 +6,8 @@ import (
 )
 
 type HostRepo struct {
-	db *sql.DB
+	conf *api.Config
+	db   *sql.DB
 }
 
 func (h *HostRepo) All() ([]api.Host, error) {
@@ -17,6 +18,7 @@ func (h *HostRepo) Upsert(host api.Host) (int, error) {
 	return upsert(
 		h.db,
 		HOST_UPSERT,
+		sql.Named("session", h.conf.Name),
 		sql.Named("ip", host.Ip),
 		sql.Named("osType", host.OsType),
 		sql.Named("hostnameLabel", host.HostnameLabel),
