@@ -28,7 +28,7 @@ func (l *HostListener) process(scan api.ScanFound) {
 		log.Error("Failed to persist host in DB", log.Any("error", err))
 		return
 	}
-	log.Info(
+	log.Debug(
 		"Host persisted",
 		log.Any("host.ip", host.Ip),
 		log.Int("id", id),

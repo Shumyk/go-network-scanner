@@ -2,7 +2,8 @@ package db
 
 import "database/sql"
 
-type Mapper[T any] func(func(...any) error) (T, error)
+type ScanFunc func(...any) error
+type Mapper[T any] func(ScanFunc) (T, error)
 
 func get[T any](
 	db *sql.DB,

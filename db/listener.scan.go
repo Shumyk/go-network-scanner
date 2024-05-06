@@ -28,7 +28,7 @@ func (l *ScanListener) process(found api.ScanFound) {
 		log.Error("Failed to persist scan", log.Any("error", err))
 		return
 	}
-	log.Info(
+	log.Debug(
 		"Scan persisted",
 		log.Any("ip", scan.Ip),
 		log.Any("port", scan.Port),

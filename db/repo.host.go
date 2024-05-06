@@ -26,7 +26,7 @@ func (h *HostRepo) Upsert(host api.Host) (int, error) {
 	)
 }
 
-func hostMap(f func(...any) error) (api.Host, error) {
+func hostMap(f ScanFunc) (api.Host, error) {
 	var h api.Host
 	err := f(
 		&h.Ip,
