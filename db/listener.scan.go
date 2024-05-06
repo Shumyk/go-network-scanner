@@ -12,22 +12,22 @@ type ScanListener struct {
 }
 
 func (l *ScanListener) Topic() events.EventName {
-	return "scan"
+	return api.EVENT_SCAN
 }
 
 func (l *ScanListener) Listen(i ...interface{}) {
-	go l.process(i[0].(api.ScanFound))
+	go l.process(i[0].(api.Scan))
 }
 
-func (l *ScanListener) process(found api.ScanFound) {
-	log.Info("Scan received", log.Any("scan", found))
+func (l *ScanListener) process(scan api.Scan) {
+	log.Debug("Scan received", log.Any("scan", scan))
 
-	scan := api.ScanOf(found)
 	id, err := l.scans.Upsert(scan)
 	if err != nil {
 		log.Error("Failed to persist scan", log.Any("error", err))
 		return
 	}
+
 	log.Debug(
 		"Scan persisted",
 		log.Any("ip", scan.Ip),

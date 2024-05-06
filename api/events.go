@@ -7,6 +7,11 @@ import (
 	"github.com/kataras/go-events"
 )
 
+const (
+	EVENT_SCAN = "nmap.scan"
+	EVENT_HOST = "nmap.host"
+)
+
 type Listener interface {
 	Topic() events.EventName
 	Listen(i ...interface{})

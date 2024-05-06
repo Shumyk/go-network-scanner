@@ -10,12 +10,3 @@ type Scan struct {
 	LastSeen        time.Time
 	ServiceBanner   string
 }
-
-type ScanFound struct {
-	Ip            string
-	Port          uint16
-	ServiceBanner string
-	OsType        string
-	HostnameLabel string
-	CustomLabel   string
-}

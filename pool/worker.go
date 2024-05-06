@@ -1,6 +1,7 @@
 package pool
 
 import (
+	"fmt"
 	"go-network-scanner/api"
 	"go-network-scanner/nmap"
 	"log/slog"
@@ -20,36 +21,34 @@ type Worker struct {
 func (w *Worker) Do() {
 	w.log.Info("Starting scan")
 	scanResult, err := w.nmap.Scan(w.ipRange)
-	w.log.Info("Finished scan")
-
 	if err != nil {
 		w.log.Error("Error scanning", log.Any("err", err))
 		panic(err)
 	}
+	w.log.Info("Finished scan")
 
 	for _, h := range scanResult.Hosts {
-		for _, p := range h.Ports {
-			w.log.Info("Has addresses", log.Any("addresses", h.Addresses))
-			w.log.Info("Has hostnames", log.Any("hostnames", h.Hostnames))
+		w.log.Info("Host found", log.Any("host", h))
 
-			hostname := ""
-			if len(h.Hostnames) > 0 {
-				hostname = h.Hostnames[0].Name
-			}
-			customLabel := ""
-			if len(h.Hostnames) > 1 {
-				w.log.Warn("More than one hostname")
-				customLabel = h.Hostnames[1].Name
-			}
-			scan := api.ScanFound{
+		hostname := ""
+		if len(h.Hostnames) > 0 {
+			hostname = h.Hostnames[0].Name
+		}
+		host := api.Host{
+			Ip:            h.Addresses[0].Addr,
+			OsType:        h.OS.Matches[0].Name,
+			HostnameLabel: hostname,
+			CustomLabel:   h.Comment,
+		}
+		events.Emit(api.EVENT_HOST, host)
+		for _, p := range h.Ports {
+			banner := fmt.Sprintf("%v - %v - %v", p.Service.Name, p.Service.Product, p.Service.Version)
+			scan := api.Scan{
 				Ip:            h.Addresses[0].Addr,
 				Port:          p.ID,
-				ServiceBanner: p.Service.Name,
-				OsType:        p.Service.OSType,
-				HostnameLabel: hostname,
-				CustomLabel:   customLabel,
+				ServiceBanner: banner,
 			}
-			events.Emit("scan", scan)
+			events.Emit(api.EVENT_SCAN, scan)
 		}
 	}
 }

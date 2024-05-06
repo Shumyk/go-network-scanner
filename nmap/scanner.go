@@ -15,20 +15,21 @@ func (s *Scanner) Scan(ip string) (*nmap.Run, error) {
 		context.Background(),
 		nmap.WithTargets(ip),
 		nmap.WithServiceInfo(),
+		nmap.WithOSDetection(),
 		nmap.WithTimingTemplate(nmap.TimingAggressive),
 	)
 	if err != nil {
-		log.Error("Error creating scanner: %v", err, log.String("ip", ip))
+		log.Error("Error creating scanner", err, log.String("ip", ip))
 		return nil, err
 	}
 
 	log.Info("Nmap starts scanning", log.String("ip", ip))
 	results, warnings, err := scanner.Run()
 	if len(*warnings) > 0 {
-		log.Warn("Warnings while scanning: %v", warnings)
+		log.Warn("Warnings while scanning", warnings)
 	}
 	if err != nil {
-		log.Error("Error scanning: %v", log.String("ip", ip), log.Any("err", err))
+		log.Error("Error scanning", log.String("ip", ip), log.Any("err", err))
 		return nil, err
 	}
 
@@ -47,6 +48,7 @@ func (s *Scanner) Scan(ip string) (*nmap.Run, error) {
 			log.String("state", host.Status.State),
 			log.String("os", os),
 			log.String("hostname", hostname),
+			log.String("comment", host.Comment),
 		)
 		for _, port := range host.Ports {
 			log.Info(

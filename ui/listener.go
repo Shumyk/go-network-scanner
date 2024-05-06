@@ -11,15 +11,15 @@ import (
 type UiListener struct{}
 
 func (l *UiListener) Topic() events.EventName {
-	return "scan"
+	return api.EVENT_SCAN
 }
 
 func (l *UiListener) Listen(i ...interface{}) {
-	go process(i[0].(api.ScanFound))
+	go process(i[0].(api.Scan))
 }
 
-func process(s api.ScanFound) {
-	log.Info("Scan received in UI listener", log.Any("scan", s))
+func process(s api.Scan) {
+	log.Debug("Scan received in UI listener", log.Any("scan", s))
 	time.Sleep(2 * time.Second)
-	log.Info("Scan displayed in UI listener", log.Any("scan", s))
+	log.Debug("Scan displayed in UI listener", log.Any("scan", s))
 }
