@@ -3,7 +3,6 @@ package pool
 import (
 	"go-network-scanner/api"
 	"go-network-scanner/nmap"
-	"log/slog"
 	log "log/slog"
 
 	nmaplib "github.com/Ullaakut/nmap/v3"
@@ -11,20 +10,16 @@ import (
 )
 
 type Worker struct {
-	ipRange     string
+	ipRange     string // TODO: is needed?
 	enableSocks bool
 
 	nmap *nmap.Scanner
-	log  *slog.Logger
+	log  *log.Logger
 }
 
 func (w *Worker) Do() {
 	w.log.Info("Starting scan")
-	scanResult, err := w.nmap.Scan(w.ipRange)
-	if err != nil {
-		w.log.Error("Error scanning", log.Any("err", err))
-		panic(err)
-	}
+	scanResult := w.nmap.Scan()
 	w.log.Info("Finished scan")
 
 	for _, h := range scanResult.Hosts {

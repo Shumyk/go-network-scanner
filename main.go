@@ -3,7 +3,6 @@ package main
 import (
 	"go-network-scanner/api"
 	"go-network-scanner/db"
-	"go-network-scanner/nmap"
 	"go-network-scanner/pool"
 	"go-network-scanner/ui"
 	"go-network-scanner/util"
@@ -24,7 +23,6 @@ func main() {
 			db.NewConfigRepo,
 			db.NewHostRepo,
 			db.NewScanRepo,
-			nmap.NewScanner,
 			pool.NewHub,
 			pool.NewWorkers,
 

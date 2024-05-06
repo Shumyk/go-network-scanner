@@ -4,7 +4,6 @@ import (
 	"go-network-scanner/api"
 	"go-network-scanner/nmap"
 	"go-network-scanner/util"
-	"slices"
 
 	log "log/slog"
 )
@@ -13,25 +12,24 @@ func NewHub(workers []*Worker) *Hub {
 	return &Hub{workers}
 }
 
-func NewWorkers(c *api.Config, nmap *nmap.Scanner) []*Worker {
+func NewWorkers(c *api.Config) []*Worker {
 	ipRanges := c.IpRanges()
 	log.Debug("Creating workers", log.Any("ipRanges", ipRanges))
 
 	workers := make([]*Worker, len(ipRanges))
 	for x, ip := range ipRanges {
-		workers[x] = newWorker(ip, c.EnableProxy, nmap)
+		workers[x] = newWorker(ip, c.EnableProxy)
 	}
 
-	workers = slices.Clip(workers)
 	log.Debug("Workers created", log.Any("workers", workers), log.Int("count", len(workers)))
 	return workers
 }
 
-func newWorker(ipRange string, proxy bool, nmap *nmap.Scanner) *Worker {
+func newWorker(ipRange string, proxy bool) *Worker {
 	return &Worker{
 		ipRange:     ipRange,
 		enableSocks: proxy,
-		nmap:        nmap,
+		nmap:        nmap.NewScanner(ipRange),
 		log:         util.LoggerWith("worker", log.String("range", ipRange)),
 	}
 }
