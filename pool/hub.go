@@ -18,20 +18,21 @@ func Start(h *Hub) {
 func (h *Hub) start() {
 	// TODO: take time from config
 	for range time.NewTicker(5 * time.Second).C {
-		log.Info("New pool cycle started")
 		start := time.Now()
-		pool := pool.New().WithMaxGoroutines(len(h.workers))
-		poolCreationDur := time.Since(start)
 
-		for _, w := range h.workers {
-			pool.Go(w.Do)
-		}
-		pool.Wait()
-
+		log.Info("New pool cycle started")
+		h.cycle()
 		log.Info(
 			"Pool cycle finished",
-			log.Duration("poolCreation", poolCreationDur),
 			log.Duration("poolCycle", time.Since(start)),
 		)
 	}
+}
+
+func (h *Hub) cycle() {
+	pool := pool.New().WithMaxGoroutines(len(h.workers))
+	for _, w := range h.workers {
+		pool.Go(w.Do)
+	}
+	pool.Wait()
 }
