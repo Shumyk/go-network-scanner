@@ -4,7 +4,7 @@ import "database/sql"
 
 type Mapper[T any] func(func(...any) error) (T, error)
 
-func Get[T any](
+func get[T any](
 	db *sql.DB,
 	query string,
 	mapper Mapper[T],
@@ -14,12 +14,12 @@ func Get[T any](
 	return mapper(row.Scan)
 }
 
-func All[T any](
+func all[T any](
 	db *sql.DB,
 	query string,
 	mapper Mapper[T],
 ) ([]T, error) {
-	rows, err := db.Query(SCAN_SELECT_ALL)
+	rows, err := db.Query(query)
 	if err != nil {
 		return nil, err
 	}
@@ -36,7 +36,7 @@ func All[T any](
 	return res, nil
 }
 
-func Upsert(
+func upsert(
 	db *sql.DB,
 	query string,
 	args ...any,
