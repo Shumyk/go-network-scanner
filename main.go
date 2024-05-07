@@ -7,7 +7,6 @@ import (
 	"go-network-scanner/ui"
 	"go-network-scanner/util"
 
-	"github.com/webui-dev/go-webui/v2"
 	"go.uber.org/fx"
 )
 
@@ -25,6 +24,7 @@ func main() {
 			db.NewScanRepo,
 			pool.NewHub,
 			pool.NewWorkers,
+			ui.NewWebUi,
 
 			fx.Annotate(
 				db.NewDbScanListener,
@@ -45,14 +45,11 @@ func main() {
 				api.SubscribeListeners,
 				fx.ParamTags(`group:"listener"`),
 			),
+			ui.Run,
 			pool.Start,
 		),
 	)
 
 	app.Run()
 	<-app.Done()
-
-	w := webui.NewWindow()
-	w.Show("<html><body><h1>Hello, folks!</h1>" + "</body></html>")
-	webui.Wait()
 }

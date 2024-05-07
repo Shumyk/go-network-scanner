@@ -12,7 +12,7 @@ type Hub struct {
 }
 
 func Start(h *Hub) {
-	h.start()
+	go h.start()
 }
 
 func (h *Hub) start() {
@@ -24,7 +24,7 @@ func (h *Hub) start() {
 		h.cycle()
 		log.Info(
 			"Pool cycle finished",
-			log.Duration("poolCycle", time.Since(start)),
+			log.Duration("duration", time.Since(start)),
 		)
 	}
 }

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Go Network Scanner</title>
+    <script src="webui.js"></script>
+    <style>
+        body {
+            background: linear-gradient(to left, #36265a, #654da9);
+            color: AliceBlue;
+            font: 16px sans-serif;
+            text-align: center;
+            margin-top: 30px;
+        }
+        button {
+            margin: 5px 0 10px;
+        }
+    </style>
+  </head>
+
+  <body>
+    <div class="container">
+      <h1>Go Network Scanner</h1>
+      <p>Scan your network for devices</p>
+      <br>
+      <button id="MyButton1">Count <span id="count">0<span></button>
+      <br>
+      <button id="MyButton2">Exit</button>
+      <script>
+          let count = document.getElementById("count").innerHTML;
+          console.log("Initial count: " + count);
+
+          function SetCount(number) {
+              document.getElementById("count").innerHTML = number;
+              console.log("New count: " + number);
+              count = number;
+          }
+      </script>
+    </div>
+</html>
