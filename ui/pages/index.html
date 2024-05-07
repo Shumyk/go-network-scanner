@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
     <title>Go Network Scanner</title>
     <script src="webui.js"></script>
@@ -22,18 +22,13 @@
       <h1>Go Network Scanner</h1>
       <p>Scan your network for devices</p>
       <br>
+      
       <button id="MyButton1">Count <span id="count">0<span></button>
       <br>
+      <div id="scan-list"></div>
+      <br>
       <button id="MyButton2">Exit</button>
-      <script>
-          let count = document.getElementById("count").innerHTML;
-          console.log("Initial count: " + count);
-
-          function SetCount(number) {
-              document.getElementById("count").innerHTML = number;
-              console.log("New count: " + number);
-              count = number;
-          }
-      </script>
     </div>
+
+    <script src="js/ui.js"></script>
 </html>

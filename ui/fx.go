@@ -2,7 +2,6 @@ package ui
 
 import (
 	"go-network-scanner/api"
-	"strconv"
 
 	log "log/slog"
 
@@ -11,11 +10,11 @@ import (
 
 const indexHTML = "index.html"
 
-func NewUiListener() api.Listener {
-	return &UiListener{}
+func NewUiListener(ui *Ui) api.Listener {
+	return &UiListener{ui}
 }
 
-func NewWebUi() *webui.Window {
+func NewWebUi() *Ui {
 	log.Info("Creating UI")
 
 	w := webui.NewWindow()
@@ -23,28 +22,9 @@ func NewWebUi() *webui.Window {
 	w.Bind("MyButton1", countFunc)
 	w.Bind("MyButton2", exitFunc)
 
-	return &w
+	return &Ui{&w}
 }
 
-func Run(w *webui.Window) {
-	log.Info("Running UI")
-	if err := w.ShowBrowser(indexHTML, webui.ChromiumBased); err != nil {
-		log.Warn("Install a chromium-based browser for an optimized experience")
-		w.Show(indexHTML)
-	}
-	webui.Wait()
-}
-
-func countFunc(e webui.Event) any {
-	log.Info("Button 1 clicked")
-	count, _ := e.Window.Script("return count;", webui.ScriptOptions{})
-	i, _ := strconv.Atoi(count)
-	e.Window.Run("SetCount(" + strconv.Itoa(i+1) + ")")
-	return nil
-}
-
-func exitFunc(e webui.Event) any {
-	log.Info("Button 2 clicked")
-	webui.Exit()
-	return nil
+func Run(ui *Ui) {
+	go ui.Run()
 }
