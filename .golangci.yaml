@@ -47,9 +47,6 @@ linters-settings:
     enable-all-rules: true
   staticcheck:
     checks: ["all"]
-  whitespace:
-    multi-if: true
-    multi-func: true
 issues:
   fix: true
   exclude-use-default: false
@@ -136,5 +133,5 @@ linters:
     - usestdlibvars
     - varnamelen
     - wastedassign
-    - whitespace
     - wrapcheck
+    - testifylint
