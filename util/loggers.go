@@ -1,41 +1,46 @@
 package util
 
 import (
-	"log/slog"
+	log "log/slog"
 	"os"
 	"path/filepath"
 )
 
+// SetupLogger sets up the default logger for the application.
 func SetupLogger() {
-	slog.SetDefault(Logger())
+	log.SetDefault(Logger())
 }
 
-func Logger() *slog.Logger {
-	return slog.New(handler())
+// Logger returns a new logger with the default handler.
+func Logger() *log.Logger {
+	return log.New(handler())
 }
 
-func LoggerWith(group string, attrs ...slog.Attr) *slog.Logger {
-	return slog.New(
+// LoggerWith returns a new logger with the default handler
+// and the given group and attributes.
+func LoggerWith(group string, attrs ...log.Attr) *log.Logger {
+	return log.New(
 		handler().
 			WithGroup(group).
 			WithAttrs(attrs),
 	)
 }
 
-func handler() slog.Handler {
-	return slog.NewTextHandler(
+func handler() log.Handler {
+	return log.NewTextHandler(
 		os.Stdout,
-		&slog.HandlerOptions{
+		&log.HandlerOptions{
 			AddSource:   true,
+			Level:       log.LevelInfo,
 			ReplaceAttr: replaceFullSourcePath,
 		},
 	)
 }
 
-func replaceFullSourcePath(groups []string, a slog.Attr) slog.Attr {
-	if a.Key == slog.SourceKey {
-		source, _ := a.Value.Any().(*slog.Source)
-		if source != nil {
+func replaceFullSourcePath(_ []string, attr log.Attr) log.Attr {
+	if attr.Key == log.SourceKey {
+		source, ok := attr.Value.Any().(*log.Source)
+		if ok {
 			// directory/filename.go
 			source.File = filepath.Join(
 				filepath.Base(filepath.Dir(source.File)),
@@ -43,5 +48,5 @@ func replaceFullSourcePath(groups []string, a slog.Attr) slog.Attr {
 			)
 		}
 	}
-	return a
+	return attr
 }
