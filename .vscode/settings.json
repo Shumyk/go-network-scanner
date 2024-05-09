@@ -1,6 +1,16 @@
 {
     "cSpell.words": [
+        "errcheck",
+        "goconst",
+        "gocritic",
+        "gocyclo",
+        "golangci",
+        "gosimple",
         "Hostnames",
         "Ullaakut"
-    ]
+    ],
+    "go.lintTool": "golangci-lint",
+    "go.lintFlags": [
+        "--fast"
+    ],
 }

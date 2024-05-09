@@ -8,8 +8,8 @@ import (
 	log "log/slog"
 )
 
-func NewHub(workers []*Worker) *Hub {
-	return &Hub{workers}
+func NewHub(workers []*Worker) *hub {
+	return &hub{workers}
 }
 
 func NewWorkers(c *api.Config) []*Worker {

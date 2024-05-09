@@ -6,12 +6,16 @@ import (
 	"github.com/Ullaakut/nmap/v3"
 )
 
+// Scanner is a wrapper around nmap.Scanner
+// that does scanning and handle warnings and errors.
 type Scanner struct {
-	ip      string
 	scanner *nmap.Scanner
+	ip      string
 }
 
-// ex. 192.168.0.0/24
+// ex. 192.168.0.0/24.
+
+// Scan scans the given IP address range.
 func (s *Scanner) Scan() *nmap.Run {
 	log.Debug("Nmap starts scanning", log.String("ip", s.ip))
 

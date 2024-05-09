@@ -47,3 +47,15 @@ The backend part would consist of modules:
 - Utils - various reusable stuff. Helpers, error handling, logging, parsers.
 If code quality is important I'd suggest using dependency injection.
 Also, for better-structured concurrency, we could utilize the conc library [https://github.com/sourcegraph/conc\].
+
+
+1. Repo should have main package in root.
+2. Any executables should be in a cmd/${PROGNAME} sub directory with the entrypoint being main.go
+3. A Makefile in the root should allow you to make builds and have compiled binaries put properly in a builds directory.
+4. Proper .gitignore set
+5. Main library should have a Version string that follows semantic versioning. Makefile should shim in proper version number into build (for display with -v/--version flags).
+6. All exported functions and symbols should have good documentation.
+7. Code is expected to be commented appropriately, for explanation.
+8. Any use of concurrency primitives should have an explanation for model, rationale behind it, and race condition testing.
+9. Final code must have >85% passing test coverage.
+10. All code should use the golangci-lint configuration and have no issues. Any bypassed issues should be on a per line basis (//nolint:{linter} - {REASON}) with a valid reason for why a bypass is occurring.

@@ -1,7 +1,7 @@
 package db
 
 const (
-	// The configuration entered
+	// The configuration entered.
 	CREATE_TABLE_CONFIG = `
 		CREATE TABLE IF NOT EXISTS config
 		(
@@ -13,7 +13,7 @@ const (
 			created_at   DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
 		);
 	`
-	// scan (ip, port, time if first discovery, time when it stopped being found, service banner)
+	// scan (ip, port, time if first discovery, time when it stopped being found, service banner).
 	CREATE_TABLE_SCAN = `
 		CREATE TABLE IF NOT EXISTS scan
 		(
@@ -26,7 +26,7 @@ const (
 			PRIMARY KEY (session, ip, port)
 		);
 	`
-	// The unique ips found (ip, time of first discovery, time when it stopped being found, operating system type, hostname label and custom label)
+	// The unique ips found (ip, time of first discovery, time when it stopped being found, operating system type, hostname label and custom label).
 	CREATE_TABLE_HOST = `
 		CREATE TABLE IF NOT EXISTS host
 		(

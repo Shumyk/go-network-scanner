@@ -7,15 +7,17 @@ import (
 	"github.com/sourcegraph/conc/pool"
 )
 
-type Hub struct {
+type hub struct {
 	workers []*Worker
 }
 
-func Start(h *Hub) {
+// Start starts the ticker and begins cycle
+// where it concurrently triggers all workers to do their scanning.
+func Start(h *hub) {
 	go h.start()
 }
 
-func (h *Hub) start() {
+func (h *hub) start() {
 	// TODO: take time from config
 	for range time.NewTicker(5 * time.Second).C {
 		start := time.Now()
@@ -29,10 +31,10 @@ func (h *Hub) start() {
 	}
 }
 
-func (h *Hub) cycle() {
-	pool := pool.New().WithMaxGoroutines(len(h.workers))
+func (h *hub) cycle() {
+	p := pool.New().WithMaxGoroutines(len(h.workers))
 	for _, w := range h.workers {
-		pool.Go(w.Do)
+		p.Go(w.Do)
 	}
-	pool.Wait()
+	p.Wait()
 }

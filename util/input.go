@@ -30,9 +30,10 @@ func AskInput() (databaseName string, config api.Config) {
 
 func askDatabaseName() string {
 	fmt.Println("Enter the name of the sqlite database (defaults to 'scans'): ")
+
 	var databaseName string
 	fmt.Scanln(&databaseName)
-	if len(databaseName) == 0 {
+	if databaseName == "" {
 		return "test_db" // TODO: change to scans
 	}
 	return databaseName

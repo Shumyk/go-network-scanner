@@ -1,14 +1,21 @@
 package db
 
-import "database/sql"
+import (
+	"database/sql"
+	"fmt"
+)
 
-type ScanFunc func(...any) error
-type Mapper[T any] func(ScanFunc) (T, error)
+const zeroID = 0
+
+type (
+	scanFunc      func(...any) error
+	mapper[T any] func(scanFunc) (T, error)
+)
 
 func get[T any](
 	db *sql.DB,
 	query string,
-	mapper Mapper[T],
+	mapper mapper[T],
 	args ...any,
 ) (T, error) {
 	row := db.QueryRow(query, args...)
@@ -18,19 +25,19 @@ func get[T any](
 func all[T any](
 	db *sql.DB,
 	query string,
-	mapper Mapper[T],
+	mapper mapper[T],
 ) ([]T, error) {
 	rows, err := db.Query(query)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("failed to execute query: %v", err)
 	}
 	defer rows.Close()
 
 	var res []T
 	for rows.Next() {
-		scan, err := mapper(rows.Scan)
-		if err != nil {
-			return nil, err
+		scan, scanErr := mapper(rows.Scan)
+		if scanErr != nil {
+			return nil, scanErr
 		}
 		res = append(res, scan)
 	}
@@ -44,11 +51,11 @@ func upsert(
 ) (int, error) {
 	result, err := db.Exec(query, args...)
 	if err != nil {
-		return 0, err
+		return zeroID, err
 	}
 	id, err := result.LastInsertId()
 	if err != nil {
-		return 0, err
+		return zeroID, err
 	}
 	return int(id), nil
 }

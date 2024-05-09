@@ -31,7 +31,7 @@ func (c *ConfigRepo) Insert(config api.Config) (int, error) {
 	)
 }
 
-func mapConfig(f ScanFunc) (api.Config, error) {
+func mapConfig(f scanFunc) (api.Config, error) {
 	var c api.Config
 	err := f(
 		&c.Name,

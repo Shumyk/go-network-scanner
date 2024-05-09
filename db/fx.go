@@ -5,7 +5,7 @@ import (
 	"go-network-scanner/api"
 )
 
-// Constructors
+// Constructors.
 func NewDb(databaseName string) any {
 	return func() *sql.DB { return open(databaseName) }
 }
@@ -31,7 +31,7 @@ func NewDbScanListener(h *HostRepo) api.Listener {
 	return &HostListener{hosts: h}
 }
 
-// Functions
+// Functions.
 func Bootstrap(db *sql.DB, confRepo *ConfigRepo) {
 	initSchema(db)
 	confRepo.Insert(*confRepo.Current)

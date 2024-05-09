@@ -12,7 +12,6 @@ func SetupLogger() {
 
 func Logger() *slog.Logger {
 	return slog.New(handler())
-
 }
 
 func LoggerWith(group string, attrs ...slog.Attr) *slog.Logger {
