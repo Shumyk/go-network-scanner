@@ -14,6 +14,17 @@ type Config struct {
 	CreatedAt   time.Time
 }
 
+func EmptyConfig() Config {
+	return Config{
+		Name:        "",
+		EnableProxy: false,
+		IpRange1:    "",
+		IpRange2:    "",
+		IpRange3:    "",
+		CreatedAt:   time.Time{},
+	}
+}
+
 func (c *Config) IpRanges() []string {
 	return slices.DeleteFunc(
 		[]string{c.IpRange1, c.IpRange2, c.IpRange3},

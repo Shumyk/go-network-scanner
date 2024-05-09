@@ -68,7 +68,7 @@ issues:
     # gosec: False positive is triggered by 'src, err := ioutil.ReadFile(filename)'
     - Potential file inclusion via variable
     # nlreturn: don't space continue cuddling
-    - continue with no blank line before
+    - (continue|return) with no blank line before
   exclude-files:
     - ".generated_.types\\.go$"
 
