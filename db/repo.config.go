@@ -27,7 +27,7 @@ func (c *ConfigRepo) Insert(config api.Config) (int, error) {
 		c.db,
 		CONFIG_INSERT,
 		config.Name, config.EnableProxy,
-		config.IpRange1, config.IpRange2, config.IpRange3,
+		config.IPRange1, config.IPRange2, config.IPRange3,
 	)
 }
 
@@ -36,9 +36,9 @@ func mapConfig(f scanFunc) (api.Config, error) {
 	err := f(
 		&c.Name,
 		&c.EnableProxy,
-		&c.IpRange1,
-		&c.IpRange2,
-		&c.IpRange3,
+		&c.IPRange1,
+		&c.IPRange2,
+		&c.IPRange3,
 	)
 	return c, err
 }

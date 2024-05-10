@@ -1,3 +1,4 @@
+// Package api provides common models and functions.
 package api
 
 import (
@@ -5,35 +6,41 @@ import (
 	"time"
 )
 
+const empStr = ""
+
+// Config represents a configuration entry.
 type Config struct {
-	Name        string
-	EnableProxy bool
-	IpRange1    string
-	IpRange2    string
-	IpRange3    string
 	CreatedAt   time.Time
+	Name        string
+	IPRange1    string
+	IPRange2    string
+	IPRange3    string
+	EnableProxy bool
 }
 
+// EmptyConfig returns a Config with empty fields.
 func EmptyConfig() Config {
 	return Config{
-		Name:        "",
+		Name:        empStr,
 		EnableProxy: false,
-		IpRange1:    "",
-		IpRange2:    "",
-		IpRange3:    "",
+		IPRange1:    empStr,
+		IPRange2:    empStr,
+		IPRange3:    empStr,
 		CreatedAt:   time.Time{},
 	}
 }
 
-func (c *Config) IpRanges() []string {
+// IPRanges returns the non-empty IP ranges.
+func (c *Config) IPRanges() []string {
 	return slices.DeleteFunc(
-		[]string{c.IpRange1, c.IpRange2, c.IpRange3},
+		[]string{c.IPRange1, c.IPRange2, c.IPRange3},
 		func(ip string) bool {
-			return len(ip) == 0
+			return ip == empStr
 		},
 	)
 }
 
-func (c *Config) IpRangesCount() int {
-	return len(c.IpRanges())
+// IPRangesCount returns the number of non-empty IP ranges.
+func (c *Config) IPRangesCount() int {
+	return len(c.IPRanges())
 }

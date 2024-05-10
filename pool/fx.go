@@ -13,7 +13,7 @@ func NewHub(workers []*Worker) *hub {
 }
 
 func NewWorkers(c *api.Config) []*Worker {
-	ipRanges := c.IpRanges()
+	ipRanges := c.IPRanges()
 	log.Debug("Creating workers", log.Any("ipRanges", ipRanges))
 
 	workers := make([]*Worker, len(ipRanges))

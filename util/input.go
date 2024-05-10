@@ -28,11 +28,11 @@ func AskInput() (databaseName string, config api.Config) {
 
 	// 4. Second ip range scan (optional)
 	fmt.Println("Enter the second IP range to scan, optional: ")
-	fmt.Fscanln(input, &config.IpRange2)
+	fmt.Fscanln(input, &config.IPRange2)
 
 	// 5. Third ip range to scan (optional)
 	fmt.Println("Enter the third IP range to scan, optional: ")
-	fmt.Fscanln(input, &config.IpRange3)
+	fmt.Fscanln(input, &config.IPRange3)
 
 	// 6. Enable socks proxy button and the ip address of the socks proxy, with a different proxy available for each ip range above
 	askSocksProxyEnabled(&config)
@@ -63,9 +63,9 @@ func askSessionName(config *api.Config) {
 
 func askIpRange(config *api.Config) {
 	fmt.Println("Enter the first IP range to scan: ")
-	fmt.Fscanln(input, &config.IpRange1)
+	fmt.Fscanln(input, &config.IPRange1)
 
-	if config.IpRange1 == "" {
+	if config.IPRange1 == "" {
 		fmt.Fprintln(os.Stderr, "First IP range is required")
 		askIpRange(config)
 	}

@@ -21,9 +21,9 @@ func TestAskInput(t *testing.T) {
 			input: []string{"session1", "local_db", "192.33.55.31", "192.32.55.59", "192.123.43.64", "y"},
 			want: api.Config{
 				Name:        "session1",
-				IpRange1:    "192.33.55.31",
-				IpRange2:    "192.32.55.59",
-				IpRange3:    "192.123.43.64",
+				IPRange1:    "192.33.55.31",
+				IPRange2:    "192.32.55.59",
+				IPRange3:    "192.123.43.64",
 				EnableProxy: true,
 			},
 			wantDb: "local_db",
@@ -33,9 +33,9 @@ func TestAskInput(t *testing.T) {
 			input: []string{"session2", "", "", "33.33.55.31", "", "", ""},
 			want: api.Config{
 				Name:        "session2",
-				IpRange1:    "33.33.55.31",
-				IpRange2:    "",
-				IpRange3:    "",
+				IPRange1:    "33.33.55.31",
+				IPRange2:    "",
+				IPRange3:    "",
 				EnableProxy: false,
 			},
 			wantDb: DEFAULT_TEST_DB,
@@ -112,7 +112,7 @@ func TestAskIpRange(t *testing.T) {
 
 			config := api.Config{}
 			askIpRange(&config)
-			assert.Equal(t, tt.want, config.IpRange1)
+			assert.Equal(t, tt.want, config.IPRange1)
 		})
 	}
 }
