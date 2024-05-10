@@ -19,7 +19,7 @@ func (s *ScanRepo) Upsert(scan api.Scan) (int, error) {
 		s.db,
 		SCAN_UPSERT,
 		sql.Named("session", s.conf.Name),
-		sql.Named("ip", scan.Ip),
+		sql.Named("ip", scan.IP),
 		sql.Named("port", scan.Port),
 		sql.Named("serviceBanner", scan.ServiceBanner),
 	)
@@ -28,7 +28,7 @@ func (s *ScanRepo) Upsert(scan api.Scan) (int, error) {
 func scanMap(f scanFunc) (api.Scan, error) {
 	var s api.Scan
 	err := f(
-		&s.Ip,
+		&s.IP,
 		&s.Port,
 		&s.FirstDiscovered,
 		&s.LastSeen,

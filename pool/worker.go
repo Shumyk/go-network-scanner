@@ -45,7 +45,7 @@ func processHost(ip string, h nmaplib.Host) {
 
 func processPort(ip string, p nmaplib.Port) {
 	scan := api.Scan{
-		Ip:            ip,
+		IP:            ip,
 		Port:          p.ID,
 		ServiceBanner: nmap.ServiceBanner(p),
 	}

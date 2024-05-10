@@ -30,7 +30,7 @@ func (l *ScanListener) process(scan api.Scan) {
 
 	log.Debug(
 		"Scan persisted",
-		log.Any("ip", scan.Ip),
+		log.Any("ip", scan.IP),
 		log.Any("port", scan.Port),
 		log.Int("id", id),
 	)

@@ -22,8 +22,8 @@ func (ui *Ui) Run() {
 }
 
 func (u *Ui) AddScan(s api.Scan) {
-	log.Info("Adding scan to UI", log.Any("scan.ip", s.Ip))
-	u.window.Run("AddDevice('" + s.Ip + ", " + strconv.Itoa(int(s.Port)) + ", " + s.ServiceBanner + "')")
+	log.Info("Adding scan to UI", log.Any("scan.ip", s.IP))
+	u.window.Run("AddDevice('" + s.IP + ", " + strconv.Itoa(int(s.Port)) + ", " + s.ServiceBanner + "')")
 }
 
 func countFunc(e webui.Event) any {
