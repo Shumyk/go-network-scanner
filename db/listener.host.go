@@ -30,7 +30,7 @@ func (l *HostListener) process(host api.Host) {
 
 	log.Debug(
 		"Host persisted",
-		log.Any("host.ip", host.Ip),
+		log.Any("host.ip", host.IP),
 		log.Int("id", id),
 	)
 }

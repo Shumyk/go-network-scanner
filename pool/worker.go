@@ -35,7 +35,7 @@ func (w *Worker) Do() {
 
 func processHost(ip string, h nmaplib.Host) {
 	host := api.Host{
-		Ip:            ip,
+		IP:            ip,
 		OsType:        nmap.Os(h),
 		HostnameLabel: nmap.Hostname(h),
 		CustomLabel:   h.Comment,
