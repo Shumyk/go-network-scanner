@@ -12,7 +12,7 @@ type HostListener struct {
 }
 
 func (l *HostListener) Topic() events.EventName {
-	return api.EVENT_HOST
+	return api.EventNmapHost
 }
 
 func (l *HostListener) Listen(i ...interface{}) {

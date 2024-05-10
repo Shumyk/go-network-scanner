@@ -12,7 +12,7 @@ type UiListener struct {
 }
 
 func (l *UiListener) Topic() events.EventName {
-	return api.EVENT_SCAN
+	return api.EventNmapScan
 }
 
 func (l *UiListener) Listen(i ...interface{}) {

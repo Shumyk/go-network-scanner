@@ -131,7 +131,6 @@ linters:
     - unparam
     - unused
     - usestdlibvars
-    - varnamelen
     - wastedassign
     - wrapcheck
     - testifylint

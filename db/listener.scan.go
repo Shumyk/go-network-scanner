@@ -12,7 +12,7 @@ type ScanListener struct {
 }
 
 func (l *ScanListener) Topic() events.EventName {
-	return api.EVENT_SCAN
+	return api.EventNmapScan
 }
 
 func (l *ScanListener) Listen(i ...interface{}) {

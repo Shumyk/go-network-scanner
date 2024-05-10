@@ -8,19 +8,23 @@ import (
 )
 
 const (
-	EVENT_SCAN = "nmap.scan"
-	EVENT_HOST = "nmap.host"
+	// EventNmapScan is topic name for scans (services running on port).
+	EventNmapScan = "nmap.scan"
+	// EventNmapHost is topic name for a hosts (IP address).
+	EventNmapHost = "nmap.host"
 )
 
+// Listener is an interface for listening to events.
 type Listener interface {
 	Topic() events.EventName
-	Listen(i ...interface{})
+	Listen(i ...any)
 }
 
 // SubscribeListeners subscribes the given listeners to their respective topics.
-// It logs the subscription details and registers the listeners with the events package.
-func SubscribeListeners(listeners []Listener) {
-	for _, l := range listeners {
+// It logs the subscription details and registers the listeners with
+// the events package.
+func SubscribeListeners(ll []Listener) {
+	for _, l := range ll {
 		log.Info(
 			"Subscribing to",
 			log.Any("topic", l.Topic()),
