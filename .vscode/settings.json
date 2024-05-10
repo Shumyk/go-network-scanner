@@ -9,6 +9,7 @@
         "gosimple",
         "Hostnames",
         "nolint",
+        "slogtest",
         "stretchr",
         "Ullaakut"
     ],

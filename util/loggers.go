@@ -1,10 +1,13 @@
 package util
 
 import (
+	"io"
 	log "log/slog"
 	"os"
 	"path/filepath"
 )
+
+var writer io.Writer = os.Stdout
 
 // SetupLogger sets up the default logger for the application.
 func SetupLogger() {
@@ -28,7 +31,7 @@ func LoggerWith(group string, attrs ...log.Attr) *log.Logger {
 
 func handler() log.Handler {
 	return log.NewTextHandler(
-		os.Stdout,
+		writer,
 		&log.HandlerOptions{
 			AddSource:   true,
 			Level:       log.LevelInfo,
