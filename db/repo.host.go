@@ -12,7 +12,7 @@ type HostRepo struct {
 }
 
 // All retrieves all hosts.
-func (h *HostRepo) All() ([]api.Host, error) {
+func (h *HostRepo) All() ([]*api.Host, error) {
 	return all(h.db, queryHostSelectAll, hostMap)
 }
 
@@ -29,7 +29,7 @@ func (h *HostRepo) Upsert(host *api.Host) (int, error) {
 	)
 }
 
-func hostMap(f scanFunc) (api.Host, error) {
+func hostMap(f scanFunc) (*api.Host, error) {
 	var h api.Host
 	err := f(
 		&h.IP,
@@ -39,5 +39,5 @@ func hostMap(f scanFunc) (api.Host, error) {
 		&h.HostnameLabel,
 		&h.CustomLabel,
 	)
-	return h, err
+	return &h, err
 }

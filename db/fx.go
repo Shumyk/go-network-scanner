@@ -28,13 +28,13 @@ func NewScanRepo(db *sql.DB, conf *api.Config) *ScanRepo {
 }
 
 // NewDbHostListener returns a new host event listener.
-func NewDbHostListener(s *ScanRepo) api.Listener {
-	return &ScanListener{scans: s}
+func NewDbHostListener(h RepoBasic[*api.Host]) api.Listener {
+	return &HostListener{hosts: h}
 }
 
 // NewDbScanListener returns a new scan event listener.
-func NewDbScanListener(h *HostRepo) api.Listener {
-	return &HostListener{hosts: h}
+func NewDbScanListener(s *ScanRepo) api.Listener {
+	return &ScanListener{scans: s}
 }
 
 // Bootstrap initializes the database.

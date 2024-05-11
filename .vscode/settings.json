@@ -10,6 +10,7 @@
         "gosimple",
         "Hostnames",
         "nolint",
+        "prealloc",
         "slogtest",
         "stretchr",
         "Ullaakut"

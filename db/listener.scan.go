@@ -19,7 +19,7 @@ func (*ScanListener) Topic() events.EventName {
 
 // Listen listens for scan events.
 func (l *ScanListener) Listen(i ...any) {
-	s, ok := i[eventPlace].(api.Scan)
+	s, ok := i[zero].(api.Scan)
 	if !ok {
 		log.Error("Failed to cast to scan")
 		return

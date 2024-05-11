@@ -13,6 +13,18 @@ type (
 	mapper[T any] func(scanFunc) (T, error)
 )
 
+// RepoBasic is a repository with basic methods.
+type RepoBasic[T any] interface {
+	All() ([]T, error)
+	Upsert(entity T) (int, error)
+}
+
+// RepoFull is a repository with all methods.
+type RepoFull[T any] interface {
+	Get(name string) (T, error)
+	RepoBasic[T]
+}
+
 func get[T any](
 	db *sql.DB,
 	query string,
@@ -34,6 +46,7 @@ func all[T any](
 	}
 	defer rows.Close()
 
+	//nolint:prealloc // We don't know the number of rows.
 	var res []T
 	for rows.Next() {
 		scan, scanErr := mapper(rows.Scan)
