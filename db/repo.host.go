@@ -11,13 +11,13 @@ type HostRepo struct {
 }
 
 func (h *HostRepo) All() ([]api.Host, error) {
-	return all(h.db, HOST_SELECT_ALL, hostMap)
+	return all(h.db, queryHostSelectAll, hostMap)
 }
 
 func (h *HostRepo) Upsert(host api.Host) (int, error) {
 	return upsert(
 		h.db,
-		HOST_UPSERT,
+		queryHostUpsert,
 		sql.Named("session", h.conf.Name),
 		sql.Named("ip", host.IP),
 		sql.Named("osType", host.OsType),

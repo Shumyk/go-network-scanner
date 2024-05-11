@@ -11,9 +11,9 @@ import (
 
 //nolint:errcheck,revive // ignore errors because they are handled in the exec()
 func initSchema(db *sql.DB) {
-	exec(db, CREATE_TABLE_CONFIG)
-	exec(db, CREATE_TABLE_SCAN)
-	exec(db, CREATE_TABLE_HOST)
+	exec(db, queryCreateTableConfig)
+	exec(db, queryCreateTableScan)
+	exec(db, queryCreateTableHost)
 }
 
 func exec(db *sql.DB, query string) error {

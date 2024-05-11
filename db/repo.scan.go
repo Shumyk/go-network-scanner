@@ -11,13 +11,13 @@ type ScanRepo struct {
 }
 
 func (s *ScanRepo) All() ([]api.Scan, error) {
-	return all(s.db, SCAN_SELECT_ALL, scanMap)
+	return all(s.db, queryScanSelectAll, scanMap)
 }
 
 func (s *ScanRepo) Upsert(scan api.Scan) (int, error) {
 	return upsert(
 		s.db,
-		SCAN_UPSERT,
+		queryScanUpsert,
 		sql.Named("session", s.conf.Name),
 		sql.Named("ip", scan.IP),
 		sql.Named("port", scan.Port),

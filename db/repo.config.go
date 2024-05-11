@@ -11,13 +11,13 @@ type ConfigRepo struct {
 }
 
 func (c *ConfigRepo) Get(name string) (api.Config, error) {
-	return get(c.db, CONFIG_SELECT_BY_NAME, mapConfig, name)
+	return get(c.db, queryConfigSelectByName, mapConfig, name)
 }
 
 func (c *ConfigRepo) All() ([]api.Config, error) {
 	return all(
 		c.db,
-		CONFIG_SELECT_ALL,
+		queryConfigSelectAll,
 		mapConfig,
 	)
 }
@@ -25,7 +25,7 @@ func (c *ConfigRepo) All() ([]api.Config, error) {
 func (c *ConfigRepo) Insert(config api.Config) (int, error) {
 	return upsert(
 		c.db,
-		CONFIG_INSERT,
+		queryConfigInsert,
 		config.Name, config.EnableProxy,
 		config.IPRange1, config.IPRange2, config.IPRange3,
 	)
