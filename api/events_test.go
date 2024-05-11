@@ -4,7 +4,7 @@ import (
 	"testing"
 
 	"github.com/kataras/go-events"
-	"github.com/magiconair/properties/assert"
+	"github.com/stretchr/testify/assert"
 )
 
 type listener struct {

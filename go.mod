@@ -5,7 +5,6 @@ go 1.22.2
 require (
 	github.com/Ullaakut/nmap/v3 v3.0.3
 	github.com/kataras/go-events v0.0.3
-	github.com/magiconair/properties v1.8.7
 	github.com/sourcegraph/conc v0.3.0
 	github.com/stretchr/testify v1.9.0
 	github.com/webui-dev/go-webui/v2 v2.4.1
