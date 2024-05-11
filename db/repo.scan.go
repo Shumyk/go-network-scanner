@@ -5,16 +5,19 @@ import (
 	"go-network-scanner/api"
 )
 
+// ScanRepo is a repository for the scan table.
 type ScanRepo struct {
 	db   *sql.DB
 	conf *api.Config
 }
 
+// All retrieves all scans.
 func (s *ScanRepo) All() ([]api.Scan, error) {
 	return all(s.db, queryScanSelectAll, scanMap)
 }
 
-func (s *ScanRepo) Upsert(scan api.Scan) (int, error) {
+// Upsert inserts or updates a scan.
+func (s *ScanRepo) Upsert(scan *api.Scan) (int, error) {
 	return upsert(
 		s.db,
 		queryScanUpsert,

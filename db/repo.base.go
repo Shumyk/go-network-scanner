@@ -2,7 +2,8 @@ package db
 
 import (
 	"database/sql"
-	"fmt"
+
+	"github.com/pkg/errors"
 )
 
 const zeroID = 0
@@ -29,7 +30,7 @@ func all[T any](
 ) ([]T, error) {
 	rows, err := db.Query(query)
 	if err != nil {
-		return nil, fmt.Errorf("failed to execute query: %v", err)
+		return nil, errors.Wrap(err, "failed to retrieve all rows")
 	}
 	defer rows.Close()
 
@@ -51,11 +52,11 @@ func upsert(
 ) (int, error) {
 	result, err := db.Exec(query, args...)
 	if err != nil {
-		return zeroID, err
+		return zeroID, errors.Wrap(err, "failed to upsert")
 	}
 	id, err := result.LastInsertId()
 	if err != nil {
-		return zeroID, err
+		return zeroID, errors.Wrap(err, "failed to get last insert ID")
 	}
 	return int(id), nil
 }

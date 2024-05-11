@@ -5,16 +5,19 @@ import (
 	"go-network-scanner/api"
 )
 
+// HostRepo is a repository for the host table.
 type HostRepo struct {
 	db   *sql.DB
 	conf *api.Config
 }
 
+// All retrieves all hosts.
 func (h *HostRepo) All() ([]api.Host, error) {
 	return all(h.db, queryHostSelectAll, hostMap)
 }
 
-func (h *HostRepo) Upsert(host api.Host) (int, error) {
+// Upsert updates or inserts a host.
+func (h *HostRepo) Upsert(host *api.Host) (int, error) {
 	return upsert(
 		h.db,
 		queryHostUpsert,

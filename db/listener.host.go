@@ -7,29 +7,42 @@ import (
 	"github.com/kataras/go-events"
 )
 
+const eventPlace = 0
+
+// HostListener listens for host events and persists them.
 type HostListener struct {
 	hosts *HostRepo
 }
 
-func (l *HostListener) Topic() events.EventName {
+// Topic returns the event topic.
+func (*HostListener) Topic() events.EventName {
 	return api.EventNmapHost
 }
 
-func (l *HostListener) Listen(i ...interface{}) {
-	go l.process(i[0].(api.Host))
+// Listen listens for host events.
+func (l *HostListener) Listen(i ...any) {
+	h, ok := i[eventPlace].(api.Host)
+	if !ok {
+		log.Error("failed to cast to host")
+		return
+	}
+	go l.process(&h)
 }
 
-func (l *HostListener) process(host api.Host) {
-	log.Debug("Host received", log.Any("host", host))
+func (l *HostListener) process(host *api.Host) {
+	log.Debug("host received", log.Any("host", host))
 
 	id, err := l.hosts.Upsert(host)
 	if err != nil {
-		log.Error("Failed to persist host in DB", log.Any("error", err))
+		log.Error(
+			"failed to persist host in DB",
+			log.Any("error", err),
+		)
 		return
 	}
 
 	log.Debug(
-		"Host persisted",
+		"host persisted",
 		log.Any("host.ip", host.IP),
 		log.Int("id", id),
 	)

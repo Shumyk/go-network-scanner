@@ -7,19 +7,27 @@ import (
 	"github.com/kataras/go-events"
 )
 
+// ScanListener listens for scan events and persists them.
 type ScanListener struct {
 	scans *ScanRepo
 }
 
-func (l *ScanListener) Topic() events.EventName {
+// Topic returns the event topic.
+func (*ScanListener) Topic() events.EventName {
 	return api.EventNmapScan
 }
 
-func (l *ScanListener) Listen(i ...interface{}) {
-	go l.process(i[0].(api.Scan))
+// Listen listens for scan events.
+func (l *ScanListener) Listen(i ...any) {
+	s, ok := i[eventPlace].(api.Scan)
+	if !ok {
+		log.Error("Failed to cast to scan")
+		return
+	}
+	go l.process(&s)
 }
 
-func (l *ScanListener) process(scan api.Scan) {
+func (l *ScanListener) process(scan *api.Scan) {
 	log.Debug("Scan received", log.Any("scan", scan))
 
 	id, err := l.scans.Upsert(scan)
