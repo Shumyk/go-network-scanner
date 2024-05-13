@@ -34,12 +34,12 @@ func (m *hostRepoMock) currentCount() int {
 	return m.callCount
 }
 
-func TestTopic(t *testing.T) {
+func TestHostTopic(t *testing.T) {
 	var l *HostListener
 	assert.Equal(t, api.EventNmapHost, string(l.Topic()))
 }
 
-func TestListen(t *testing.T) {
+func TestHostListen(t *testing.T) {
 	tests := []struct {
 		name      string
 		input     []any
@@ -83,7 +83,7 @@ func TestListen(t *testing.T) {
 	}
 }
 
-func TestProcess(t *testing.T) {
+func TestHostProcess(t *testing.T) {
 	tests := []struct {
 		name    string
 		mock    *hostRepoMock

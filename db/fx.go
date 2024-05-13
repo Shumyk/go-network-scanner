@@ -33,7 +33,7 @@ func NewDbHostListener(h RepoBasic[*api.Host]) api.Listener {
 }
 
 // NewDbScanListener returns a new scan event listener.
-func NewDbScanListener(s *ScanRepo) api.Listener {
+func NewDbScanListener(s RepoBasic[*api.Scan]) api.Listener {
 	return &ScanListener{scans: s}
 }
 
