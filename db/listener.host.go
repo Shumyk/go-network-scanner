@@ -31,6 +31,7 @@ func (l *HostListener) Listen(i ...any) {
 		log.Error("failed to cast to host")
 		return
 	}
+	//nolint:errcheck // Ignore error here as it's returned for tests.
 	go l.process(h)
 }
 
