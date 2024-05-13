@@ -40,7 +40,7 @@ func processHost(ip string, h nmaplib.Host) {
 		HostnameLabel: nmap.Hostname(h),
 		CustomLabel:   h.Comment,
 	}
-	events.Emit(api.EventNmapHost, host)
+	events.Emit(api.EventNmapHost, &host)
 }
 
 func processPort(ip string, p nmaplib.Port) {
@@ -49,5 +49,5 @@ func processPort(ip string, p nmaplib.Port) {
 		Port:          p.ID,
 		ServiceBanner: nmap.ServiceBanner(p),
 	}
-	events.Emit(api.EventNmapScan, scan)
+	events.Emit(api.EventNmapScan, &scan)
 }

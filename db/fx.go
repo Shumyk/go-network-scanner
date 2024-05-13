@@ -47,7 +47,7 @@ func NewDbScanListener(s RepoBasic[api.Scan]) api.Listener {
 func Bootstrap(db *sql.DB, confRepo *ConfigRepo) {
 	initSchema(db)
 
-	_, err := confRepo.Insert(confRepo.Current)
+	_, err := confRepo.Upsert(confRepo.Current)
 	if err != nil {
 		log.Warn(
 			"Failed to insert configuration",

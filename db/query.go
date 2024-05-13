@@ -45,6 +45,10 @@ const (
 	queryConfigSelectAll    = "SELECT name, enable_proxy, ip_range1, ip_range2, ip_range3 FROM config;"
 	queryConfigSelectByName = "SELECT name, enable_proxy, ip_range1, ip_range2, ip_range3 FROM config WHERE name = ?;"
 	queryConfigInsert       = "INSERT INTO config (name, enable_proxy, ip_range1, ip_range2, ip_range3) VALUES (?, ?, ?, ?, ?);"
+	queryConfigUpsert       = `
+		INSERT INTO config (name, enable_proxy, ip_range1, ip_range2, ip_range3) VALUES (:name, :enableProxy, :ipRange1, :ipRange2, :ipRange3)
+			ON CONFLICT(name) DO UPDATE SET enable_proxy = :enableProxy, ip_range1 = :ipRange1, ip_range2 = :ipRange2, ip_range3 = :ipRange3;
+	`
 
 	queryScanSelectAll = "SELECT id, ip, port, first_discovered, last_seen, service_banner FROM scan;"
 	queryScanInsert    = "INSERT INTO scan (ip, port, last_seen, service_banner) VALUES (?, ?, datetime(), ?);"

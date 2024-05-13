@@ -33,7 +33,7 @@ func (l *Listener[T]) Listen(i ...any) {
 		)
 		return
 	}
-	t, ok := i[zero].(T)
+	t, ok := i[zero].(*T)
 	if !ok {
 		log.Error(
 			"failed to cast",
@@ -43,7 +43,7 @@ func (l *Listener[T]) Listen(i ...any) {
 		return
 	}
 	//nolint:errcheck // Ignore error here as it's returned for tests.
-	go l.process(&t)
+	go l.process(t)
 }
 
 func (l *Listener[T]) process(t *T) (int, error) {

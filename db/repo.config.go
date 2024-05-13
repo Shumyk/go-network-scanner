@@ -25,13 +25,16 @@ func (c *ConfigRepo) All() ([]api.Config, error) {
 	)
 }
 
-// Insert inserts a configuration.
-func (c *ConfigRepo) Insert(config *api.Config) (int, error) {
+// Upsert inserts a configuration.
+func (c *ConfigRepo) Upsert(config *api.Config) (int, error) {
 	return upsert(
 		c.db,
-		queryConfigInsert,
-		config.Name, config.EnableProxy,
-		config.IPRange1, config.IPRange2, config.IPRange3,
+		queryConfigUpsert,
+		sql.Named("name", config.Name),
+		sql.Named("enableProxy", config.EnableProxy),
+		sql.Named("ipRange1", config.IPRange1),
+		sql.Named("ipRange2", config.IPRange2),
+		sql.Named("ipRange3", config.IPRange3),
 	)
 }
 
