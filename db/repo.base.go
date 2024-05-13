@@ -19,8 +19,8 @@ type RepoBasic[T any] interface {
 	Upsert(entity T) (int, error)
 }
 
-// RepoFull is a repository with all methods.
-type RepoFull[T any] interface {
+// Repo is a repository with all methods.
+type Repo[T any] interface {
 	Get(name string) (T, error)
 	RepoBasic[T]
 }
