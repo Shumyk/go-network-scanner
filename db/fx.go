@@ -18,26 +18,26 @@ func NewConfigRepo(db *sql.DB, conf *api.Config) *ConfigRepo {
 }
 
 // NewHostRepo returns a new host repository.
-func NewHostRepo(db *sql.DB, conf *api.Config) *HostRepo {
+func NewHostRepo(db *sql.DB, conf *api.Config) RepoBasic[api.Host] {
 	return &HostRepo{db, conf}
 }
 
 // NewScanRepo returns a new scan repository.
-func NewScanRepo(db *sql.DB, conf *api.Config) *ScanRepo {
+func NewScanRepo(db *sql.DB, conf *api.Config) RepoBasic[api.Scan] {
 	return &ScanRepo{db, conf}
 }
 
 // NewDbHostListener returns a new host event listener.
-func NewDbHostListener(h RepoBasic[*api.Host]) *Listener[*api.Host] {
-	return &Listener[*api.Host]{
+func NewDbHostListener(h RepoBasic[api.Host]) api.Listener {
+	return &Listener[api.Host]{
 		topic: api.EventNmapHost,
 		repo:  h,
 	}
 }
 
 // NewDbScanListener returns a new scan event listener.
-func NewDbScanListener(s RepoBasic[*api.Scan]) *Listener[*api.Scan] {
-	return &Listener[*api.Scan]{
+func NewDbScanListener(s RepoBasic[api.Scan]) api.Listener {
+	return &Listener[api.Scan]{
 		topic: api.EventNmapScan,
 		repo:  s,
 	}

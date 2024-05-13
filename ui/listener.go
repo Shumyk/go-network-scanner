@@ -20,9 +20,9 @@ func (l *UiListener) Listen(i ...interface{}) {
 }
 
 func (l *UiListener) process(s api.Scan) {
-	log.Info("Scan received in UI listener", log.Any("scan", s))
+	log.Debug("Scan received in UI listener", log.Any("scan", s))
 
 	l.ui.AddScan(s)
 
-	log.Info("Scan displayed in UI listener", log.Any("scan", s))
+	log.Debug("Scan displayed in UI listener", log.Any("scan", s))
 }

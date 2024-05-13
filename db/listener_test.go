@@ -103,7 +103,7 @@ func TestHostProcess(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			tt.mock.wg.Add(1)
 
-			l := NewDbHostListener(tt.mock)
+			l := Listener[api.Host]{tt.mock, api.EventNmapHost}
 			id, err := l.process(&api.Host{})
 			if tt.wantErr {
 				assert.Equal(t, 0, id)

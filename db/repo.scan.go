@@ -12,7 +12,7 @@ type ScanRepo struct {
 }
 
 // All retrieves all scans.
-func (s *ScanRepo) All() ([]api.Scan, error) {
+func (s *ScanRepo) All() ([]*api.Scan, error) {
 	return all(s.db, queryScanSelectAll, scanMap)
 }
 
@@ -28,7 +28,7 @@ func (s *ScanRepo) Upsert(scan *api.Scan) (int, error) {
 	)
 }
 
-func scanMap(f scanFunc) (api.Scan, error) {
+func scanMap(f scanFunc) (*api.Scan, error) {
 	var s api.Scan
 	err := f(
 		&s.IP,
@@ -37,5 +37,5 @@ func scanMap(f scanFunc) (api.Scan, error) {
 		&s.LastSeen,
 		&s.ServiceBanner,
 	)
-	return s, err
+	return &s, err
 }

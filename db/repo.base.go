@@ -15,13 +15,13 @@ type (
 
 // RepoBasic is a repository with basic methods.
 type RepoBasic[T any] interface {
-	All() ([]T, error)
-	Upsert(entity T) (int, error)
+	All() ([]*T, error)
+	Upsert(entity *T) (int, error)
 }
 
 // Repo is a repository with all methods.
 type Repo[T any] interface {
-	Get(name string) (T, error)
+	Get(name string) (*T, error)
 	RepoBasic[T]
 }
 

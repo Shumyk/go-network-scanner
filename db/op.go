@@ -33,7 +33,7 @@ func exec(db *sql.DB, query string) error {
 }
 
 func open(databaseName string) *sql.DB {
-	databaseName = fmt.Sprintf("file:%v", databaseName)
+	databaseName = fmt.Sprintf("file:%v?cache=shared", databaseName)
 	db, err := sql.Open("sqlite", databaseName)
 	if err != nil {
 		panic(err)
