@@ -8,18 +8,18 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-type hostRepoMock struct {
+type repoMock struct {
 	callCount int
 	wg        sync.WaitGroup
 
 	upsertFn func(host *api.Host) (int, error)
 }
 
-func (m *hostRepoMock) All() ([]*api.Host, error) {
+func (m *repoMock) All() ([]*api.Host, error) {
 	return nil, nil
 }
 
-func (m *hostRepoMock) Upsert(h *api.Host) (int, error) {
+func (m *repoMock) Upsert(h *api.Host) (int, error) {
 	m.wg.Done()
 	m.callCount++
 
@@ -29,13 +29,13 @@ func (m *hostRepoMock) Upsert(h *api.Host) (int, error) {
 	return 1, nil
 }
 
-func (m *hostRepoMock) currentCount() int {
+func (m *repoMock) currentCount() int {
 	m.wg.Wait()
 	return m.callCount
 }
 
 func TestHostTopic(t *testing.T) {
-	var l *HostListener
+	l := NewDbHostListener(&repoMock{})
 	assert.Equal(t, api.EventNmapHost, string(l.Topic()))
 }
 
@@ -43,42 +43,38 @@ func TestHostListen(t *testing.T) {
 	tests := []struct {
 		name      string
 		input     []any
-		mock      *hostRepoMock
 		wantCalls int
 	}{
 		{
 			name:      "success",
 			input:     []any{&api.Host{}},
-			mock:      &hostRepoMock{},
 			wantCalls: 1,
 		},
 		{
 			name:      "cast error",
 			input:     []any{&api.Config{}},
-			mock:      &hostRepoMock{},
 			wantCalls: 0,
 		},
 		{
 			name:      "empty input",
 			input:     []any{},
-			mock:      &hostRepoMock{},
 			wantCalls: 0,
 		},
 		{
 			name:      "nil input",
 			input:     nil,
-			mock:      &hostRepoMock{},
 			wantCalls: 0,
 		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			tt.mock.wg.Add(tt.wantCalls)
+			mock := &repoMock{}
+			mock.wg.Add(tt.wantCalls)
 
-			l := NewDbHostListener(tt.mock)
+			l := NewDbHostListener(mock)
 			l.Listen(tt.input...)
 
-			assert.Equal(t, tt.wantCalls, tt.mock.currentCount())
+			assert.Equal(t, tt.wantCalls, mock.currentCount())
 		})
 	}
 }
@@ -86,27 +82,28 @@ func TestHostListen(t *testing.T) {
 func TestHostProcess(t *testing.T) {
 	tests := []struct {
 		name    string
-		mock    *hostRepoMock
+		mock    *repoMock
 		wantErr bool
 	}{
 		{
 			name:    "success",
-			mock:    &hostRepoMock{},
+			mock:    &repoMock{},
 			wantErr: false,
 		},
 		{
 			name: "upsert error",
-			mock: &hostRepoMock{
+			mock: &repoMock{
 				upsertFn: func(*api.Host) (int, error) { return 0, assert.AnError },
 			},
 			wantErr: true,
 		},
 	}
+
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			tt.mock.wg.Add(1)
 
-			l := &HostListener{hosts: tt.mock}
+			l := NewDbHostListener(tt.mock)
 			id, err := l.process(&api.Host{})
 			if tt.wantErr {
 				assert.Equal(t, 0, id)
