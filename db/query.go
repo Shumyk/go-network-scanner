@@ -50,7 +50,7 @@ const (
 			ON CONFLICT(name) DO UPDATE SET enable_proxy = :enableProxy, ip_range1 = :ipRange1, ip_range2 = :ipRange2, ip_range3 = :ipRange3;
 	`
 
-	queryScanSelectAll = "SELECT id, ip, port, first_discovered, last_seen, service_banner FROM scan;"
+	queryScanSelectAll = "SELECT session, ip, port, first_discovered, last_seen, service_banner FROM scan;"
 	queryScanInsert    = "INSERT INTO scan (ip, port, last_seen, service_banner) VALUES (?, ?, datetime(), ?);"
 	queryScanUpsert    = `
 		INSERT INTO scan (session, ip, port, last_seen, service_banner) VALUES (:session, :ip, :port, datetime(), :serviceBanner)

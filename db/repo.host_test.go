@@ -13,7 +13,7 @@ var (
 	mockTime, _ = time.Parse(time.DateOnly, "2021-01-01")
 )
 
-func TestAll(t *testing.T) {
+func TestHostAll(t *testing.T) {
 	db := open(memoryDB)
 	defer db.Close()
 	initSchema(db)
@@ -26,6 +26,7 @@ func TestAll(t *testing.T) {
 	hosts, err := r.All()
 	assert.Nil(t, err)
 	assert.Len(t, hosts, 3)
+
 	h1 := hosts[0]
 	h2 := hosts[1]
 	h3 := hosts[2]
@@ -56,7 +57,10 @@ func TestAll(t *testing.T) {
 	time.Sleep(time.Second)
 	h1ToUpdate := createHost(1)
 	h1ToUpdate.CustomLabel = "cl1-updated"
-	r.Upsert(h1ToUpdate)
+	id, err := r.Upsert(h1ToUpdate)
+	assert.Nil(t, err)
+	assert.Equal(t, 1, id)
+
 	hosts, err = r.All()
 	assert.Nil(t, err)
 	assert.Len(t, hosts, 3)

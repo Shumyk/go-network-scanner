@@ -67,9 +67,9 @@ func upsert(
 	if err != nil {
 		return zeroID, errors.Wrap(err, "failed to upsert")
 	}
-	id, err := result.LastInsertId()
+	rowsAffected, err := result.RowsAffected()
 	if err != nil {
 		return zeroID, errors.Wrap(err, "failed to get last insert ID")
 	}
-	return int(id), nil
+	return int(rowsAffected), nil
 }
