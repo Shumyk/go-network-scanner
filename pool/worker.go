@@ -22,7 +22,7 @@ func (w *Worker) Do() {
 	scanResult := w.nmap.Scan()
 	for i := range scanResult.Hosts {
 		h := &scanResult.Hosts[i]
-		w.log.Info("Host found", log.Any("host", h))
+		w.log.Debug("Host found", log.Any("host", h))
 
 		ip := nmap.IP(h)
 		processHost(ip, h)
