@@ -11,7 +11,7 @@ import (
 
 // Worker is the main struct that does the scanning and emits events.
 type Worker struct {
-	nmap *nmap.Scanner
+	nmap nmap.Scanner
 	log  *log.Logger
 
 	enableSocks bool

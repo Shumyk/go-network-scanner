@@ -10,8 +10,8 @@ import (
 )
 
 // NewScanner creates a new Scanner.
-func NewScanner(ipRange string) *Scanner {
-	return &Scanner{
+func NewScanner(ipRange string) Scanner {
+	return &scanner{
 		ip:      ipRange,
 		scanner: newNmapScanner(ipRange),
 	}

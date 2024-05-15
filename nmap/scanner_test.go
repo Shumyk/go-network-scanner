@@ -48,7 +48,7 @@ func TestScannerScan(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			s := Scanner{scanner: tt.scanner}
+			s := scanner{scanner: tt.scanner}
 			if tt.panics {
 				assert.Panics(t, func() { s.Scan() })
 			} else {
@@ -79,7 +79,7 @@ func TestScannerCheckError(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			s := Scanner{}
+			s := scanner{}
 			if tt.panics {
 				assert.Panics(t, func() { s.checkError(tt.err) })
 			} else {

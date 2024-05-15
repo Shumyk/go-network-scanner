@@ -12,16 +12,20 @@ type scanRunner interface {
 	Run() (result *nmap.Run, warnings *[]string, err error)
 }
 
+type Scanner interface {
+	Scan() *nmap.Run
+}
+
 // Scanner is a wrapper around nmap.Scanner
 // that does scanning and handle warnings and errors.
-type Scanner struct {
+type scanner struct {
 	scanner scanRunner
 	ip      string
 }
 
 // Scan scans the given IP address range.
 // ex. 192.168.0.0/24.
-func (s *Scanner) Scan() *nmap.Run {
+func (s *scanner) Scan() *nmap.Run {
 	log.Debug("Nmap starts scanning", log.String(ip, s.ip))
 
 	results, warnings, err := s.scanner.Run()
@@ -30,7 +34,7 @@ func (s *Scanner) Scan() *nmap.Run {
 	return results
 }
 
-func (s *Scanner) printWarnings(warnings []string) {
+func (s *scanner) printWarnings(warnings []string) {
 	for _, warning := range warnings {
 		log.Warn(
 			"Warning while scanning",
@@ -40,7 +44,7 @@ func (s *Scanner) printWarnings(warnings []string) {
 	}
 }
 
-func (s *Scanner) checkError(err error) {
+func (s *scanner) checkError(err error) {
 	if err == nil {
 		return
 	}
