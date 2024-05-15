@@ -5,35 +5,35 @@ import (
 	"go-network-scanner/nmap"
 	log "log/slog"
 
-	nmaplib "github.com/Ullaakut/nmap/v3"
+	lib "github.com/Ullaakut/nmap/v3"
 	"github.com/kataras/go-events"
 )
 
+// Worker is the main struct that does the scanning and emits events.
 type Worker struct {
-	ipRange     string // TODO: is needed?
-	enableSocks bool
-
 	nmap *nmap.Scanner
 	log  *log.Logger
+
+	enableSocks bool
 }
 
+// Do triggers the nmap scan and processes the results.
 func (w *Worker) Do() {
-	w.log.Info("Starting scan")
 	scanResult := w.nmap.Scan()
-	w.log.Info("Finished scan")
-
-	for _, h := range scanResult.Hosts {
+	for i := range scanResult.Hosts {
+		h := &scanResult.Hosts[i]
 		w.log.Info("Host found", log.Any("host", h))
 
-		ip := nmap.IP(&h)
-		processHost(ip, &h)
-		for _, p := range h.Ports {
-			processPort(ip, &p)
+		ip := nmap.IP(h)
+		processHost(ip, h)
+		for x := range h.Ports {
+			processPort(ip, &h.Ports[x])
 		}
 	}
 }
 
-func processHost(ip string, h *nmaplib.Host) {
+func processHost(ip string, h *lib.Host) {
+	// nolint:exhaustruct // Other fields are added by consumer.
 	host := api.Host{
 		IP:            ip,
 		OsType:        nmap.OS(h),
@@ -43,7 +43,8 @@ func processHost(ip string, h *nmaplib.Host) {
 	events.Emit(api.EventNmapHost, &host)
 }
 
-func processPort(ip string, p *nmaplib.Port) {
+func processPort(ip string, p *lib.Port) {
+	// nolint:exhaustruct // Other fields are added by consumer.
 	scan := api.Scan{
 		IP:            ip,
 		Port:          p.ID,

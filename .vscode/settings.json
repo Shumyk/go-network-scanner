@@ -2,6 +2,7 @@
     "cSpell.words": [
         "DATETIME",
         "errcheck",
+        "exhaustruct",
         "forbidigo",
         "goconst",
         "gocritic",
@@ -9,6 +10,7 @@
         "golangci",
         "gosimple",
         "Hostnames",
+        "kataras",
         "nolint",
         "prealloc",
         "slogtest",
