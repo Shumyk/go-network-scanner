@@ -6,18 +6,23 @@ import (
 	"github.com/Ullaakut/nmap/v3"
 )
 
+const ip = "ip"
+
+type scanRunner interface {
+	Run() (result *nmap.Run, warnings *[]string, err error)
+}
+
 // Scanner is a wrapper around nmap.Scanner
 // that does scanning and handle warnings and errors.
 type Scanner struct {
-	scanner *nmap.Scanner
+	scanner scanRunner
 	ip      string
 }
 
-// ex. 192.168.0.0/24.
-
 // Scan scans the given IP address range.
+// ex. 192.168.0.0/24.
 func (s *Scanner) Scan() *nmap.Run {
-	log.Debug("Nmap starts scanning", log.String("ip", s.ip))
+	log.Debug("Nmap starts scanning", log.String(ip, s.ip))
 
 	results, warnings, err := s.scanner.Run()
 	s.printWarnings(*warnings)
@@ -29,7 +34,7 @@ func (s *Scanner) printWarnings(warnings []string) {
 	for _, warning := range warnings {
 		log.Warn(
 			"Warning while scanning",
-			log.String("ip", s.ip),
+			log.String(ip, s.ip),
 			log.String("warning", warning),
 		)
 	}
@@ -41,7 +46,7 @@ func (s *Scanner) checkError(err error) {
 	}
 	log.Error(
 		"Error while scanning",
-		log.String("ip", s.ip),
+		log.String(ip, s.ip),
 		log.Any("err", err),
 	)
 	panic(err)

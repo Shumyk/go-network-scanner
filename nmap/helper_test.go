@@ -7,7 +7,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-const ip = "127.0.0.1"
+const ip_addr = "127.0.0.1"
 
 func TestIP(t *testing.T) {
 	tests := []struct {
@@ -24,20 +24,20 @@ func TestIP(t *testing.T) {
 			name: "one address",
 			h: &nmap.Host{
 				Addresses: []nmap.Address{
-					{Addr: ip},
+					{Addr: ip_addr},
 				},
 			},
-			want: ip,
+			want: ip_addr,
 		},
 		{
 			name: "two addresses",
 			h: &nmap.Host{
 				Addresses: []nmap.Address{
-					{Addr: ip},
-					{Addr: ip + "1"},
+					{Addr: ip_addr},
+					{Addr: ip_addr + "1"},
 				},
 			},
-			want: ip,
+			want: ip_addr,
 		},
 	}
 	for _, tt := range tests {

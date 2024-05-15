@@ -1,3 +1,5 @@
+// Package nmap is a wrapper around the nmap package.
+// It provides a simple interface to scan a range of IP addresses.
 package nmap
 
 import (
@@ -7,6 +9,7 @@ import (
 	"github.com/Ullaakut/nmap/v3"
 )
 
+// NewScanner creates a new Scanner.
 func NewScanner(ipRange string) *Scanner {
 	return &Scanner{
 		ip:      ipRange,
@@ -14,7 +17,7 @@ func NewScanner(ipRange string) *Scanner {
 	}
 }
 
-func newNmapScanner(ipRange string) *nmap.Scanner {
+func newNmapScanner(ipRange string) scanRunner {
 	scanner, err := nmap.NewScanner(
 		context.Background(),
 		nmap.WithTargets(ipRange),
