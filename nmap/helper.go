@@ -2,30 +2,34 @@ package nmap
 
 import "github.com/Ullaakut/nmap/v3"
 
-const SEPARATOR = " - "
+const separator = " - "
 
-func Ip(h nmap.Host) string {
+// IP returns the first IP address of a host.
+func IP(h *nmap.Host) string {
 	if len(h.Addresses) > 0 {
 		return h.Addresses[0].Addr
 	}
 	return ""
 }
 
-func Hostname(h nmap.Host) string {
+// Hostname returns the first hostname of a host.
+func Hostname(h *nmap.Host) string {
 	if len(h.Hostnames) > 0 {
 		return h.Hostnames[0].Name
 	}
 	return ""
 }
 
-func Os(h nmap.Host) string {
+// OS returns the first OS name of a host.
+func OS(h *nmap.Host) string {
 	if len(h.OS.Matches) > 0 {
 		return h.OS.Matches[0].Name
 	}
 	return ""
 }
 
-func ServiceBanner(p nmap.Port) string {
+// ServiceBanner returns a string representation of a service.
+func ServiceBanner(p *nmap.Port) string {
 	banner := ""
 	if p.Service.Name != "" {
 		banner += p.Service.Name
@@ -41,7 +45,7 @@ func ServiceBanner(p nmap.Port) string {
 
 func separateIfNotEmpty(s string) string {
 	if s != "" {
-		return s + SEPARATOR
+		return s + separator
 	}
 	return s
 }

@@ -25,25 +25,25 @@ func (w *Worker) Do() {
 	for _, h := range scanResult.Hosts {
 		w.log.Info("Host found", log.Any("host", h))
 
-		ip := nmap.Ip(h)
-		processHost(ip, h)
+		ip := nmap.IP(&h)
+		processHost(ip, &h)
 		for _, p := range h.Ports {
-			processPort(ip, p)
+			processPort(ip, &p)
 		}
 	}
 }
 
-func processHost(ip string, h nmaplib.Host) {
+func processHost(ip string, h *nmaplib.Host) {
 	host := api.Host{
 		IP:            ip,
-		OsType:        nmap.Os(h),
+		OsType:        nmap.OS(h),
 		HostnameLabel: nmap.Hostname(h),
 		CustomLabel:   h.Comment,
 	}
 	events.Emit(api.EventNmapHost, &host)
 }
 
-func processPort(ip string, p nmaplib.Port) {
+func processPort(ip string, p *nmaplib.Port) {
 	scan := api.Scan{
 		IP:            ip,
 		Port:          p.ID,

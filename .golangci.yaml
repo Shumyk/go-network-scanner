@@ -45,6 +45,13 @@ linters-settings:
   revive:
     max-open-files: 4096
     enable-all-rules: true
+    rules:
+      - name: add-constant
+        severity: warning
+        disabled: false
+        arguments:
+          - allowStrs: '""'
+            allowInts: "0,1"
   staticcheck:
     checks: ["all"]
 issues:
