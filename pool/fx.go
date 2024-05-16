@@ -10,16 +10,16 @@ import (
 )
 
 // NewHub creates a new hub with the given workers.
-func NewHub(workers []*Worker) *Hub {
+func NewHub(workers []Worker) *Hub {
 	return &Hub{workers}
 }
 
 // NewWorkers creates a new worker for each IP range in the config.
-func NewWorkers(c *api.Config) []*Worker {
+func NewWorkers(c *api.Config) []Worker {
 	ipRanges := c.IPRanges()
 	log.Debug("Creating workers", log.Any("ipRanges", ipRanges))
 
-	workers := make([]*Worker, len(ipRanges))
+	workers := make([]Worker, len(ipRanges))
 	for x, ip := range ipRanges {
 		workers[x] = newWorker(ip, c.EnableProxy)
 	}
@@ -32,8 +32,8 @@ func NewWorkers(c *api.Config) []*Worker {
 	return workers
 }
 
-func newWorker(ipRange string, proxy bool) *Worker {
-	return &Worker{
+func newWorker(ipRange string, proxy bool) Worker {
+	return &worker{
 		enableSocks: proxy,
 		nmap:        nmap.NewScanner(ipRange),
 		log:         util.LoggerWith("worker", log.String("range", ipRange)),

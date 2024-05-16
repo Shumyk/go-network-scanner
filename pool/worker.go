@@ -9,8 +9,13 @@ import (
 	"github.com/kataras/go-events"
 )
 
-// Worker is the main struct that does the scanning and emits events.
-type Worker struct {
+// Worker is the interface that all workers must implement.
+type Worker interface {
+	Do()
+}
+
+// worker is the main struct that does the scanning and emits events.
+type worker struct {
 	nmap nmap.Scanner
 	log  *log.Logger
 
@@ -18,7 +23,7 @@ type Worker struct {
 }
 
 // Do triggers the nmap scan and processes the results.
-func (w *Worker) Do() {
+func (w *worker) Do() {
 	scanResult := w.nmap.Scan()
 	for i := range scanResult.Hosts {
 		h := &scanResult.Hosts[i]

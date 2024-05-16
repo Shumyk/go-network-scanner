@@ -89,7 +89,7 @@ func TestDo(t *testing.T) {
 				tt.wantsScanEvents--
 			})
 
-			w := &Worker{
+			w := &worker{
 				nmap: &scannerMock{tt.returns},
 				log:  util.Logger(),
 			}

@@ -7,9 +7,11 @@ import (
 	"github.com/sourcegraph/conc/pool"
 )
 
+var interval = 5 * time.Second
+
 // Hub is the main struct that holds all workers.
 type Hub struct {
-	workers []*Worker
+	workers []Worker
 }
 
 // Start starts the ticker and begins cycle
@@ -19,7 +21,8 @@ func Start(h *Hub) {
 }
 
 func (h *Hub) start() {
-	for range time.NewTicker(5 * time.Second).C {
+	tick := time.NewTicker(interval)
+	for ; true; <-tick.C {
 		start := time.Now()
 
 		log.Info("New pool cycle started")
