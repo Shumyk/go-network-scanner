@@ -24,6 +24,7 @@ func newNmapScanner(ipRange string) scanRunner {
 		nmap.WithServiceInfo(),
 		nmap.WithOSDetection(),
 		nmap.WithTimingTemplate(nmap.TimingAggressive),
+		// nmap.WithProxies("socks4://todo:port"),
 	)
 	if err != nil {
 		log.Error(
