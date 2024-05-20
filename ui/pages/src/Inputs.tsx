@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Dispatch, FC, ReactElement, SetStateAction } from "react";
 import {
   Box,
   FormControl,
@@ -11,7 +11,9 @@ import InputProxy from "./InputProxy";
 import InputIpRange from "./InputIpRange";
 import InputName from "./InputName";
 
-export default function Inputs() {
+const Inputs: FC<{ configured: Dispatch<SetStateAction<boolean>> }> = ({
+  configured,
+}): ReactElement => {
   const [proxy, setProxy] = React.useState(false);
 
   function focusNext(event: React.KeyboardEvent<HTMLDivElement>): void {
@@ -28,6 +30,7 @@ export default function Inputs() {
 
   function handleSubmit(event: React.FormEvent<HTMLFormElement>): void {
     event.preventDefault();
+    configured(true);
   }
 
   const toggleProxy = (event: React.ChangeEvent<HTMLInputElement>): void => {
@@ -113,4 +116,6 @@ export default function Inputs() {
       </Box>
     </FormControl>
   );
-}
+};
+
+export default Inputs;

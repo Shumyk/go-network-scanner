@@ -2,11 +2,9 @@ import React from "react";
 
 import "./App.css";
 import Inputs from "./Inputs";
-import {
-  ThemeProvider,
-  createTheme,
-} from "@mui/material";
+import { ThemeProvider, createTheme } from "@mui/material";
 import { pink } from "@mui/material/colors";
+import ScanGrid from "./ScanGrid";
 
 // TODO: move out this
 const theme = createTheme({
@@ -19,10 +17,13 @@ const theme = createTheme({
 });
 
 function App() {
+  const [configured, setConfigured] = React.useState(false);
+
   return (
     <div className="App">
       <ThemeProvider theme={theme}>
-        <Inputs />
+        {!configured && <Inputs configured={setConfigured} />}
+        {configured && <ScanGrid />}
       </ThemeProvider>
     </div>
   );
