@@ -25,17 +25,27 @@ const theme = createTheme({
 });
 
 function App() {
+  const [proxy, setProxy] = React.useState(false);
+
   function focusNext(event: React.KeyboardEvent<HTMLDivElement>): void {
     if (event.key === "Enter") {
       const fields = Array.from(document.querySelectorAll("input")) || [];
-      const position = fields.indexOf(event.target as HTMLInputElement);
-      fields[position + 1]?.focus();
+      let position = fields.indexOf(event.target as HTMLInputElement) + 1;
+
+      while (fields[position]?.disabled && position <= fields.length - 1) {
+        position++;
+      }
+      fields[position]?.focus();
     }
   }
 
   function handleSubmit(event: React.FormEvent<HTMLFormElement>): void {
     event.preventDefault();
   }
+
+  const toggleProxy = (event: React.ChangeEvent<HTMLInputElement>): void => {
+    setProxy(event.target.checked);
+  };
 
   return (
     <div className="App">
@@ -85,7 +95,9 @@ function App() {
                 <Grid item xs={2}>
                   <FormControlLabel
                     labelPlacement="bottom"
-                    control={<Switch id="enable-proxy" />}
+                    control={
+                      <Switch id="enable-proxy" onChange={toggleProxy} />
+                    }
                     label="Proxy"
                   />
                 </Grid>
@@ -106,7 +118,11 @@ function App() {
                     variant="outlined"
                     fullWidth
                     required
-                    hidden={true}
+                    sx={{
+                      opacity: proxy ? 1 : 0,
+                      transition: "all 0.5s",
+                      visibility: proxy ? "visible" : "hidden",
+                    }}
                     onKeyDown={focusNext}
                   />
                 </Grid>
@@ -130,7 +146,11 @@ function App() {
                     label="Proxy 2"
                     variant="outlined"
                     fullWidth
-                    hidden={true}
+                    sx={{
+                      opacity: proxy ? 1 : 0,
+                      transition: "all 0.5s",
+                      visibility: proxy ? "visible" : "hidden",
+                    }}
                     onKeyDown={focusNext}
                   />
                 </Grid>
@@ -145,6 +165,7 @@ function App() {
                     label="IP Range 3"
                     variant="outlined"
                     fullWidth
+                    onKeyDown={focusNext}
                   />
                 </Grid>
                 <Grid item xs={5}>
@@ -153,7 +174,11 @@ function App() {
                     label="Proxy 3"
                     variant="outlined"
                     fullWidth
-                    hidden={true}
+                    sx={{
+                      opacity: proxy ? 1 : 0,
+                      transition: "all 0.5s",
+                      visibility: proxy ? "visible" : "hidden",
+                    }}
                     onKeyDown={focusNext}
                   />
                 </Grid>
