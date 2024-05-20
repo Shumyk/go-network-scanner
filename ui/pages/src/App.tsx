@@ -18,11 +18,12 @@ const theme = createTheme({
 
 function App() {
   const [configured, setConfigured] = React.useState(false);
+  const handleConfigured = () => setConfigured(true);
 
   return (
     <div className="App">
       <ThemeProvider theme={theme}>
-        {!configured && <Inputs configured={setConfigured} />}
+        {!configured && <Inputs onConfigured={handleConfigured} />}
         {configured && <ScanGrid />}
       </ThemeProvider>
     </div>

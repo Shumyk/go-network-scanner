@@ -1,4 +1,4 @@
-import React, { Dispatch, FC, ReactElement, SetStateAction } from "react";
+import React, { FC, ReactElement } from "react";
 import {
   Box,
   FormControl,
@@ -11,8 +11,8 @@ import InputProxy from "./InputProxy";
 import InputIpRange from "./InputIpRange";
 import InputName from "./InputName";
 
-const Inputs: FC<{ configured: Dispatch<SetStateAction<boolean>> }> = ({
-  configured,
+const Inputs: FC<{ onConfigured: () => void }> = ({
+  onConfigured,
 }): ReactElement => {
   const [proxy, setProxy] = React.useState(false);
 
@@ -29,8 +29,7 @@ const Inputs: FC<{ configured: Dispatch<SetStateAction<boolean>> }> = ({
   }
 
   function handleSubmit(event: React.FormEvent<HTMLFormElement>): void {
-    event.preventDefault();
-    configured(true);
+    onConfigured();
   }
 
   const toggleProxy = (event: React.ChangeEvent<HTMLInputElement>): void => {
