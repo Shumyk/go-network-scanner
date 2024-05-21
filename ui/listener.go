@@ -31,7 +31,7 @@ func (l *Listener) Listen(i ...any) {
 		)
 		return
 	}
-	s, ok := i[0].(map[string][]api.Scan)
+	s, ok := i[0].(map[string][]*api.ScanDTO)
 	if !ok {
 		log.Error(
 			"failed to cast",

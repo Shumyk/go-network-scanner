@@ -29,17 +29,18 @@ func (u *UI) Run() {
 	webui.Wait()
 }
 
-func (u *UI) addScan(s map[string][]api.Scan) {
-	// device := s.IP + ", " + strconv.Itoa(int(s.Port)) + ", " + s.ServiceBanner
+func (u *UI) addScan(s map[string][]*api.ScanDTO) {
 	log.Info(
 		"Adding scans to UI",
 		log.Any("scan.ip", len(s)),
 	)
+
 	bytes, err := json.Marshal(s)
 	if err != nil {
 		log.Error("Failed to marshal scans", log.Any("err", err))
 		return
 	}
+
 	u.window.Run("addScannedDevice('" + string(bytes) + "')")
 }
 

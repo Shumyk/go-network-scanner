@@ -26,7 +26,7 @@ type worker struct {
 func (w *worker) Do() {
 	scanResult := w.nmap.Scan()
 
-	scansByIP := make(map[string][]api.Scan)
+	scansByIP := make(map[string][]*api.ScanDTO, len(scanResult.Hosts))
 
 	for i := range scanResult.Hosts {
 		h := &scanResult.Hosts[i]
@@ -36,7 +36,7 @@ func (w *worker) Do() {
 		processHost(ip, h)
 		for x := range h.Ports {
 			scan := processPort(ip, &h.Ports[x])
-			scansByIP[ip] = append(scansByIP[ip], *scan)
+			scansByIP[ip] = append(scansByIP[ip], api.ScanDTOFrom(scan))
 		}
 		events.Emit(api.EventNmapScans, scansByIP)
 	}
