@@ -19,7 +19,7 @@ type Listener struct {
 
 // Topic returns the event topic.
 func (*Listener) Topic() events.EventName {
-	return api.EventNmapScan
+	return api.EventNmapScans
 }
 
 // Listen listens for events.
@@ -31,7 +31,7 @@ func (l *Listener) Listen(i ...any) {
 		)
 		return
 	}
-	s, ok := i[0].(*api.Scan)
+	s, ok := i[0].(map[string][]api.Scan)
 	if !ok {
 		log.Error(
 			"failed to cast",
@@ -40,6 +40,5 @@ func (l *Listener) Listen(i ...any) {
 		)
 		return
 	}
-	//nolint:errcheck // Ignore error here as it's returned for tests.
 	go l.ui.addScan(s)
 }

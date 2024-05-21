@@ -25,6 +25,9 @@ type worker struct {
 // Do triggers the nmap scan and processes the results.
 func (w *worker) Do() {
 	scanResult := w.nmap.Scan()
+
+	scansByIP := make(map[string][]api.Scan)
+
 	for i := range scanResult.Hosts {
 		h := &scanResult.Hosts[i]
 		w.log.Debug("Host found", log.Any("host", h))
@@ -32,8 +35,10 @@ func (w *worker) Do() {
 		ip := nmap.IP(h)
 		processHost(ip, h)
 		for x := range h.Ports {
-			processPort(ip, &h.Ports[x])
+			scan := processPort(ip, &h.Ports[x])
+			scansByIP[ip] = append(scansByIP[ip], *scan)
 		}
+		events.Emit(api.EventNmapScans, scansByIP)
 	}
 }
 
@@ -48,7 +53,7 @@ func processHost(ip string, h *lib.Host) {
 	events.Emit(api.EventNmapHost, &host)
 }
 
-func processPort(ip string, p *lib.Port) {
+func processPort(ip string, p *lib.Port) *api.Scan {
 	// nolint:exhaustruct // Other fields are added by consumer.
 	scan := api.Scan{
 		IP:            ip,
@@ -56,4 +61,5 @@ func processPort(ip string, p *lib.Port) {
 		ServiceBanner: nmap.ServiceBanner(p),
 	}
 	events.Emit(api.EventNmapScan, &scan)
+	return &scan
 }

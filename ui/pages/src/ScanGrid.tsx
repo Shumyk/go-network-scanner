@@ -5,8 +5,11 @@ const ScanGrid = () => {
   const [scannedDevices, setScannedDevices] = useState<string[]>([]);
 
   const addScannedDevice = useCallback(
-    (device: string): void => {
-      setScannedDevices([...scannedDevices, device]);
+    (scans: string): void => {
+      console.log("Received scans", scans);
+      const devices = JSON.parse(scans);
+      console.log("Parsed devices", devices);
+      // setScannedDevices([...scannedDevices, device]);
     },
     [scannedDevices]
   );

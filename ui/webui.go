@@ -1,6 +1,7 @@
 package ui
 
 import (
+	"encoding/json"
 	"go-network-scanner/api"
 	log "log/slog"
 	"strconv"
@@ -28,14 +29,18 @@ func (u *UI) Run() {
 	webui.Wait()
 }
 
-func (u *UI) addScan(s *api.Scan) {
-	device := s.IP + ", " + strconv.Itoa(int(s.Port)) + ", " + s.ServiceBanner
+func (u *UI) addScan(s map[string][]api.Scan) {
+	// device := s.IP + ", " + strconv.Itoa(int(s.Port)) + ", " + s.ServiceBanner
 	log.Info(
-		"Adding scan to UI",
-		log.Any("scan.ip", s.IP),
-		log.String("device", device),
+		"Adding scans to UI",
+		log.Any("scan.ip", len(s)),
 	)
-	u.window.Run("addScannedDevice('" + device + "')")
+	bytes, err := json.Marshal(s)
+	if err != nil {
+		log.Error("Failed to marshal scans", log.Any("err", err))
+		return
+	}
+	u.window.Run("addScannedDevice('" + string(bytes) + "')")
 }
 
 func countFunc(e webui.Event) any {

@@ -10,6 +10,8 @@ import (
 const (
 	// EventNmapScan is topic name for scans (services running on port).
 	EventNmapScan = "nmap.scan"
+	// EventNmapScans is topic name for a list of scans.
+	EventNmapScans = "nmap.scans"
 	// EventNmapHost is topic name for a hosts (IP address).
 	EventNmapHost = "nmap.host"
 )
