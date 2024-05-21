@@ -21,8 +21,7 @@ func Start(h *Hub) {
 }
 
 func (h *Hub) start() {
-	tick := time.NewTicker(interval)
-	for ; true; <-tick.C {
+	for ; true; <-time.NewTicker(interval).C {
 		start := time.Now()
 
 		log.Info("New pool cycle started")

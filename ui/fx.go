@@ -18,9 +18,9 @@ func NewWebUi() *Ui {
 	log.Info("Creating UI")
 
 	w := webui.NewWindow()
-	w.SetRootFolder("ui/pages")
-	w.Bind("MyButton1", countFunc)
-	w.Bind("MyButton2", exitFunc)
+	w.SetRootFolder("ui/pages/build")
+	// w.Bind("MyButton1", countFunc)
+	// w.Bind("MyButton2", exitFunc)
 
 	return &Ui{&w}
 }
