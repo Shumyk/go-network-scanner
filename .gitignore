@@ -41,7 +41,7 @@ go.work
 .ionide
 
 # Test Sqlite DB 
-test_db
+test.db
 
 # Nmap source code 
 nmap-source-code-*/

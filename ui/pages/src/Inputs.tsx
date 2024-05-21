@@ -71,6 +71,7 @@ const Inputs: FC<{ onConfigured: () => void }> = ({
             <Grid item xs={5}>
               <InputName
                 type="database"
+                value={databaseName}
                 helperText="Name of SQLite database file"
                 onChange={(e) => setDatabaseName(e.target.value)}
                 onKeyDown={focusNext}

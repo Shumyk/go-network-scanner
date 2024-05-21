@@ -8,44 +8,38 @@ import (
 )
 
 const (
-	zero  = 0
 	topic = "topic"
 	data  = "data"
 )
 
-type UiListener struct {
+// Listener listens for events and propagates them to the UI.
+type Listener struct {
 	ui *UI
 }
 
-func (l *UiListener) Topic() events.EventName {
+// Topic returns the event topic.
+func (*Listener) Topic() events.EventName {
 	return api.EventNmapScan
 }
 
-func (l *UiListener) Listen(i ...any) {
-	if len(i) == zero || i[zero] == nil {
+// Listen listens for events.
+func (l *Listener) Listen(i ...any) {
+	if len(i) == 0 || i[0] == nil {
 		log.Error(
 			"no event data",
 			log.Any(topic, l.Topic()),
 		)
 		return
 	}
-	t, ok := i[zero].(*api.Scan)
+	s, ok := i[0].(*api.Scan)
 	if !ok {
 		log.Error(
 			"failed to cast",
 			log.Any(topic, l.Topic()),
-			log.Any(data, i[zero]),
+			log.Any(data, i[0]),
 		)
 		return
 	}
 	//nolint:errcheck // Ignore error here as it's returned for tests.
-	go l.process(t)
-}
-
-func (l *UiListener) process(s *api.Scan) {
-	log.Debug("Scan received in UI listener", log.Any("scan", s))
-
-	l.ui.AddScan(s)
-
-	log.Debug("Scan displayed in UI listener", log.Any("scan", s))
+	go l.ui.addScan(s)
 }

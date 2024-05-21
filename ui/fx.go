@@ -12,7 +12,7 @@ const indexHTML = "index.html"
 
 // NewUIListener creates a new UI listener.
 func NewUIListener(ui *UI) api.Listener {
-	return &UiListener{ui}
+	return &Listener{ui}
 }
 
 // NewWebUI creates a new web UI and binds the functions to the buttons.
