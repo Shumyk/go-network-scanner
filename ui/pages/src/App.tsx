@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 import "./App.css";
 import Inputs from "./Inputs";
@@ -19,6 +19,15 @@ const theme = createTheme({
 function App() {
   const [configured, setConfigured] = React.useState(false);
   const handleConfigured = () => setConfigured(true);
+
+  useEffect(() => {
+    const script = document.createElement("script");
+    script.src = "webui.js";
+    document.head.appendChild(script);
+    return () => {
+      document.head.removeChild(script);
+    }
+  }, []);
 
   return (
     <div className="App">
