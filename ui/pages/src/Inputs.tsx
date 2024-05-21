@@ -43,17 +43,20 @@ const Inputs: FC<{ onConfigured: () => void }> = ({
   function handleSubmit(event: React.FormEvent<HTMLFormElement>): void {
     event.preventDefault();
 
-    console.log({
-      "database-name": databaseName,
-      "session-name": sessionName,
-      "ip-range-1": ipRange1,
-      "ip-range-2": ipRange2,
-      "ip-range-3": ipRange3,
-      "enable-proxy": enableProxy,
-      "proxy-1": proxy1,
-      "proxy-2": proxy2,
-      "proxy-3": proxy3,
-    });
+    const data = {
+      "databaseName": databaseName,
+      "sessionName": sessionName,
+      "ipRange1": ipRange1,
+      "ipRange2": ipRange2,
+      "ipRange3": ipRange3,
+      "enableProxy": enableProxy,
+      "proxy1": proxy1,
+      "proxy2": proxy2,
+      "proxy3": proxy3,
+    };
+    console.log(data);
+    // @ts-ignore
+    window.webui.bootstrap(JSON.stringify(data));
 
     onConfigured();
   }

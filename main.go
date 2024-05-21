@@ -24,7 +24,7 @@ func main() {
 			db.NewScanRepo,
 			pool.NewHub,
 			pool.NewWorkers,
-			ui.NewWebUi,
+			ui.NewWebUI,
 
 			fx.Annotate(
 				db.NewDbScanListener,
@@ -35,7 +35,7 @@ func main() {
 				fx.ResultTags(`group:"listener"`, `name:"db.host"`),
 			),
 			fx.Annotate(
-				ui.NewUiListener,
+				ui.NewUIListener,
 				fx.ResultTags(`group:"listener"`, `name:"ui"`),
 			),
 		),

@@ -12,13 +12,25 @@ type Ui struct {
 	window *webui.Window
 }
 
+type ConfDTO struct {
+	DatabaseName string
+	SessionName  string
+	IPRange1     string
+	IPRange2     string
+	IPRange3     string
+	EnableProxy  bool
+	Proxy1       string
+	Proxy2       string
+	Proxy3       string
+}
+
 // 192.168.0.0/24
 
-func (ui *Ui) Run() {
+func (u *Ui) Run() {
 	log.Info("Running UI")
-	if err := ui.window.ShowBrowser(indexHTML, webui.ChromiumBased); err != nil {
+	if err := u.window.ShowBrowser(indexHTML, webui.ChromiumBased); err != nil {
 		log.Warn("Install a chromium-based browser for an optimized experience", log.Any("err", err))
-		err := ui.window.Show(indexHTML)
+		err := u.window.Show(indexHTML)
 		if err != nil {
 			log.Error("Failed to show window", log.Any("err", err))
 		}
@@ -42,5 +54,21 @@ func countFunc(e webui.Event) any {
 func exitFunc(e webui.Event) any {
 	log.Info("Button 2 clicked")
 	webui.Exit()
+	return nil
+}
+
+func (*Ui) bootstrap(e webui.Event) webui.Void {
+	log.Info("Bootstrapping UI",
+		log.Any("event", e),
+		log.Any("event.element", e.Element),
+		log.Any("event.elementType", e.EventType),
+	)
+
+	conf, err := webui.GetArg[ConfDTO](e)
+	if err != nil {
+		log.Error("Failed to get config for bootstrap", log.Any("err", err))
+	}
+	log.Info("Got config", log.Any("conf", conf))
+
 	return nil
 }
