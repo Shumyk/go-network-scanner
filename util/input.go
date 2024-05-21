@@ -14,6 +14,9 @@ const (
 
 var input = os.Stdin
 
+// AskInput asks the user for input to create a new session.
+//
+// Deprecated: now using the web UI to get input from the user.
 func AskInput() (databaseName string, config api.Config) {
 	config = api.EmptyConfig()
 

@@ -26,10 +26,10 @@ type Config struct {
 	CreatedAt   time.Time
 	Name        string
 	IPRange1    string
-	Proxy1      string
 	IPRange2    string
-	Proxy2      string
 	IPRange3    string
+	Proxy1      string
+	Proxy2      string
 	Proxy3      string
 	EnableProxy bool
 }
@@ -43,6 +43,21 @@ func EmptyConfig() Config {
 		IPRange2:    empStr,
 		IPRange3:    empStr,
 		CreatedAt:   time.Time{},
+	}
+}
+
+// ConfigOf converts a ConfDTO to a Config.
+func ConfigOf(dto *ConfDTO) *Config {
+	return &Config{
+		CreatedAt:   time.Now(),
+		Name:        dto.SessionName,
+		IPRange1:    dto.IPRange1,
+		IPRange2:    dto.IPRange2,
+		IPRange3:    dto.IPRange3,
+		EnableProxy: dto.EnableProxy,
+		Proxy1:      dto.Proxy1,
+		Proxy2:      dto.Proxy2,
+		Proxy3:      dto.Proxy3,
 	}
 }
 

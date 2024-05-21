@@ -8,7 +8,6 @@ import (
 )
 
 const (
-	zero  = 0
 	data  = "data"
 	topic = "topic"
 )
@@ -26,19 +25,19 @@ func (l *Listener[T]) Topic() events.EventName {
 
 // Listen listens for events.
 func (l *Listener[T]) Listen(i ...any) {
-	if len(i) == zero || i[zero] == nil {
+	if len(i) == 0 || i[0] == nil {
 		log.Error(
 			"no event data",
 			log.Any(topic, l.topic),
 		)
 		return
 	}
-	t, ok := i[zero].(*T)
+	t, ok := i[0].(*T)
 	if !ok {
 		log.Error(
 			"failed to cast",
 			log.Any(topic, l.topic),
-			log.Any(data, i[zero]),
+			log.Any(data, i[0]),
 		)
 		return
 	}

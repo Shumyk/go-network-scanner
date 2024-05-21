@@ -11,23 +11,19 @@ import (
 const indexHTML = "index.html"
 
 // NewUIListener creates a new UI listener.
-func NewUIListener(ui *Ui) api.Listener {
+func NewUIListener(ui *UI) api.Listener {
 	return &UiListener{ui}
 }
 
 // NewWebUI creates a new web UI and binds the functions to the buttons.
-func NewWebUI() *Ui {
+func NewWebUI() *UI {
 	log.Info("Creating UI")
 
 	w := webui.NewWindow()
-	ui := &Ui{&w}
+	ui := &UI{&w, make(chan *api.ConfDTO)}
 	ui.window.SetRootFolder("ui/pages/build")
 
 	webui.Bind(*ui.window, "bootstrap", ui.bootstrap)
 
 	return ui
-}
-
-func Run(ui *Ui) {
-	go ui.Run()
 }

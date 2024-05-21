@@ -5,17 +5,18 @@ import (
 	log "log/slog"
 	"strconv"
 
-	"github.com/kataras/go-events"
 	"github.com/webui-dev/go-webui/v2"
 )
 
-type Ui struct {
+// UI represents the user interface.
+type UI struct {
 	window *webui.Window
+	Conf   chan *api.ConfDTO
 }
 
 // 192.168.0.0/24
 
-func (u *Ui) Run() {
+func (u *UI) Run() {
 	log.Info("Running UI")
 	if err := u.window.ShowBrowser(indexHTML, webui.ChromiumBased); err != nil {
 		log.Warn("Install a chromium-based browser for an optimized experience", log.Any("err", err))
@@ -27,7 +28,7 @@ func (u *Ui) Run() {
 	webui.Wait()
 }
 
-func (u *Ui) AddScan(s *api.Scan) {
+func (u *UI) AddScan(s *api.Scan) {
 	log.Info("Adding scan to UI", log.Any("scan.ip", s.IP))
 	u.window.Run("addScannedDevice('" + s.IP + ", " + strconv.Itoa(int(s.Port)) + ", " + s.ServiceBanner + "')")
 }
@@ -46,7 +47,7 @@ func exitFunc(e webui.Event) any {
 	return nil
 }
 
-func (*Ui) bootstrap(e webui.Event) webui.Void {
+func (u *UI) bootstrap(e webui.Event) webui.Void {
 	log.Info("Bootstrapping UI",
 		log.Any("event", e),
 		log.Any("event.element", e.Element),
@@ -58,7 +59,7 @@ func (*Ui) bootstrap(e webui.Event) webui.Void {
 		log.Error("Failed to get config for bootstrap", log.Any("err", err))
 	}
 	log.Info("Got config", log.Any("conf", conf))
-	events.Emit(api.EventBootstrap, conf)
+	u.Conf <- &conf
 
 	return nil
 }

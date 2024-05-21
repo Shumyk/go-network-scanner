@@ -14,7 +14,7 @@ const (
 )
 
 type UiListener struct {
-	ui *Ui
+	ui *UI
 }
 
 func (l *UiListener) Topic() events.EventName {

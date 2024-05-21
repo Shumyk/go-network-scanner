@@ -1,3 +1,4 @@
+// Package main : Main entry of the application
 package main
 
 import (
@@ -13,18 +14,23 @@ import (
 func main() {
 	go util.SetupLogger()
 	// 192.168.0.0/24
-	databaseName, config := util.AskInput()
+
+	u := ui.NewWebUI()
+	go u.Run()
+	conf := <-u.Conf
 
 	app := fx.New(
-		fx.Supply(&config),
+		fx.Supply(
+			api.ConfigOf(conf),
+			u,
+		),
 		fx.Provide(
-			db.NewDb(databaseName),
+			db.NewDb(conf.DatabaseName),
 			db.NewConfigRepo,
 			db.NewHostRepo,
 			db.NewScanRepo,
 			pool.NewHub,
 			pool.NewWorkers,
-			ui.NewWebUI,
 
 			fx.Annotate(
 				db.NewDbScanListener,
@@ -45,7 +51,6 @@ func main() {
 				api.SubscribeListeners,
 				fx.ParamTags(`group:"listener"`),
 			),
-			ui.Run,
 			pool.Start,
 		),
 	)

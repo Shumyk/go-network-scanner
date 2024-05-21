@@ -14,7 +14,7 @@ import InputName from "./InputName";
 const Inputs: FC<{ onConfigured: () => void }> = ({
   onConfigured,
 }): ReactElement => {
-  const [databaseName, setDatabaseName] = React.useState("");
+  const [databaseName, setDatabaseName] = React.useState("test.db"); // TODO: change to 'scans.db'
   const [sessionName, setSessionName] = React.useState("");
   const [ipRange1, setIpRange1] = React.useState("192.168.0.0/24");
   const [ipRange2, setIpRange2] = React.useState("");
