@@ -8,13 +8,29 @@ import (
 
 const empStr = ""
 
+// ConfDTO represents a configuration data transfer object sent from UI.
+type ConfDTO struct {
+	DatabaseName string
+	SessionName  string
+	IPRange1     string
+	IPRange2     string
+	IPRange3     string
+	Proxy1       string
+	Proxy2       string
+	Proxy3       string
+	EnableProxy  bool
+}
+
 // Config represents a configuration entry.
 type Config struct {
 	CreatedAt   time.Time
 	Name        string
 	IPRange1    string
+	Proxy1      string
 	IPRange2    string
+	Proxy2      string
 	IPRange3    string
+	Proxy3      string
 	EnableProxy bool
 }
 

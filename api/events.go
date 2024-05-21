@@ -8,6 +8,8 @@ import (
 )
 
 const (
+	// EventBootstrap is topic name for singular bootstrap event.
+	EventBootstrap = "bootstrap"
 	// EventNmapScan is topic name for scans (services running on port).
 	EventNmapScan = "nmap.scan"
 	// EventNmapHost is topic name for a hosts (IP address).

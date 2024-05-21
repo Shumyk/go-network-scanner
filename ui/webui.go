@@ -5,23 +5,12 @@ import (
 	log "log/slog"
 	"strconv"
 
+	"github.com/kataras/go-events"
 	"github.com/webui-dev/go-webui/v2"
 )
 
 type Ui struct {
 	window *webui.Window
-}
-
-type ConfDTO struct {
-	DatabaseName string
-	SessionName  string
-	IPRange1     string
-	IPRange2     string
-	IPRange3     string
-	EnableProxy  bool
-	Proxy1       string
-	Proxy2       string
-	Proxy3       string
 }
 
 // 192.168.0.0/24
@@ -64,11 +53,12 @@ func (*Ui) bootstrap(e webui.Event) webui.Void {
 		log.Any("event.elementType", e.EventType),
 	)
 
-	conf, err := webui.GetArg[ConfDTO](e)
+	conf, err := webui.GetArg[api.ConfDTO](e)
 	if err != nil {
 		log.Error("Failed to get config for bootstrap", log.Any("err", err))
 	}
 	log.Info("Got config", log.Any("conf", conf))
+	events.Emit(api.EventBootstrap, conf)
 
 	return nil
 }
