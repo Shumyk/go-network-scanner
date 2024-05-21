@@ -3,11 +3,13 @@ import { TextField } from "@mui/material";
 const InputName = ({
   type,
   helperText,
+  onChange,
   onKeyDown,
 }: {
   type: string;
   helperText?: string;
-  onKeyDown: any;
+  onChange: React.ChangeEventHandler<HTMLInputElement>;
+  onKeyDown: React.KeyboardEventHandler<HTMLInputElement>;
 }) => {
   return (
     <TextField
@@ -17,6 +19,7 @@ const InputName = ({
     variant="outlined"
     fullWidth
     required
+    onChange={onChange}
     onKeyDown={onKeyDown}
   />
   );

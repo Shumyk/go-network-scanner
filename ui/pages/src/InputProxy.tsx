@@ -1,13 +1,16 @@
 import { TextField } from "@mui/material";
+import React from "react";
 
 const InputProxy = ({
   id,
   visible,
+  onChange,
   onKeyDown,
 }: {
   id: number;
   visible: boolean;
-  onKeyDown: any;
+  onChange: React.ChangeEventHandler<HTMLInputElement>;
+  onKeyDown: React.KeyboardEventHandler<HTMLInputElement>;
 }) => {
   return (
     <TextField
@@ -20,6 +23,7 @@ const InputProxy = ({
         transition: "all 0.5s",
         visibility: visible ? "visible" : "hidden",
       }}
+      onChange={onChange}
       onKeyDown={onKeyDown}
     />
   );

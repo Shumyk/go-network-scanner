@@ -14,7 +14,15 @@ import InputName from "./InputName";
 const Inputs: FC<{ onConfigured: () => void }> = ({
   onConfigured,
 }): ReactElement => {
-  const [proxy, setProxy] = React.useState(false);
+  const [databaseName, setDatabaseName] = React.useState("");
+  const [sessionName, setSessionName] = React.useState("");
+  const [ipRange1, setIpRange1] = React.useState("192.168.0.0/24");
+  const [ipRange2, setIpRange2] = React.useState("");
+  const [ipRange3, setIpRange3] = React.useState("");
+  const [enableProxy, setEnableProxy] = React.useState(false);
+  const [proxy1, setProxy1] = React.useState("");
+  const [proxy2, setProxy2] = React.useState("");
+  const [proxy3, setProxy3] = React.useState("");
 
   function focusNext(event: React.KeyboardEvent<HTMLDivElement>): void {
     if (event.key === "Enter") {
@@ -28,13 +36,27 @@ const Inputs: FC<{ onConfigured: () => void }> = ({
     }
   }
 
+  const toggleProxy = (event: React.ChangeEvent<HTMLInputElement>): void => {
+    setEnableProxy(event.target.checked);
+  };
+
   function handleSubmit(event: React.FormEvent<HTMLFormElement>): void {
+    event.preventDefault();
+
+    console.log({
+      "database-name": databaseName,
+      "session-name": sessionName,
+      "ip-range-1": ipRange1,
+      "ip-range-2": ipRange2,
+      "ip-range-3": ipRange3,
+      "enable-proxy": enableProxy,
+      "proxy-1": proxy1,
+      "proxy-2": proxy2,
+      "proxy-3": proxy3,
+    });
+
     onConfigured();
   }
-
-  const toggleProxy = (event: React.ChangeEvent<HTMLInputElement>): void => {
-    setProxy(event.target.checked);
-  };
 
   return (
     <FormControl component="form" autoComplete="off" onSubmit={handleSubmit}>
@@ -47,6 +69,7 @@ const Inputs: FC<{ onConfigured: () => void }> = ({
               <InputName
                 type="database"
                 helperText="Name of SQLite database file"
+                onChange={(e) => setDatabaseName(e.target.value)}
                 onKeyDown={focusNext}
               />
             </Grid>
@@ -57,7 +80,11 @@ const Inputs: FC<{ onConfigured: () => void }> = ({
           <Grid container item spacing={2}>
             <Grid item xs={2}></Grid>
             <Grid item xs={5}>
-              <InputName type="session" onKeyDown={focusNext} />
+              <InputName
+                type="session"
+                onChange={(e) => setSessionName(e.target.value)}
+                onKeyDown={focusNext}
+              />
             </Grid>
             <Grid item xs={5}></Grid>
           </Grid>
@@ -72,10 +99,21 @@ const Inputs: FC<{ onConfigured: () => void }> = ({
               />
             </Grid>
             <Grid item xs={5}>
-              <InputIpRange id={1} required={true} onKeyDown={focusNext} />
+              <InputIpRange
+                id={1}
+                required={true}
+                value={ipRange1}
+                onChange={(e) => setIpRange1(e.target.value)}
+                onKeyDown={focusNext}
+              />
             </Grid>
             <Grid item xs={5}>
-              <InputProxy id={1} visible={proxy} onKeyDown={focusNext} />
+              <InputProxy
+                id={1}
+                visible={enableProxy}
+                onChange={(e) => setProxy1(e.target.value)}
+                onKeyDown={focusNext}
+              />
             </Grid>
           </Grid>
 
@@ -83,10 +121,19 @@ const Inputs: FC<{ onConfigured: () => void }> = ({
           <Grid container item spacing={2}>
             <Grid item xs={2}></Grid>
             <Grid item xs={5}>
-              <InputIpRange id={2} onKeyDown={focusNext} />
+              <InputIpRange
+                id={2}
+                onChange={(e) => setIpRange2(e.target.value)}
+                onKeyDown={focusNext}
+              />
             </Grid>
             <Grid item xs={5}>
-              <InputProxy id={2} visible={proxy} onKeyDown={focusNext} />
+              <InputProxy
+                id={2}
+                visible={enableProxy}
+                onChange={(e) => setProxy2(e.target.value)}
+                onKeyDown={focusNext}
+              />
             </Grid>
           </Grid>
 
@@ -94,10 +141,19 @@ const Inputs: FC<{ onConfigured: () => void }> = ({
           <Grid container item spacing={2}>
             <Grid item xs={2}></Grid>
             <Grid item xs={5}>
-              <InputIpRange id={3} onKeyDown={focusNext} />
+              <InputIpRange
+                id={3}
+                onChange={(e) => setIpRange3(e.target.value)}
+                onKeyDown={focusNext}
+              />
             </Grid>
             <Grid item xs={5}>
-              <InputProxy id={3} visible={proxy} onKeyDown={focusNext} />
+              <InputProxy
+                id={3}
+                visible={enableProxy}
+                onChange={(e) => setProxy3(e.target.value)}
+                onKeyDown={focusNext}
+              />
             </Grid>
           </Grid>
 
