@@ -1,17 +1,31 @@
+import { useEffect, useState, useCallback } from "react";
+import ScanGridItem from "./ScanGridItem";
+
 const ScanGrid = () => {
-  const addScannedDevice = (device: string) => {
-    console.log("Adding scanned device:", device);
-    const scanList = document.getElementById("scan-list");
-    const scanItem = document.createElement("p");
-    scanItem.innerHTML = device;
-    scanList?.appendChild(scanItem);
-  };
-  addScannedDevice("Scanned Devices:");
+  const [scannedDevices, setScannedDevices] = useState<string[]>([]);
+
+  const addScannedDevice = useCallback(
+    (device: string): void => {
+      setScannedDevices([...scannedDevices, device]);
+    },
+    [scannedDevices]
+  );
+
+  useEffect(() => {
+    // @ts-ignore
+    window.addScannedDevice = (device) => {
+      addScannedDevice(device);
+    };
+  }, [addScannedDevice]);
 
   return (
     <div>
       <h1>Scan Grid</h1>
-      <div id="scan-list"></div>
+      <div id="scan-list">
+        {scannedDevices.map((device) => (
+          <ScanGridItem device={device} />
+        ))}
+      </div>
     </div>
   );
 };
