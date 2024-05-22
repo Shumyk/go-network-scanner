@@ -1,7 +1,23 @@
-import React from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { DownOutlined } from "@ant-design/icons";
 import type { TableColumnsType } from "antd";
 import { Badge, Dropdown, Space, Table } from "antd";
+
+class ScanDTO {
+  constructor(public data: HostType[]) {}
+
+  hydrate(): HostType[] {
+    // Assign unique keys to HostType and ServiceType
+    return this.data.map((host) => ({
+      ...host,
+      key: host.ip, // Use a unique identifier for the key
+      services: host.services.map((service) => ({
+        ...service,
+        key: `${host.ip}-${service.port}`, // Use a combination of host IP and port for the key
+      })),
+    }));
+  }
+}
 
 interface HostType {
   key: React.Key;
@@ -32,6 +48,23 @@ const items = [
 ];
 
 const ScanGridTable: React.FC = () => {
+  const [rows, setRows] = useState<HostType[]>([]);
+
+  const addScannedDevice = useCallback((json: string): void => {
+    const scan: ScanDTO = JSON.parse(json);
+    console.log("Received scanned devices", scan);
+
+    const data = new ScanDTO(scan.data).hydrate();
+    setRows(data);
+  }, []);
+
+  useEffect(() => {
+    // @ts-ignore
+    window.addScannedDevice = (device) => {
+      addScannedDevice(device);
+    };
+  }, [addScannedDevice]);
+
   const expandedRowRender = (host: HostType) => {
     const columns: TableColumnsType<ServiceType> = [
       { title: "Port", dataIndex: "port", key: "port" },
@@ -41,8 +74,16 @@ const ScanGridTable: React.FC = () => {
         key: "state",
         render: () => <Badge status="success" text="Finished" />,
       },
-      { title: "Discovered", dataIndex: "firstDiscovered", key: "firstDiscovered" },
-      { title: "Last seen", dataIndex: "lastDiscovered", key: "lastDiscovered" },
+      {
+        title: "Discovered",
+        dataIndex: "firstDiscovered",
+        key: "firstDiscovered",
+      },
+      {
+        title: "Last seen",
+        dataIndex: "lastDiscovered",
+        key: "lastDiscovered",
+      },
       {
         title: "Action",
         key: "operation",
@@ -60,7 +101,9 @@ const ScanGridTable: React.FC = () => {
       },
     ];
 
-    return <Table columns={columns} dataSource={host.services} pagination={false} />;
+    return (
+      <Table columns={columns} dataSource={host.services} pagination={false} />
+    );
   };
 
   const columns: TableColumnsType<HostType> = [
@@ -68,7 +111,11 @@ const ScanGridTable: React.FC = () => {
     { title: "OS", dataIndex: "os", key: "os" },
     { title: "Hostname", dataIndex: "hostnameLabel", key: "hostnameLabel" },
     { title: "Custom Label", dataIndex: "customLabel", key: "customLabel" },
-    {  title: "Discovered", dataIndex: "firstDiscovered", key: "firstDiscovered"},
+    {
+      title: "Discovered",
+      dataIndex: "firstDiscovered",
+      key: "firstDiscovered",
+    },
     { title: "Last seen", dataIndex: "lastDiscovered", key: "lastDiscovered" },
     { title: "Action", key: "operation", render: () => <a>Publish</a> },
   ];
@@ -76,45 +123,44 @@ const ScanGridTable: React.FC = () => {
   return (
     <Table
       columns={columns}
-      expandable={{ expandedRowRender, defaultExpandAllRows: true }}
-      dataSource={sampleData()}
+      expandable={{ expandedRowRender, rowExpandable: () => true}}
+      dataSource={rows}
     />
   );
 };
 
 export default ScanGridTable;
 
-function sampleData() {
-    const data: HostType[] = [];
-    for (let i = 0; i < 3; ++i) {
-        data.push({
-            key: i.toString(),
-            ip: "193.23.43." + i,
-            os: i % 2 === 0 ? "Windows" : "Linux",
-            hostnameLabel: "hostname" + i,
-            customLabel: "custom" + i,
-            services: [
-                {
-                    key: i.toString(),
-                    ip: "193.23.43." + i,
-                    port: "80",
-                    banner: "Apache",
-                    firstDiscovered: new Date().toLocaleTimeString(),
-                    lastDiscovered: new Date().toLocaleTimeString(),
-                },
-                {
-                    key: i.toString(),
-                    ip: "193.23.43." + i,
-                    port: "443",
-                    banner: "Nginx",
-                    firstDiscovered: new Date().toLocaleTimeString(),
-                    lastDiscovered: new Date().toLocaleTimeString(),
-                },
-            ],
-            firstDiscovered: new Date().toLocaleTimeString(),
-            lastDiscovered: new Date().toLocaleTimeString(),
-        });
-    }
-    return data;
+function sampleData(): HostType[] {
+  const data: HostType[] = [];
+  for (let i = 0; i < 3; ++i) {
+    data.push({
+      key: i.toString(),
+      ip: "193.23.43." + i,
+      os: i % 2 === 0 ? "Windows" : "Linux",
+      hostnameLabel: "hostname" + i,
+      customLabel: "custom" + i,
+      services: [
+        {
+          key: i.toString(),
+          ip: "193.23.43." + i,
+          port: "80",
+          banner: "Apache",
+          firstDiscovered: new Date().toLocaleTimeString(),
+          lastDiscovered: new Date().toLocaleTimeString(),
+        },
+        {
+          key: i.toString(),
+          ip: "193.23.43." + i,
+          port: "443",
+          banner: "Nginx",
+          firstDiscovered: new Date().toLocaleTimeString(),
+          lastDiscovered: new Date().toLocaleTimeString(),
+        },
+      ],
+      firstDiscovered: new Date().toLocaleTimeString(),
+      lastDiscovered: new Date().toLocaleTimeString(),
+    });
+  }
+  return data;
 }
-

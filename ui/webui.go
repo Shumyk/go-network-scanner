@@ -28,7 +28,7 @@ func (u *UI) Run() {
 	webui.Wait()
 }
 
-func (u *UI) addScan(s *api.ScansDTO) {
+func (u *UI) addScan(s *api.ScannedResultsDTO) {
 	log.Info(
 		"Adding scans to UI",
 		log.Any("count", len(s.Data)),

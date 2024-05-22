@@ -17,7 +17,7 @@ const theme = createTheme({
 });
 
 function App() {
-  const [configured, setConfigured] = React.useState(true);
+  const [configured, setConfigured] = React.useState(false);
   const handleConfigured = () => setConfigured(true);
 
   return (

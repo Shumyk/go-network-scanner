@@ -26,27 +26,26 @@ type worker struct {
 func (w *worker) Do() {
 	scanResult := w.nmap.Scan()
 
-	scans := make([]*api.ScanDTO, 0)
+	dto := api.ScannedResultsDTO{}
 
 	for i := range scanResult.Hosts {
 		h := &scanResult.Hosts[i]
 		w.log.Debug("Host found", log.Any("host", h))
 
 		ip := nmap.IP(h)
-		processHost(ip, h)
+		hostDTO := api.HostDTOFrom(processHost(ip, h))
+
 		for x := range h.Ports {
-			scans = append(
-				scans,
-				api.ScanDTOFrom(
-					processPort(ip, &h.Ports[x]),
-				),
-			)
+			scan := processPort(ip, &h.Ports[x])
+			scanDTO := api.ScanDTOFrom(scan)
+			hostDTO.Services = append(hostDTO.Services, *scanDTO)
 		}
+		dto.Data = append(dto.Data, *hostDTO)
 	}
-	events.Emit(api.EventNmapScans, api.ScansDTO{Data: scans})
+	events.Emit(api.EventNmapScans, dto)
 }
 
-func processHost(ip string, h *lib.Host) {
+func processHost(ip string, h *lib.Host) *api.Host {
 	// nolint:exhaustruct // Other fields are added by consumer.
 	host := api.Host{
 		IP:            ip,
@@ -55,6 +54,7 @@ func processHost(ip string, h *lib.Host) {
 		CustomLabel:   h.Comment,
 	}
 	events.Emit(api.EventNmapHost, &host)
+	return &host
 }
 
 func processPort(ip string, p *lib.Port) *api.Scan {
