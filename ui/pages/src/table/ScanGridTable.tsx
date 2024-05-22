@@ -1,7 +1,8 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { DownOutlined } from "@ant-design/icons";
 import type { TableColumnsType } from "antd";
-import { Badge, Dropdown, Space, Table } from "antd";
+import { Badge, ConfigProvider, Dropdown, Space, Table } from "antd";
+import "./ScanGridTable.css";
 
 class ScanDTO {
   constructor(public data: HostType[]) {}
@@ -102,7 +103,12 @@ const ScanGridTable: React.FC = () => {
     ];
 
     return (
-      <Table columns={columns} dataSource={host.services} pagination={false} />
+      <Table
+        columns={columns}
+        dataSource={host.services}
+        pagination={false}
+        bordered
+      />
     );
   };
 
@@ -121,11 +127,32 @@ const ScanGridTable: React.FC = () => {
   ];
 
   return (
-    <Table
-      columns={columns}
-      expandable={{ expandedRowRender, rowExpandable: () => true}}
-      dataSource={rows}
-    />
+    <ConfigProvider
+      theme={{
+        token: {
+          colorTextBase: "#ffffff",
+          colorBgBase: "#614b9e",
+          colorPrimary: "#eb2f96",
+          colorInfo: "#e271af",
+        },
+        components: {
+          Table: {
+            borderColor: "#ccc1ec",
+          },
+        },
+      }}
+    >
+      <Table
+        columns={columns}
+        expandable={{
+          expandedRowRender,
+          defaultExpandAllRows: true,
+          rowExpandable: () => true,
+        }}
+        dataSource={sampleData()}
+        bordered={true}
+      />
+    </ConfigProvider>
   );
 };
 

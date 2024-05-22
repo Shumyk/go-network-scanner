@@ -4,6 +4,7 @@ import (
 	"go-network-scanner/api"
 	"go-network-scanner/nmap"
 	log "log/slog"
+	"time"
 
 	lib "github.com/Ullaakut/nmap/v3"
 	"github.com/kataras/go-events"
@@ -26,7 +27,7 @@ type worker struct {
 func (w *worker) Do() {
 	scanResult := w.nmap.Scan()
 
-	dto := api.ScannedResultsDTO{}
+	dto := api.ScannedResultsDTO{Data: []api.HostDTO{}}
 
 	for i := range scanResult.Hosts {
 		h := &scanResult.Hosts[i]
@@ -48,10 +49,12 @@ func (w *worker) Do() {
 func processHost(ip string, h *lib.Host) *api.Host {
 	// nolint:exhaustruct // Other fields are added by consumer.
 	host := api.Host{
-		IP:            ip,
-		OsType:        nmap.OS(h),
-		HostnameLabel: nmap.Hostname(h),
-		CustomLabel:   h.Comment,
+		FirstDiscovered: time.Time(h.StartTime),
+		LastSeen:        time.Time(h.EndTime),
+		IP:              ip,
+		OsType:          nmap.OS(h),
+		HostnameLabel:   nmap.Hostname(h),
+		CustomLabel:     h.Comment,
 	}
 	events.Emit(api.EventNmapHost, &host)
 	return &host
@@ -60,9 +63,11 @@ func processHost(ip string, h *lib.Host) *api.Host {
 func processPort(ip string, p *lib.Port) *api.Scan {
 	// nolint:exhaustruct // Other fields are added by consumer.
 	scan := api.Scan{
-		IP:            ip,
-		Port:          p.ID,
-		ServiceBanner: nmap.ServiceBanner(p),
+		FirstDiscovered: time.Now(),
+		LastSeen:        time.Now(),
+		IP:              ip,
+		Port:            p.ID,
+		ServiceBanner:   nmap.ServiceBanner(p),
 	}
 	events.Emit(api.EventNmapScan, &scan)
 	return &scan
