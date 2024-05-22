@@ -29,10 +29,10 @@ func (u *UI) Run() {
 	webui.Wait()
 }
 
-func (u *UI) addScan(s map[string][]*api.ScanDTO) {
+func (u *UI) addScan(s *api.ScansDTO) {
 	log.Info(
 		"Adding scans to UI",
-		log.Any("scan.ip", len(s)),
+		log.Any("scan.ip", len(s.Data)),
 	)
 
 	bytes, err := json.Marshal(s)

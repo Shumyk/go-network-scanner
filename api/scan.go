@@ -20,6 +20,11 @@ type ScanDTO struct {
 	Port    uint16 `json:"port"`
 }
 
+// ScansDTO is the data transfer object for multiple scans by IP.
+type ScansDTO struct {
+	Data []*ScanDTO `json:"data"`
+}
+
 func ScanDTOFrom(s *Scan) *ScanDTO {
 	return &ScanDTO{
 		IP:      s.IP,
