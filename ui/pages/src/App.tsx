@@ -1,10 +1,10 @@
-import React, { useEffect } from "react";
+import React from "react";
 
 import "./App.css";
 import Inputs from "./Inputs";
 import { ThemeProvider, createTheme } from "@mui/material";
 import { pink } from "@mui/material/colors";
-import ScanGrid from "./ScanGrid";
+import ScanGridTable from "./ScanGridTable";
 
 // TODO: move out this
 const theme = createTheme({
@@ -17,14 +17,14 @@ const theme = createTheme({
 });
 
 function App() {
-  const [configured, setConfigured] = React.useState(false);
+  const [configured, setConfigured] = React.useState(true);
   const handleConfigured = () => setConfigured(true);
 
   return (
     <div className="App">
       <ThemeProvider theme={theme}>
         {!configured && <Inputs onConfigured={handleConfigured} />}
-        {configured && <ScanGrid />}
+        {configured && <ScanGridTable />}
       </ThemeProvider>
     </div>
   );

@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"go-network-scanner/api"
 	log "log/slog"
-	"strconv"
 
 	"github.com/webui-dev/go-webui/v2"
 )
@@ -32,7 +31,7 @@ func (u *UI) Run() {
 func (u *UI) addScan(s *api.ScansDTO) {
 	log.Info(
 		"Adding scans to UI",
-		log.Any("scan.ip", len(s.Data)),
+		log.Any("count", len(s.Data)),
 	)
 
 	bytes, err := json.Marshal(s)
@@ -42,20 +41,6 @@ func (u *UI) addScan(s *api.ScansDTO) {
 	}
 
 	u.window.Run("addScannedDevice('" + string(bytes) + "')")
-}
-
-func countFunc(e webui.Event) any {
-	log.Info("Button 1 clicked")
-	count, _ := e.Window.Script("return count;", webui.ScriptOptions{})
-	i, _ := strconv.Atoi(count)
-	e.Window.Run("SetCount(" + strconv.Itoa(i+1) + ")")
-	return nil
-}
-
-func exitFunc(e webui.Event) any {
-	log.Info("Button 2 clicked")
-	webui.Exit()
-	return nil
 }
 
 func (u *UI) bootstrap(e webui.Event) webui.Void {
