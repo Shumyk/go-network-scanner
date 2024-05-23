@@ -9,12 +9,25 @@ const items = [
 
 const hostColumns: TableColumnsType<HostType> = [
   {
-    title: "",
+    title: "❇️",
     dataIndex: "icon",
     key: "icon",
     align: "center",
     className: "icon-cell",
-    render: () => <Image src="/computer.png" width={35} preview={false} />,
+    render: (_, record: HostType) => {
+      return {
+        props: {
+          className: `${
+            record.scannedAt === record.lastDiscovered ? "found" : "lost"
+          } `,
+        },
+        children: (
+          <div className="">
+            <Image src="/computer.png" width={35} preview={false} />
+          </div>
+        ),
+      };
+    },
   },
   { title: "IP", dataIndex: "ip", key: "ip" },
   {
@@ -49,7 +62,7 @@ const hostColumns: TableColumnsType<HostType> = [
 
 const serviceColumns: TableColumnsType<ServiceType> = [
   {
-    title: "",
+    title: "❇️",
     dataIndex: "icon",
     key: "icon",
     render: () => <Badge status="success" text="Finished" />,

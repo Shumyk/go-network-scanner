@@ -29,7 +29,8 @@ export function sampleData(): HostType[] {
         },
       ],
       firstDiscovered: new Date().toLocaleTimeString(),
-      lastDiscovered: new Date().toLocaleTimeString(),
+      lastDiscovered: new Date().toLocaleTimeString() + "",
+      scannedAt: new Date().toLocaleTimeString(),
     });
   }
   return data;

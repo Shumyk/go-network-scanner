@@ -25,6 +25,7 @@ interface HostType {
 
   firstDiscovered: string;
   lastDiscovered: string;
+  scannedAt: string;
 }
 
 interface ServiceType {

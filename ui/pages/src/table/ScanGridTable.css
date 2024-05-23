@@ -1,9 +1,111 @@
 thead > tr > th {
-    background-color: #4a3978 !important; 
+  background-color: #4a3978 !important;
 }
 
 .icon-cell {
-    text-align: right;
-    vertical-align: middle;
-    padding: 2px 2px !important;
+  padding: 2px 2px !important;
+}
+
+.pulse {
+  border-radius: 100%;
+  box-shadow: 0 0 5 rgba(10, 123, 44, 0.4);
+  animation: pulse-found 2s infinite, magnified 2s infinite;
+  left: calc(-50vw + 50%);
+  right: calc(-50vw + 50%);
+  top: calc(-50vw + 50%);
+  bottom: calc(-50vw + 50%);
+}
+
+.found {
+  border-radius: 100%;
+
+  animation: pulse-found 2s 3, magnified 8s 1, activation 2s 6s 1 forwards;
+
+  left: calc(-50vw + 50%);
+  right: calc(-50vw + 50%);
+  top: calc(-50vw + 50%);
+  bottom: calc(-50vw + 50%);
+}
+
+.lost {
+  border-radius: 100%;
+
+  animation: rounder 1s 1, pulse-lost 2s 1s 3, magnified 8s 1s 1, inactivation 2s 7s 1 forwards;
+
+  left: calc(-50vw + 50%);
+  right: calc(-50vw + 50%);
+  top: calc(-50vw + 50%);
+  bottom: calc(-50vw + 50%);
+}
+
+@keyframes rounder {
+    0% { border-radius: 0% }
+    50% { border-radius: 100% }
+    100% { border-radius: 0% }
+}
+
+@keyframes magnified {
+  0%,
+  100% {
+    transform: scale(1, 1);
+  }
+  50% {
+    transform: scale(1.4, 1.4);
+  }
+}
+
+@keyframes activation {
+    0% {}
+    100% {
+      background-color: rgba(152, 222, 152, 0.5);
+    }
+}
+
+@keyframes inactivation {
+  0% {}
+  100% {
+    background-color: rgba(201, 9, 9, 0.468);
+  }
+}
+
+@-webkit-keyframes pulse-found {
+  0%,
+  100% {
+    -webkit-box-shadow: 0 0 0 0 rgba(152, 222, 152, 0.5);
+  }
+  50% {
+    -webkit-box-shadow: 0 0 0 10px rgba(152, 222, 152, 0.5);
+  }
+}
+@keyframes pulse-found {
+  0%,
+  100% {
+    -moz-box-shadow: 0 0 0 0 rgba(152, 222, 152, 0.5);
+    box-shadow: 0 0 0 0 rgba(152, 222, 152, 0.5);
+  }
+  50% {
+    -moz-box-shadow: 0 0 0 10px rgba(152, 222, 152, 0.5);
+    box-shadow: 0 0 0 10px rgba(152, 222, 152, 0.5);
+  }
+}
+
+@-webkit-keyframes pulse-lost {
+  0%,
+  100% {
+    -webkit-box-shadow: 0 0 0 0 maroon;
+  }
+  50% {
+    -webkit-box-shadow: 0 0 0 10px maroon;
+  }
+}
+@keyframes pulse-lost {
+  0%,
+  100% {
+    -moz-box-shadow: 0 0 0 0 maroon;
+    box-shadow: 0 0 0 0 maroon;
+  }
+  50% {
+    -moz-box-shadow: 0 0 0 10px maroon;
+    box-shadow: 0 0 0 10px maroon;
+  }
 }
