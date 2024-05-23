@@ -18,6 +18,7 @@ export function sampleData(): HostType[] {
           banner: "Apache",
           firstDiscovered: new Date().toLocaleTimeString(),
           lastDiscovered: new Date().toLocaleTimeString(),
+          scannedAt: new Date().toLocaleTimeString() + 1,
         },
         {
           key: ip + "443",
@@ -26,6 +27,7 @@ export function sampleData(): HostType[] {
           banner: "Nginx",
           firstDiscovered: new Date().toLocaleTimeString(),
           lastDiscovered: new Date().toLocaleTimeString(),
+          scannedAt: new Date().toLocaleTimeString(),
         },
       ],
       firstDiscovered: new Date().toLocaleTimeString(),

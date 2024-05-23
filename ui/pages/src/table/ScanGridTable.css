@@ -4,38 +4,29 @@ thead > tr > th {
 
 .icon-cell {
   padding: 2px 2px !important;
-}
-
-.pulse {
-  border-radius: 100%;
-  box-shadow: 0 0 5 rgba(10, 123, 44, 0.4);
-  animation: pulse-found 2s infinite, magnified 2s infinite;
-  left: calc(-50vw + 50%);
-  right: calc(-50vw + 50%);
-  top: calc(-50vw + 50%);
-  bottom: calc(-50vw + 50%);
+  width: 70px;
 }
 
 .found {
-  border-radius: 100%;
+  border-radius: 100% !important;
 
   animation: pulse-found 2s 3, magnified 8s 1, activation 2s 6s 1 forwards;
 
-  left: calc(-50vw + 50%);
+  /* left: 0;
   right: calc(-50vw + 50%);
   top: calc(-50vw + 50%);
-  bottom: calc(-50vw + 50%);
+  bottom: calc(-50vw + 50%); */
 }
 
 .lost {
   border-radius: 100%;
 
-  animation: rounder 1s 1, pulse-lost 2s 1s 3, magnified 8s 1s 1, inactivation 2s 7s 1 forwards;
+  animation: rounder 1s 1, pulse-lost 2s 1s 3, magnified 8s 1s 1, inactivation 2s 6s 1 forwards;
 
-  left: calc(-50vw + 50%);
+  /* left: calc(-50vw + 50%);
   right: calc(-50vw + 50%);
   top: calc(-50vw + 50%);
-  bottom: calc(-50vw + 50%);
+  bottom: calc(-50vw + 50%); */
 }
 
 @keyframes rounder {

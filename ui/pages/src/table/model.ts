@@ -36,6 +36,7 @@ interface ServiceType {
 
   firstDiscovered: string;
   lastDiscovered: string;
+  scannedAt: string;
 }
 
 export { ScanDTO };

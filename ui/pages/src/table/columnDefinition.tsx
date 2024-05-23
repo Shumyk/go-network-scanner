@@ -1,4 +1,4 @@
-import { Badge, Dropdown, Image, Space, TableColumnsType } from "antd";
+import { Dropdown, Image, Space, TableColumnsType } from "antd";
 import { HostType, ServiceType } from "./model";
 import { DownOutlined } from "@ant-design/icons";
 
@@ -21,11 +21,7 @@ const hostColumns: TableColumnsType<HostType> = [
             record.scannedAt === record.lastDiscovered ? "found" : "lost"
           } `,
         },
-        children: (
-          <div className="">
-            <Image src="/computer.png" width={35} preview={false} />
-          </div>
-        ),
+        children: <Image src="/computer.png" width={35} preview={false} />,
       };
     },
   },
@@ -65,7 +61,18 @@ const serviceColumns: TableColumnsType<ServiceType> = [
     title: "❇️",
     dataIndex: "icon",
     key: "icon",
-    render: () => <Badge status="success" text="Finished" />,
+    align: "center",
+    className: "icon-cell",
+    render: (_, record: ServiceType) => {
+      return {
+        props: {
+          className: `${
+            record.scannedAt === record.lastDiscovered ? "found" : "lost"
+          } `,
+        },
+        children: <Image src="/service.png" width={35} preview={false} />,
+      };
+    },
   },
   { title: "Port", dataIndex: "port", key: "port" },
   { title: "Banner", dataIndex: "banner", key: "banner" },
