@@ -3,15 +3,16 @@ import { HostType } from "./model";
 export function sampleData(): HostType[] {
   const data: HostType[] = [];
   for (let i = 0; i < 3; ++i) {
+    const ip = "193.23.43." + i;
     data.push({
       key: i.toString(),
-      ip: "193.23.43." + i,
+      ip: ip,
       os: i % 2 === 0 ? "Windows" : "Linux",
       hostnameLabel: "hostname" + i,
       customLabel: "custom" + i,
       services: [
         {
-          key: i.toString(),
+          key: ip + "80",
           ip: "193.23.43." + i,
           port: "80",
           banner: "Apache",
@@ -19,7 +20,7 @@ export function sampleData(): HostType[] {
           lastDiscovered: new Date().toLocaleTimeString(),
         },
         {
-          key: i.toString(),
+          key: ip + "443",
           ip: "193.23.43." + i,
           port: "443",
           banner: "Nginx",

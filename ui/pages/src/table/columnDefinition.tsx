@@ -1,4 +1,4 @@
-import { Badge, Dropdown, Space, TableColumnsType } from "antd";
+import { Badge, Dropdown, Image, Space, TableColumnsType } from "antd";
 import { HostType, ServiceType } from "./model";
 import { DownOutlined } from "@ant-design/icons";
 
@@ -9,7 +9,24 @@ const items = [
 
 const hostColumns: TableColumnsType<HostType> = [
   { title: "IP", dataIndex: "ip", key: "ip" },
-  { title: "OS", dataIndex: "os", key: "os" },
+  {
+    title: "OS",
+    dataIndex: "os",
+    key: "os",
+    align: "center",
+    render: (os: string) => {
+      if (os.includes("Windows")) {
+        return <Image src="/windows.png" width={23} preview={false} />;
+      }
+      if (os.includes("Linux")) {
+        return <Image src="/linux.png" width={23} preview={false} />;
+      }
+      if (os.includes("Mac")) {
+        return <Image src="/apple.png" width={23} preview={false} />;
+      }
+      return os;
+    },
+  },
   { title: "Hostname", dataIndex: "hostnameLabel", key: "hostnameLabel" },
   { title: "Custom Label", dataIndex: "customLabel", key: "customLabel" },
   {
