@@ -8,21 +8,30 @@ const items = [
 ];
 
 const hostColumns: TableColumnsType<HostType> = [
+  {
+    title: "",
+    dataIndex: "icon",
+    key: "icon",
+    align: "center",
+    className: "icon-cell",
+    render: () => <Image src="/computer.png" width={35} preview={false} />,
+  },
   { title: "IP", dataIndex: "ip", key: "ip" },
   {
     title: "OS",
     dataIndex: "os",
     key: "os",
     align: "center",
+    className: "icon-cell",
     render: (os: string) => {
       if (os.includes("Windows")) {
-        return <Image src="/windows.png" width={23} preview={false} />;
+        return <Image src="/windows.png" width={35} preview={false} />;
       }
       if (os.includes("Linux")) {
-        return <Image src="/linux.png" width={23} preview={false} />;
+        return <Image src="/linux.png" width={35} preview={false} />;
       }
       if (os.includes("Mac")) {
-        return <Image src="/apple.png" width={23} preview={false} />;
+        return <Image src="/apple.png" width={35} preview={false} />;
       }
       return os;
     },
@@ -39,13 +48,14 @@ const hostColumns: TableColumnsType<HostType> = [
 ];
 
 const serviceColumns: TableColumnsType<ServiceType> = [
-  { title: "Port", dataIndex: "port", key: "port" },
-  { title: "Banner", dataIndex: "banner", key: "banner" },
   {
-    title: "Status",
-    key: "state",
+    title: "",
+    dataIndex: "icon",
+    key: "icon",
     render: () => <Badge status="success" text="Finished" />,
   },
+  { title: "Port", dataIndex: "port", key: "port" },
+  { title: "Banner", dataIndex: "banner", key: "banner" },
   {
     title: "Discovered",
     dataIndex: "firstDiscovered",

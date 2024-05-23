@@ -1,3 +1,9 @@
 thead > tr > th {
     background-color: #4a3978 !important; 
 }
+
+.icon-cell {
+    text-align: right;
+    vertical-align: middle;
+    padding: 2px 2px !important;
+}
