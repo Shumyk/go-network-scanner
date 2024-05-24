@@ -58,7 +58,7 @@ const ScanGridTable: React.FC = () => {
           rowExpandable: () => true,
         }}
         // dataSource={rows}
-        dataSource={sampleData()}
+        dataSource={rows}
         bordered={true}
       />
     </ConfigProvider>

@@ -2,17 +2,23 @@ package api
 
 import "time"
 
+type DateTime time.Time
+
+func (dt DateTime) MarshalText() ([]byte, error) {
+	return []byte(time.Time(dt).Format(time.DateTime)), nil
+}
+
 // ScannedResultsDTO is the data transfer object for scanned results.
 type ScannedResultsDTO struct {
-	ScannedAt time.Time `json:"scannedAt"`
+	ScannedAt DateTime  `json:"scannedAt"`
 	Data      []HostDTO `json:"data"`
 }
 
 // HostDTO is the data transfer object for scanned results.
 type HostDTO struct {
-	FirstDiscovered time.Time `json:"firstDiscovered"`
-	LastDiscovered  time.Time `json:"lastDiscovered"`
-	ScannedAt       time.Time `json:"scannedAt"`
+	FirstDiscovered DateTime `json:"firstDiscovered"`
+	LastDiscovered  DateTime `json:"lastDiscovered"`
+	ScannedAt       DateTime `json:"scannedAt"`
 
 	IP            string `json:"ip"`
 	OS            string `json:"os"`
@@ -22,12 +28,16 @@ type HostDTO struct {
 	Services []ScanDTO `json:"services"`
 }
 
+func DateTimeFrom(t time.Time) DateTime {
+	return DateTime(t)
+}
+
 // HostDTOFrom converts a Host to a HostDTO.
 func HostDTOFrom(h *Host, scannedAt time.Time) *HostDTO {
 	return &HostDTO{
-		FirstDiscovered: h.FirstDiscovered,
-		LastDiscovered:  h.LastSeen,
-		ScannedAt:       scannedAt,
+		FirstDiscovered: DateTimeFrom(h.FirstDiscovered),
+		LastDiscovered:  DateTimeFrom(h.LastSeen),
+		ScannedAt:       DateTimeFrom(scannedAt),
 
 		IP:            h.IP,
 		OS:            h.OsType,
@@ -40,9 +50,9 @@ func HostDTOFrom(h *Host, scannedAt time.Time) *HostDTO {
 
 // ScanDTO is the data transfer object for scans.
 type ScanDTO struct {
-	FirstDiscovered time.Time `json:"firstDiscovered"`
-	LastDiscovered  time.Time `json:"lastDiscovered"`
-	ScannedAt       time.Time `json:"scannedAt"`
+	FirstDiscovered DateTime `json:"firstDiscovered"`
+	LastDiscovered  DateTime `json:"lastDiscovered"`
+	ScannedAt       DateTime `json:"scannedAt"`
 
 	IP     string `json:"ip"`
 	Banner string `json:"banner"`
@@ -52,9 +62,9 @@ type ScanDTO struct {
 // ScanDTOFrom creates a ScanDTO from a Scan.
 func ScanDTOFrom(s *Scan, scannedAt time.Time) *ScanDTO {
 	return &ScanDTO{
-		FirstDiscovered: s.FirstDiscovered,
-		LastDiscovered:  s.LastSeen,
-		ScannedAt:       scannedAt,
+		FirstDiscovered: DateTimeFrom(s.FirstDiscovered),
+		LastDiscovered:  DateTimeFrom(s.LastSeen),
+		ScannedAt:       DateTimeFrom(scannedAt),
 
 		IP:     s.IP,
 		Banner: s.ServiceBanner,

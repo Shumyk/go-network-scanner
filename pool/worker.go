@@ -30,7 +30,7 @@ func (w *worker) Do() {
 
 	dto := api.ScannedResultsDTO{
 		Data:      []api.HostDTO{},
-		ScannedAt: scannedAt,
+		ScannedAt: api.DateTimeFrom(scannedAt),
 	}
 
 	for i := range scanResult.Hosts {
@@ -54,8 +54,8 @@ func (w *worker) Do() {
 func processHost(ip string, h *lib.Host) *api.Host {
 	// nolint:exhaustruct // Other fields are added by consumer.
 	host := api.Host{
-		FirstDiscovered: time.Time(h.StartTime),
-		LastSeen:        time.Time(h.EndTime),
+		FirstDiscovered: time.Now(),
+		LastSeen:        time.Now(),
 		IP:              ip,
 		OsType:          nmap.OS(h),
 		HostnameLabel:   nmap.Hostname(h),
