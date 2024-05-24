@@ -25,7 +25,7 @@ const OsIcon: React.FC<{
     <Tooltip title={os} placement="top" color="#e271af">
       <Image src={image} width={35} preview={false} />
     </Tooltip>
-  ); 
+  );
 };
 
 const hostColumns: TableColumnsType<HostType> = [
@@ -37,9 +37,7 @@ const hostColumns: TableColumnsType<HostType> = [
     className: "icon-cell",
     render: (_, record: HostType) => {
       return {
-        props: {
-          className: record.classNames(),
-        },
+        props: { className: record.classNames() },
         children: <Image src="/computer.png" width={35} preview={false} />,
       };
     },
@@ -65,16 +63,16 @@ const hostColumns: TableColumnsType<HostType> = [
 ];
 
 const IconCell = ({ record }: { record: ServiceType }) => {
-  const [found, setFound] = React.useState("");
-  const [lost, setLost] = React.useState("");
+  // const [found, setFound] = React.useState("");
+  // const [lost, setLost] = React.useState("");
 
-  useEffect(() => {
-    if (record.scannedAt === record.lastDiscovered) {
-      setFound("found");
-    } else {
-      setLost("lost");
-    }
-  }, [record.scannedAt, record.lastDiscovered]);
+  // useEffect(() => {
+  //   if (record.scannedAt === record.lastDiscovered) {
+  //     setFound("found");
+  //   } else {
+  //     setLost("lost");
+  //   }
+  // }, [record.scannedAt, record.lastDiscovered]);
 
   // const classes = `service-icon-cell ${found} ${lost}`;
   return (
@@ -91,17 +89,11 @@ const serviceColumns = (): TableColumnsType<ServiceType> => {
       dataIndex: "icon",
       key: "icon",
       align: "center",
-      // className: "icon-cell",
+      className: "icon-cell",
       render: (_, record: ServiceType) => {
         setTimeout(() => {}, 8000);
         return {
-          props: {
-            className: `${
-              record.scannedAt === record.lastDiscovered
-                ? "icon-cell found"
-                : "icon-cell lost"
-            } `,
-          },
+          props: { className: record.classNames() },
           children: <IconCell record={record} />,
         };
       },

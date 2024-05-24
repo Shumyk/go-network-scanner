@@ -32,9 +32,11 @@ const ScanGridTable: React.FC = () => {
     _indent: number,
     expanded: boolean
   ) => {
-    console.info("expandedRowRender", host, expanded, host.services);
-    console.info("expanded", expanded);
-    if (!host.services.length) return <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />; 
+    // console.info("expandedRowRender", host, expanded, host.services);
+    // console.info("expanded", expanded);
+
+    if (!host.services.length)
+      return <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />;
     return (
       <Table
         columns={serviceColumns()}
