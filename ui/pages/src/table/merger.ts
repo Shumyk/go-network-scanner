@@ -36,7 +36,7 @@ function merge(oldData: HostType[], newData: HostDTO[]): HostType[] {
     if (prevHost) {
       // Entity continue to be present, transiting to ONLINE state.
       const online: HostType = mergeServices(prevHost, newHost);
-      online.status = ONLINE;
+      online.status = existingPreviousTransition(prevHost.status);
       merged.push(online);
     } else {
       // New host is found, mark all its services as FOUND.
@@ -85,10 +85,18 @@ function mergeServices(prevHost: HostType, newHost: HostDTO): HostType {
 //
 // Entity is found in current scan, decide to which status to transition to.
 function presentStatusTransition(previous: any): TypeStatus {
-  // Entity was found previous scan, so it should transition to ONLINE.
-  if (previous) return ONLINE;
+  if (previous)
+    return existingPreviousTransition(previous.status);
   // Previous entry is absent, so it's newly found entity.
   return FOUND;
+}
+// Entity was found previous scan, so it should transition:
+//      LOST or OFFLINE  -> to FOUND.
+//      else             -> to ONLINE.
+function existingPreviousTransition(previous: TypeStatus): TypeStatus {
+  if (previous === LOST) return FOUND;
+  if (previous === OFFLINE) return FOUND;
+  return ONLINE;
 }
 // Entity is absent in current scan, decide to which status to transition to.
 function absentStatusTransition(status: TypeStatus): TypeStatus {
