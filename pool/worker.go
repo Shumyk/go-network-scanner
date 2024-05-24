@@ -26,19 +26,24 @@ type worker struct {
 // Do triggers the nmap scan and processes the results.
 func (w *worker) Do() {
 	scanResult := w.nmap.Scan()
+	scannedAt := time.Now()
 
-	dto := api.ScannedResultsDTO{Data: []api.HostDTO{}}
+	dto := api.ScannedResultsDTO{
+		Data:      []api.HostDTO{},
+		ScannedAt: scannedAt,
+	}
 
 	for i := range scanResult.Hosts {
 		h := &scanResult.Hosts[i]
 		w.log.Debug("Host found", log.Any("host", h))
 
 		ip := nmap.IP(h)
-		hostDTO := api.HostDTOFrom(processHost(ip, h))
+		host := processHost(ip, h)
+		hostDTO := api.HostDTOFrom(host, scannedAt)
 
 		for x := range h.Ports {
 			scan := processPort(ip, &h.Ports[x])
-			scanDTO := api.ScanDTOFrom(scan)
+			scanDTO := api.ScanDTOFrom(scan, scannedAt)
 			hostDTO.Services = append(hostDTO.Services, *scanDTO)
 		}
 		dto.Data = append(dto.Data, *hostDTO)

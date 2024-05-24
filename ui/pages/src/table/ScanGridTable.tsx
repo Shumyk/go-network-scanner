@@ -26,7 +26,7 @@ const ScanGridTable: React.FC = () => {
   const expandedRowRender = (host: HostType) => {
     return (
       <Table
-        columns={serviceColumns}
+        columns={serviceColumns()}
         dataSource={host.services}
         pagination={false}
         bordered
@@ -57,6 +57,7 @@ const ScanGridTable: React.FC = () => {
           defaultExpandAllRows: true,
           rowExpandable: () => true,
         }}
+        // dataSource={rows}
         dataSource={sampleData()}
         bordered={true}
       />
