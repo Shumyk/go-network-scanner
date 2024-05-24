@@ -1,11 +1,10 @@
-import { HostType } from "./model";
+import { HostDTO, HostType } from "./model";
 
 export function sampleData(): HostType[] {
-  const data: HostType[] = [];
+  const data: HostDTO[] = [];
   for (let i = 0; i < 3; ++i) {
     const ip = "193.23.43." + i;
     data.push({
-      key: i.toString(),
       ip: ip,
       os: i % 2 === 0 ? "Windows" : "Linux",
       hostnameLabel: "hostname" + i,
@@ -19,6 +18,7 @@ export function sampleData(): HostType[] {
           firstDiscovered: new Date().toLocaleTimeString(),
           lastDiscovered: new Date().toLocaleTimeString(),
           scannedAt: new Date().toLocaleTimeString() + 1,
+          status: "found"
         },
         {
           key: ip + "443",
@@ -28,6 +28,7 @@ export function sampleData(): HostType[] {
           firstDiscovered: new Date().toLocaleTimeString(),
           lastDiscovered: new Date().toLocaleTimeString(),
           scannedAt: new Date().toLocaleTimeString(),
+          status: "online",
         },
       ],
       firstDiscovered: new Date().toLocaleTimeString(),
@@ -35,5 +36,5 @@ export function sampleData(): HostType[] {
       scannedAt: new Date().toLocaleTimeString(),
     });
   }
-  return data;
+  return data.map((d) => new HostType(d));
 }

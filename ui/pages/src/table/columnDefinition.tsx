@@ -38,9 +38,7 @@ const hostColumns: TableColumnsType<HostType> = [
     render: (_, record: HostType) => {
       return {
         props: {
-          className: `${
-            record.scannedAt === record.lastDiscovered ? "found" : "lost"
-          } `,
+          className: record.classNames(),
         },
         children: <Image src="/computer.png" width={35} preview={false} />,
       };
@@ -89,7 +87,7 @@ const IconCell = ({ record }: { record: ServiceType }) => {
 const serviceColumns = (): TableColumnsType<ServiceType> => {
   return [
     {
-      title: "❇️",
+      title: "",
       dataIndex: "icon",
       key: "icon",
       align: "center",

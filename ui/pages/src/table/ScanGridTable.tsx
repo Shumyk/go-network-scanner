@@ -1,20 +1,23 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { ConfigProvider, Table } from "antd";
+import { ConfigProvider, Empty, Table } from "antd";
 import "./ScanGridTable.css";
-import { HostType, ScanDTO } from "./model";
+import { HostType, ScanDTO, TableData } from "./model";
 import { sampleData } from "./dataGenerator";
 import { hostColumns, serviceColumns } from "./columnDefinition";
 
 const ScanGridTable: React.FC = () => {
-  const [rows, setRows] = useState<HostType[]>([]);
+  const [tableData, setTableData] = useState<TableData>(new TableData());
 
-  const addScannedDevice = useCallback((json: string): void => {
-    const scan: ScanDTO = JSON.parse(json);
-    console.log("Received scanned devices", scan);
+  const addScannedDevice = useCallback(
+    (json: string): void => {
+      const scan: ScanDTO = JSON.parse(json);
+      console.log("Received scanned devices", scan);
 
-    const data = new ScanDTO(scan.data).hydrate();
-    setRows(data);
-  }, []);
+      const merged: TableData = tableData.merge(scan.data);
+      setTableData(merged);
+    },
+    [tableData, setTableData]
+  );
 
   useEffect(() => {
     // @ts-ignore
@@ -23,7 +26,15 @@ const ScanGridTable: React.FC = () => {
     };
   }, [addScannedDevice]);
 
-  const expandedRowRender = (host: HostType) => {
+  const expandedRowRender = (
+    host: HostType,
+    _number: number,
+    _indent: number,
+    expanded: boolean
+  ) => {
+    console.info("expandedRowRender", host, expanded, host.services);
+    console.info("expanded", expanded);
+    if (!host.services.length) return <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />; 
     return (
       <Table
         columns={serviceColumns()}
@@ -58,7 +69,7 @@ const ScanGridTable: React.FC = () => {
           rowExpandable: () => true,
         }}
         // dataSource={rows}
-        dataSource={rows}
+        dataSource={[...tableData.data]}
         bordered={true}
       />
     </ConfigProvider>

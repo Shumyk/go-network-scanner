@@ -86,6 +86,7 @@ const Inputs: FC<{ onConfigured: () => void }> = ({
             <Grid item xs={5}>
               <InputName
                 type="session"
+                focus
                 onChange={(e) => setSessionName(e.target.value)}
                 onKeyDown={focusNext}
               />
