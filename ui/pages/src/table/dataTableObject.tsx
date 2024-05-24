@@ -1,8 +1,13 @@
 import { HostDTO, ServiceDTO } from "./dataTransferObject";
 
+// ### Entity Statuses.
+// - `FOUND` - Entity was found. It was absent in the previous scan and present in the current scan.
 const FOUND = "found";
+// - `LOST` - Entity was lost. It was present in the previous scan and absent in the current scan.
 const LOST = "lost";
+// - `ONLINE` - Entity is online. It was present in the previous scan and present in the current scan.
 const ONLINE = "online";
+// - `OFFLINE` - Entity is offline. It was absent in the previous scan and absent in the current scan.
 const OFFLINE = "offline";
 const UNKNOWN = "unknown";
 type TypeStatus = "found" | "lost" | "online" | "offline" | "unknown";

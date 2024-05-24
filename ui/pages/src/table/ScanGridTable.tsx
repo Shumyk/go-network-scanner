@@ -1,19 +1,21 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { ConfigProvider, Empty, Table } from "antd";
 import "./ScanGridTable.css";
-import { HostType, ScanDTO, TableData } from "./model";
+import { merge } from "./merger";
 import { sampleData } from "./dataGenerator";
 import { hostColumns, serviceColumns } from "./columnDefinition";
+import { HostType } from "./dataTableObject";
+import { ScanDTO } from "./dataTransferObject";
 
 const ScanGridTable: React.FC = () => {
-  const [tableData, setTableData] = useState<TableData>(new TableData());
+  const [tableData, setTableData] = useState<HostType[]>([]);
 
   const addScannedDevice = useCallback(
     (json: string): void => {
       const scan: ScanDTO = JSON.parse(json);
       console.log("Received scanned devices", scan);
 
-      const merged: TableData = tableData.merge(scan.data);
+      const merged: HostType[] = merge(tableData, scan.data);
       setTableData(merged);
     },
     [tableData, setTableData]
@@ -71,7 +73,7 @@ const ScanGridTable: React.FC = () => {
           rowExpandable: () => true,
         }}
         // dataSource={rows}
-        dataSource={[...tableData.data]}
+        dataSource={tableData}
         bordered={true}
       />
     </ConfigProvider>

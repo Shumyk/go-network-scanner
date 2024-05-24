@@ -1,4 +1,5 @@
-import { HostDTO, HostType } from "./model";
+import { HostDTO } from "./dataTransferObject";
+import { HostType } from "./dataTableObject";
 
 export function sampleData(): HostType[] {
   const data: HostDTO[] = [];
@@ -29,5 +30,5 @@ export function sampleData(): HostType[] {
       lastDiscovered: new Date().toLocaleTimeString() + "",
     });
   }
-  return data.map((d) => new HostType(d));
+  return data.map((d) => HostType.of(d));
 }
