@@ -1,6 +1,6 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Dropdown, Image, Space, TableColumnsType, Tooltip } from "antd";
-import { HostType, ServiceType } from "./model";
+import { HostType, ServiceType } from "./dataTableObject";
 import { DownOutlined } from "@ant-design/icons";
 
 const items = [
