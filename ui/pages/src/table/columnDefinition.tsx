@@ -1,26 +1,6 @@
-import React from "react";
-import { Image, TableColumnsType, Tooltip } from "antd";
+import { OsIcon } from "./OsIcon";
+import { Image, TableColumnsType } from "antd";
 import { HostType, ServiceType } from "./dataTableObject";
-
-const OsIcon: React.FC<{
-  os: string;
-}> = ({ os }) => {
-  let image = "/operative-system.png";
-  if (os.includes("Windows")) {
-    image = "/windows.png";
-  }
-  if (os.includes("Linux")) {
-    image = "/linux.png";
-  }
-  if (os.includes("macOS") || os.includes("iOS")) {
-    image = "/apple.png";
-  }
-  return (
-    <Tooltip title={os} placement="top" color="#e271af">
-      <Image src={image} width={35} preview={false} />
-    </Tooltip>
-  );
-};
 
 const hostColumns: TableColumnsType<HostType> = [
   {
@@ -28,6 +8,7 @@ const hostColumns: TableColumnsType<HostType> = [
     dataIndex: "icon",
     key: "icon",
     align: "center",
+    width: "5%",
     className: "icon-cell",
     render: (_, record: HostType) => {
       return {
@@ -36,7 +17,7 @@ const hostColumns: TableColumnsType<HostType> = [
       };
     },
   },
-  { title: "IP", dataIndex: "ip", key: "ip" },
+  { title: "IP", dataIndex: "ip", key: "ip", width: "14.1%" },
   {
     title: "OS",
     dataIndex: "os",
@@ -45,14 +26,34 @@ const hostColumns: TableColumnsType<HostType> = [
     className: "icon-cell",
     render: (os: string) => <OsIcon os={os} />,
   },
-  { title: "Hostname", dataIndex: "hostnameLabel", key: "hostnameLabel" },
-  { title: "Custom Label", dataIndex: "customLabel", key: "customLabel" },
+  {
+    title: "Hostname",
+    dataIndex: "hostnameLabel",
+    key: "hostnameLabel",
+    align: "center",
+    width: "21.5%",
+  },
+  {
+    title: "Custom Label",
+    dataIndex: "customLabel",
+    key: "customLabel",
+    align: "center",
+    width: "21.5%",
+  },
   {
     title: "Discovered",
     dataIndex: "firstDiscovered",
     key: "firstDiscovered",
+    align: "center",
+    width: "14.5%",
   },
-  { title: "Last seen", dataIndex: "lastDiscovered", key: "lastDiscovered" },
+  {
+    title: "Last seen",
+    dataIndex: "lastDiscovered",
+    key: "lastDiscovered",
+    align: "center",
+    width: "14.5%",
+  },
 ];
 
 const IconCell = ({ record }: { record: ServiceType }) => {
@@ -81,6 +82,7 @@ const serviceColumns = (): TableColumnsType<ServiceType> => {
       title: "❇️",
       align: "center",
       className: "empty-cell",
+      width: "5%",
     },
     {
       title: "",
@@ -88,6 +90,7 @@ const serviceColumns = (): TableColumnsType<ServiceType> => {
       key: "icon",
       align: "center",
       className: "icon-cell",
+      width: "5%",
       render: (_, record: ServiceType) => {
         return {
           props: { className: record.classNames() },
@@ -100,6 +103,7 @@ const serviceColumns = (): TableColumnsType<ServiceType> => {
       dataIndex: "port",
       key: "port",
       align: "center",
+      width: "10%",
     },
     {
       title: "Banner",
@@ -112,12 +116,14 @@ const serviceColumns = (): TableColumnsType<ServiceType> => {
       dataIndex: "firstDiscovered",
       key: "firstDiscovered",
       align: "center",
+      width: "15%",
     },
     {
       title: "Last seen",
       dataIndex: "lastDiscovered",
       key: "lastDiscovered",
       align: "center",
+      width: "15%",
     },
   ];
 };
