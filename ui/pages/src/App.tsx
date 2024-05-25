@@ -28,7 +28,7 @@ function App() {
           <Inputs onConfigured={handleConfigured} />
         </ThemeProvider>
       )}
-      
+
       {configured && (
         <ConfigProvider
           theme={{

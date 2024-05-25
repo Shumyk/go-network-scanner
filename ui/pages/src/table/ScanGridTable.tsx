@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useState } from "react";
 import { Divider, Empty, Spin, Table } from "antd";
 import "./ScanGridTable.css";
 import { merge } from "./merger";
+import { sort } from "./sorter";
 import { sampleData } from "./dataGenerator";
 import { hostColumns, serviceColumns } from "./columnDefinition";
 import { HostType } from "./dataTableObject";
@@ -16,7 +17,7 @@ const ScanGridTable: React.FC = () => {
       console.log("Received scanned devices", scan);
 
       const merged: HostType[] = merge(tableData, scan.data);
-      setTableData(merged);
+      setTableData(sort(merged));
     },
     [tableData, setTableData]
   );
@@ -27,18 +28,11 @@ const ScanGridTable: React.FC = () => {
       addScannedDevice(device);
     };
 
-    setTimeout(() => setTableData(sampleData()), 2000);
+    setTimeout(() => addScannedDevice(JSON.stringify(sampleData())), 10000);
   }, [addScannedDevice]);
 
   const expandedRowRender = (showHeader: boolean) => {
-    return (
-      host: HostType,
-      _number: number,
-      _indent: number,
-      expanded: boolean
-    ) => {
-      console.info(`key ${host.key}, row ${_number},expanded ${expanded}`);
-
+    return (host: HostType) => {
       if (!host.services.length)
         return <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />;
       return (
@@ -61,7 +55,7 @@ const ScanGridTable: React.FC = () => {
         columns={hostColumns}
         expandable={{
           expandedRowRender: expandedRowRender(true),
-          expandedRowKeys: tableData.map((host) => host.key),
+          expandedRowKeys: [tableData[0]?.key],
         }}
         dataSource={tableData.length > 0 ? [tableData[0]] : []}
         bordered={true}
@@ -73,7 +67,7 @@ const ScanGridTable: React.FC = () => {
 
       {tableData.slice(1).map((host) => (
         <>
-          <Divider key={host.key + 'divider'} />
+          <Divider key={host.key + "divider"} />
           <Table
             key={host.key}
             columns={hostColumns}
