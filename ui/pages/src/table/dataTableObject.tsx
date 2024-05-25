@@ -62,7 +62,7 @@ class HostType {
 class ServiceType {
   static of(service: ServiceDTO, status: TypeStatus = UNKNOWN): ServiceType {
     return new this(
-      service.ip + service.port,
+      service.ip + ":" + service.port,
       service.ip,
       service.port,
       service.banner,

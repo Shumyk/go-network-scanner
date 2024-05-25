@@ -26,6 +26,8 @@ const ScanGridTable: React.FC = () => {
     window.addScannedDevice = (device) => {
       addScannedDevice(device);
     };
+
+    setTimeout(() => setTableData(sampleData()), 2000);
   }, [addScannedDevice]);
 
   const expandedRowRender = (
@@ -71,17 +73,14 @@ const ScanGridTable: React.FC = () => {
         columns={hostColumns}
         expandable={{
           expandedRowRender,
-          defaultExpandAllRows: true,
-          rowExpandable: () => true,
-          indentSize: 10,
+          expandedRowKeys: tableData.map((host) => host.key),
         }}
-        // dataSource={rows}
         dataSource={tableData}
         bordered={true}
         locale={{
           emptyText: <Spin size="large" tip="Scanning..." />,
         }}
-      />
+      /> 
     </ConfigProvider>
   );
 };

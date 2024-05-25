@@ -5,7 +5,6 @@ thead > tr > th {
 .icon-cell {
   padding: 2px 2px !important;
   width: 70px;
-  /* border-radius: 100% !important;  */
 }
 
 .service-icon-cell {
@@ -19,27 +18,22 @@ thead > tr > th {
   padding: 32px 8px 16px;
 }
 
+.empty-cell {
+  padding: 2px 2px !important;
+  width: 70px;
+  border: 0.5px solid #ccc1ec !important; 
+}
+
 .found {
   border-radius: 100% !important;
-  content: inherit;
 
   animation: pulse-found 2s 3, magnified 8s 1, activation 2s 6s 1 forwards;
-
-  /* left: 0;
-  right: calc(-50vw + 50%);
-  top: calc(-50vw + 50%);
-  bottom: calc(-50vw + 50%); */
 }
 
 .lost {
   border-radius: 100% !important;
 
   animation: pulse-lost 2s 3, magnified 8s 1, inactivation 2s 6s 1 forwards;
-
-  /* left: calc(-50vw + 50%);
-  right: calc(-50vw + 50%);
-  top: calc(-50vw + 50%);
-  bottom: calc(-50vw + 50%); */
 }
 
 .online {

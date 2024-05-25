@@ -30,5 +30,5 @@ export function sampleData(): HostType[] {
       lastDiscovered: new Date().toLocaleTimeString() + "",
     });
   }
-  return data.map((d) => HostType.of(d));
+  return data.map((d) => HostType.found(d));
 }

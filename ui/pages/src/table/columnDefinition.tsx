@@ -1,12 +1,6 @@
 import React from "react";
-import { Dropdown, Image, Space, TableColumnsType, Tooltip } from "antd";
+import { Image, TableColumnsType, Tooltip } from "antd";
 import { HostType, ServiceType } from "./dataTableObject";
-import { DownOutlined } from "@ant-design/icons";
-
-const items = [
-  { key: "1", label: "Action 1" },
-  { key: "2", label: "Action 2" },
-];
 
 const OsIcon: React.FC<{
   os: string;
@@ -59,7 +53,6 @@ const hostColumns: TableColumnsType<HostType> = [
     key: "firstDiscovered",
   },
   { title: "Last seen", dataIndex: "lastDiscovered", key: "lastDiscovered" },
-  { title: "Action", key: "operation", render: () => <a>Publish</a> },
 ];
 
 const IconCell = ({ record }: { record: ServiceType }) => {
@@ -76,7 +69,7 @@ const IconCell = ({ record }: { record: ServiceType }) => {
 
   // const classes = `service-icon-cell ${found} ${lost}`;
   return (
-    // <div className={classes}>
+    // <div className="icon-cell" style={{ width: 35}}>
     <Image src="/service.png" width={35} preview={false} />
     // </div>
   );
@@ -85,45 +78,46 @@ const IconCell = ({ record }: { record: ServiceType }) => {
 const serviceColumns = (): TableColumnsType<ServiceType> => {
   return [
     {
+      title: "❇️",
+      align: "center",
+      className: "empty-cell",
+    },
+    {
       title: "",
       dataIndex: "icon",
       key: "icon",
       align: "center",
       className: "icon-cell",
       render: (_, record: ServiceType) => {
-        setTimeout(() => {}, 8000);
         return {
           props: { className: record.classNames() },
           children: <IconCell record={record} />,
         };
       },
     },
-    { title: "Port", dataIndex: "port", key: "port" },
-    { title: "Banner", dataIndex: "banner", key: "banner" },
+    {
+      title: "Port",
+      dataIndex: "port",
+      key: "port",
+      align: "center",
+    },
+    {
+      title: "Banner",
+      dataIndex: "banner",
+      key: "banner",
+      align: "center",
+    },
     {
       title: "Discovered",
       dataIndex: "firstDiscovered",
       key: "firstDiscovered",
+      align: "center",
     },
     {
       title: "Last seen",
       dataIndex: "lastDiscovered",
       key: "lastDiscovered",
-    },
-    {
-      title: "Action",
-      key: "operation",
-      render: () => (
-        <Space size="middle">
-          <a>Pause</a>
-          <a>Stop</a>
-          <Dropdown menu={{ items }}>
-            <a>
-              More <DownOutlined />
-            </a>
-          </Dropdown>
-        </Space>
-      ),
+      align: "center",
     },
   ];
 };
