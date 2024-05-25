@@ -51,7 +51,8 @@ const create = (): HostDTO[] => {
 const data: HostDTO[] = create();
 
 export function sampleData(): ScanDTO {
-  const cloned = [...data];
+  const cloned = JSON.parse(JSON.stringify(data)) as HostDTO[];
+
   vandalize(cloned);
   return new ScanDTO(cloned);
 
@@ -69,7 +70,7 @@ export function sampleData(): ScanDTO {
       data[2].services.pop();
     }
   }
-  function shuffle(array: any[]): void {
+  function shuffle(array: any[]): any[] {
     let currentIndex = array.length;
     // While there remain elements to shuffle...
     while (currentIndex !== 0) {
@@ -82,5 +83,6 @@ export function sampleData(): ScanDTO {
         array[currentIndex],
       ];
     }
+    return array;
   }
 }
