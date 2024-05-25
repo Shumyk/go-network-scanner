@@ -5,6 +5,7 @@ import Inputs from "./Inputs";
 import { ThemeProvider, createTheme } from "@mui/material";
 import { pink } from "@mui/material/colors";
 import ScanGridTable from "./table/ScanGridTable";
+import { ConfigProvider } from "antd";
 
 // TODO: move out this
 const theme = createTheme({
@@ -22,10 +23,31 @@ function App() {
 
   return (
     <div className="App">
-      <ThemeProvider theme={theme}>
-        {!configured && <Inputs onConfigured={handleConfigured} />}
-        {configured && <ScanGridTable />}
-      </ThemeProvider>
+      {!configured && (
+        <ThemeProvider theme={theme}>
+          <Inputs onConfigured={handleConfigured} />
+        </ThemeProvider>
+      )}
+      
+      {configured && (
+        <ConfigProvider
+          theme={{
+            token: {
+              colorTextBase: "#ffffff",
+              colorBgBase: "#614b9e",
+              colorPrimary: "#eb2f96",
+              colorInfo: "#e271af",
+            },
+            components: {
+              Table: {
+                borderColor: "#ccc1ec",
+              },
+            },
+          }}
+        >
+          <ScanGridTable />
+        </ConfigProvider>
+      )}
     </div>
   );
 }

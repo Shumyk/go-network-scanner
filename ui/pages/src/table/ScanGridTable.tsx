@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { ConfigProvider, Empty, Spin, Table } from "antd";
+import { Divider, Empty, Spin, Table } from "antd";
 import "./ScanGridTable.css";
 import { merge } from "./merger";
 import { sampleData } from "./dataGenerator";
@@ -30,58 +30,65 @@ const ScanGridTable: React.FC = () => {
     setTimeout(() => setTableData(sampleData()), 2000);
   }, [addScannedDevice]);
 
-  const expandedRowRender = (
-    host: HostType,
-    _number: number,
-    _indent: number,
-    expanded: boolean
-  ) => {
-    // console.info("expandedRowRender", host, expanded, host.services);
-    console.info(`key ${host.key}, row ${_number},expanded ${expanded}`);
-
-    if (!host.services.length)
-      return <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />;
+  const expandedRowRender = (showHeader: boolean) => {
     return (
-      <Table
-        columns={serviceColumns()}
-        dataSource={host.services}
-        pagination={false}
-        bordered
-        size="small"
-      />
-    );
+      host: HostType,
+      _number: number,
+      _indent: number,
+      expanded: boolean
+    ) => {
+      console.info(`key ${host.key}, row ${_number},expanded ${expanded}`);
+
+      if (!host.services.length)
+        return <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />;
+      return (
+        <Table
+          columns={serviceColumns()}
+          dataSource={host.services}
+          pagination={false}
+          bordered
+          showHeader={showHeader}
+          size="small"
+        />
+      );
+    };
   };
 
   return (
-    <ConfigProvider
-      theme={{
-        token: {
-          colorTextBase: "#ffffff",
-          colorBgBase: "#614b9e",
-          colorPrimary: "#eb2f96",
-          colorInfo: "#e271af",
-        },
-        components: {
-          Table: {
-            borderColor: "#ccc1ec",
-          },
-        },
-      }}
-    >
+    <>
       <Table
         title={() => "Scanned devices"}
         columns={hostColumns}
         expandable={{
-          expandedRowRender,
+          expandedRowRender: expandedRowRender(true),
           expandedRowKeys: tableData.map((host) => host.key),
         }}
-        dataSource={tableData}
+        dataSource={tableData.length > 0 ? [tableData[0]] : []}
         bordered={true}
         locale={{
           emptyText: <Spin size="large" tip="Scanning..." />,
         }}
-      /> 
-    </ConfigProvider>
+        pagination={false}
+      />
+
+      {tableData.slice(1).map((host) => (
+        <>
+          <Divider key={host.key + 'divider'} />
+          <Table
+            key={host.key}
+            columns={hostColumns}
+            showHeader={false}
+            expandable={{
+              expandedRowRender: expandedRowRender(false),
+              expandedRowKeys: tableData.map((host) => host.key),
+            }}
+            dataSource={[host]}
+            bordered={true}
+            pagination={false}
+          />
+        </>
+      ))}
+    </>
   );
 };
 
