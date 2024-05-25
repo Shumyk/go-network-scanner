@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { ConfigProvider, Empty, Table } from "antd";
+import { ConfigProvider, Empty, Spin, Table } from "antd";
 import "./ScanGridTable.css";
 import { merge } from "./merger";
 import { sampleData } from "./dataGenerator";
@@ -35,7 +35,7 @@ const ScanGridTable: React.FC = () => {
     expanded: boolean
   ) => {
     // console.info("expandedRowRender", host, expanded, host.services);
-    // console.info("expanded", expanded);
+    console.info(`key ${host.key}, row ${_number},expanded ${expanded}`);
 
     if (!host.services.length)
       return <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />;
@@ -45,6 +45,7 @@ const ScanGridTable: React.FC = () => {
         dataSource={host.services}
         pagination={false}
         bordered
+        size="small"
       />
     );
   };
@@ -66,15 +67,20 @@ const ScanGridTable: React.FC = () => {
       }}
     >
       <Table
+        title={() => "Scanned devices"}
         columns={hostColumns}
         expandable={{
           expandedRowRender,
           defaultExpandAllRows: true,
           rowExpandable: () => true,
+          indentSize: 10,
         }}
         // dataSource={rows}
         dataSource={tableData}
         bordered={true}
+        locale={{
+          emptyText: <Spin size="large" tip="Scanning..." />,
+        }}
       />
     </ConfigProvider>
   );

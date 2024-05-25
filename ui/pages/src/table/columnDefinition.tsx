@@ -11,14 +11,14 @@ const items = [
 const OsIcon: React.FC<{
   os: string;
 }> = ({ os }) => {
-  let image = "/computer.png";
+  let image = "/operative-system.png";
   if (os.includes("Windows")) {
     image = "/windows.png";
   }
   if (os.includes("Linux")) {
     image = "/linux.png";
   }
-  if (os.includes("macOS")) {
+  if (os.includes("macOS") || os.includes("iOS")) {
     image = "/apple.png";
   }
   return (

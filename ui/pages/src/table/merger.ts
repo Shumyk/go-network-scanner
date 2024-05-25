@@ -20,13 +20,10 @@ import { HostDTO, ServiceDTO } from "./dataTransferObject";
 // - Transition the status of the entities depending on the current status.
 function merge(oldData: HostType[], newData: HostDTO[]): HostType[] {
   const merged: HostType[] = [];
-
   // Iterate through the newly scanned data to understand which hosts are new or existing.
   for (const newHost of newData) processNewHost(newHost);
-
   // Iterate through the existing data to understand which hosts are lost.
   for (const prevHost of oldData) processLostHost(prevHost);
-
   console.info("Merged data: ", merged);
   return merged;
 
