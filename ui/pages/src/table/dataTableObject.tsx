@@ -12,7 +12,12 @@ const OFFLINE = "offline";
 const UNKNOWN = "unknown";
 type TypeStatus = "found" | "lost" | "online" | "offline" | "unknown";
 
-class HostType {
+interface Type {
+  icon: string;
+  classNames(): string;
+}
+
+class HostType implements Type {
   static assign(host: HostType): HostType {
     return new this(
       host.key,
@@ -53,6 +58,7 @@ class HostType {
     );
   }
 
+  icon: string = "computer.png";
   constructor(
     public key: React.Key,
     public ip: string,
@@ -72,7 +78,7 @@ class HostType {
   }
 }
 
-class ServiceType {
+class ServiceType implements Type {
   static assign(service: ServiceType): ServiceType {
     return new this(
       service.key,
@@ -96,6 +102,7 @@ class ServiceType {
     );
   }
 
+  icon: string = "service.png";
   constructor(
     public key: React.Key,
     public ip: string,
@@ -114,5 +121,5 @@ class ServiceType {
 }
 
 export { HostType, ServiceType };
-export type { TypeStatus };
+export type { TypeStatus, Type };
 export { ONLINE, OFFLINE, FOUND, LOST, UNKNOWN };

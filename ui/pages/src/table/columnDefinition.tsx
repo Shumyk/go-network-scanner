@@ -1,5 +1,5 @@
-import { OsIcon } from "./OsIcon";
-import { Image, TableColumnsType } from "antd";
+import { OsIcon, renderIcon } from "./OsIcon";
+import { TableColumnsType } from "antd";
 import { HostType, ServiceType } from "./dataTableObject";
 
 const hostColumns: TableColumnsType<HostType> = [
@@ -10,12 +10,7 @@ const hostColumns: TableColumnsType<HostType> = [
     align: "center",
     width: 48 + 12, // = 60px, 48px is the width of nested table margin
     className: "icon-cell",
-    render: (_, record: HostType) => {
-      return {
-        props: { className: record.classNames() },
-        children: <Image src="/computer.png" width={35} preview={false} />,
-      };
-    },
+    render: (_, record: HostType) => renderIcon(record),
   },
   {
     title: "IP",
@@ -61,26 +56,6 @@ const hostColumns: TableColumnsType<HostType> = [
   },
 ];
 
-const IconCell = ({ record }: { record: ServiceType }) => {
-  // const [found, setFound] = React.useState("");
-  // const [lost, setLost] = React.useState("");
-
-  // useEffect(() => {
-  //   if (record.scannedAt === record.lastDiscovered) {
-  //     setFound("found");
-  //   } else {
-  //     setLost("lost");
-  //   }
-  // }, [record.scannedAt, record.lastDiscovered]);
-
-  // const classes = `service-icon-cell ${found} ${lost}`;
-  return (
-    // <div className="icon-cell" style={{ width: 35}}>
-    <Image src="/service.png" width={35} preview={false} />
-    // </div>
-  );
-};
-
 const serviceColumns = (): TableColumnsType<ServiceType> => {
   return [
     {
@@ -88,12 +63,7 @@ const serviceColumns = (): TableColumnsType<ServiceType> => {
       align: "center",
       className: "empty-cell",
       width: 60, // the same as the width of the icon in hostColumns
-      render: (_, record: ServiceType) => {
-        return {
-          props: { className: record.classNames() },
-          children: <IconCell record={record} />,
-        };
-      },
+      render: (_, record: ServiceType) => renderIcon(record),
     },
     {
       title: "Port",

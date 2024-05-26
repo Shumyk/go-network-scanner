@@ -1,6 +1,7 @@
 import { Image, Tooltip } from "antd";
+import { Type } from "./dataTableObject";
 
-const OsIcon: React.FC<{ os: string }> = ({ os }) => {
+const OsIcon = ({ os }: { os: string }) => {
   let image = "/operative-system.png";
   if (os.includes("Windows")) {
     image = "/windows.png";
@@ -18,4 +19,15 @@ const OsIcon: React.FC<{ os: string }> = ({ os }) => {
   );
 };
 
-export { OsIcon };
+const IconCell = ({ src }: { src: string }) => {
+  return <Image src={`/${src}`} width={35} preview={false} />;
+};
+
+const renderIcon = (type: Type) => {
+  return {
+    props: { className: type.classNames() },
+    children: <IconCell src={type.icon} />,
+  };
+};
+
+export { OsIcon, IconCell, renderIcon };
