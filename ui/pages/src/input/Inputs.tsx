@@ -36,25 +36,22 @@ const Inputs: FC<{ onConfigured: () => void }> = ({
     }
   }
 
-  const toggleProxy = (event: React.ChangeEvent<HTMLInputElement>): void => {
-    setEnableProxy(event.target.checked);
-  };
-
   function handleSubmit(event: React.FormEvent<HTMLFormElement>): void {
     event.preventDefault();
 
     const data = {
-      "databaseName": databaseName,
-      "sessionName": sessionName,
-      "ipRange1": ipRange1,
-      "ipRange2": ipRange2,
-      "ipRange3": ipRange3,
-      "enableProxy": enableProxy,
-      "proxy1": proxy1,
-      "proxy2": proxy2,
-      "proxy3": proxy3,
+      databaseName: databaseName,
+      sessionName: sessionName,
+      ipRange1: ipRange1,
+      ipRange2: ipRange2,
+      ipRange3: ipRange3,
+      enableProxy: enableProxy,
+      proxy1: proxy1,
+      proxy2: proxy2,
+      proxy3: proxy3,
     };
-    console.log(data);
+    console.log("Sending configuration", data);
+    // Send data to backend
     // @ts-ignore
     window.webui?.bootstrap(JSON.stringify(data));
 
@@ -99,7 +96,12 @@ const Inputs: FC<{ onConfigured: () => void }> = ({
             <Grid item xs={2}>
               <FormControlLabel
                 labelPlacement="bottom"
-                control={<Switch id="enable-proxy" onChange={toggleProxy} />}
+                control={
+                  <Switch
+                    id="enable-proxy"
+                    onChange={(e) => setEnableProxy(e.target.checked)}
+                  />
+                }
                 label="Proxy"
               />
             </Grid>

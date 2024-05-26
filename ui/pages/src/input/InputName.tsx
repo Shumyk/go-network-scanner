@@ -17,17 +17,17 @@ const InputName = ({
 }) => {
   return (
     <TextField
-    id={type + "-name"}
-    value={value}
-    label={type[0].toUpperCase() + type.slice(1) + " Name"}
-    helperText={helperText}
-    variant="outlined"
-    inputRef={(input) => focus && input?.focus()}
-    fullWidth
-    required
-    onChange={onChange}
-    onKeyDown={onKeyDown}
-  />
+      id={type + "-name"}
+      value={value}
+      label={type[0].toUpperCase() + type.slice(1) + " Name"}
+      helperText={helperText}
+      variant="outlined"
+      inputRef={(input) => focus && input?.focus()}
+      fullWidth
+      required
+      onChange={onChange}
+      onKeyDown={onKeyDown}
+    />
   );
 };
 

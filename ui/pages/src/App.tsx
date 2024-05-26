@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 
 import "./App.css";
-import Inputs from "./Inputs";
+import Inputs from "./input/Inputs";
 import { ThemeProvider, createTheme } from "@mui/material";
 import { pink } from "@mui/material/colors";
 import ScanGridTable from "./table/ScanGridTable";
@@ -18,20 +18,19 @@ const theme = createTheme({
 });
 
 function App() {
-  const parseConfigured = (): boolean => sessionStorage.getItem("configured") === "true";
+  const parseConfigured = (): boolean =>
+    sessionStorage.getItem("configured") === "true";
 
-  const [configured, setConfigured] = React.useState<boolean>(parseConfigured());
-  const handleConfigured = () => {
-    setConfigured(true);
-    sessionStorage.setItem("configured", "true");
-  };
+  const [configured, setConfigured] = React.useState<boolean>(
+    parseConfigured()
+  );
 
   const disableKeyReload = (e: KeyboardEvent) => {
     if (isF5(e) || isCtrlR(e) || isCtrlShiftR(e) || isCmdR(e)) {
       e.preventDefault();
       return;
     }
-    
+
     function isF5(event: KeyboardEvent): boolean {
       return event.key === "F5";
     }
@@ -46,7 +45,6 @@ function App() {
     }
   };
 
-
   useEffect(() => {
     window.addEventListener("keydown", disableKeyReload);
     return () => window.removeEventListener("keydown", disableKeyReload);
@@ -56,7 +54,12 @@ function App() {
     <div className="App">
       {!configured && (
         <ThemeProvider theme={theme}>
-          <Inputs onConfigured={handleConfigured} />
+          <Inputs
+            onConfigured={() => {
+              setConfigured(true);
+              sessionStorage.setItem("configured", "true");
+            }}
+          />
         </ThemeProvider>
       )}
 
