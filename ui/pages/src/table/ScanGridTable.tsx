@@ -27,6 +27,10 @@ const ScanGridTable: React.FC = () => {
     window.addScannedDevice = (device) => {
       addScannedDevice(device);
     };
+  
+    // TODO: remove found/lost classes after 8 seconds.
+    // TODO: add proxy to the backend.
+    // TODO: remove scannedAt
 
     setTimeout(() => addScannedDevice(JSON.stringify(sampleData())), 10000);
   }, [addScannedDevice]);
@@ -56,6 +60,7 @@ const ScanGridTable: React.FC = () => {
         expandable={{
           expandedRowRender: expandedRowRender(true),
           expandedRowKeys: [tableData[0]?.key],
+          showExpandColumn: false,
         }}
         dataSource={tableData.length > 0 ? [tableData[0]] : []}
         bordered={true}
@@ -75,6 +80,7 @@ const ScanGridTable: React.FC = () => {
             expandable={{
               expandedRowRender: expandedRowRender(false),
               expandedRowKeys: tableData.map((host) => host.key),
+              showExpandColumn: false,
             }}
             dataSource={[host]}
             bordered={true}

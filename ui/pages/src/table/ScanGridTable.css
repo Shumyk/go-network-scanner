@@ -4,7 +4,6 @@ thead > tr > th {
 
 .icon-cell {
   padding: 2px 2px !important;
-  width: 70px;
 }
 
 .service-icon-cell {
@@ -20,7 +19,6 @@ thead > tr > th {
 
 .empty-cell {
   padding: 2px 2px !important;
-  width: 70px;
   border: 0.5px solid #ccc1ec !important; 
 }
 
