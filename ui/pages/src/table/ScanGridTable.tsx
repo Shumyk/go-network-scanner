@@ -1,47 +1,32 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Divider, Empty, Spin, Table } from "antd";
 import "./ScanGridTable.css";
-import { merge } from "./merger";
-import { sort } from "./sorter";
 import { sampleData } from "./dataGenerator";
 import { hostColumns, serviceColumns } from "./columnDefinition";
 import { HostType } from "./dataTableObject";
-import { ScanDTO } from "./dataTransferObject";
 import Storage from "../storage";
+import ScannedDataListener from "./ScannedDataListener";
 
 const ScanGridTable: React.FC = () => {
   const [tableData, setTableData] = useState<HostType[]>(Storage.scanned());
 
-  const addScannedDevice = useCallback(
-    (json: string): void => {
-      const scan: ScanDTO = JSON.parse(json);
-      console.log("Received scanned devices", scan);
-
-      const merged: HostType[] = merge(tableData, scan.data);
-      const sorted: HostType[] = sort(merged);
-      setTableData(sorted);
-
-      Storage.setScanned(sorted);
-    },
-    [tableData, setTableData]
-  );
+  // TODO: add proxy to the backend.
+  // TODO: remove scannedAt
 
   useEffect(() => {
-    // @ts-ignore
-    window.addScannedDevice = (device) => {
-      addScannedDevice(device);
-    };
-
-    // TODO: add proxy to the backend.
-    // TODO: remove scannedAt
+    const listener = ScannedDataListener.instance(tableData, setTableData);
+    listener.bind();
 
     // For development, trigger sample data event after 10 seconds.
     // @ts-ignore
     !window.webui &&
-      setTimeout(() => addScannedDevice(JSON.stringify(sampleData())), 10000);
-  }, [addScannedDevice]);
+      setTimeout(() => listener.process(JSON.stringify(sampleData())), 10000);
 
-  const expandedRowRender = (showHeader: boolean) => {
+    // @ts-ignore
+    return () => listener.unbind();
+  }, [tableData, setTableData]);
+
+  const nestedTableRender = (showHeader: boolean) => {
     return (host: HostType) => {
       if (!host.services.length)
         return <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />;
@@ -49,10 +34,10 @@ const ScanGridTable: React.FC = () => {
         <Table
           columns={serviceColumns()}
           dataSource={host.services}
-          pagination={false}
           bordered
-          showHeader={showHeader}
           size="small"
+          pagination={false}
+          showHeader={showHeader}
         />
       );
     };
@@ -63,15 +48,15 @@ const ScanGridTable: React.FC = () => {
       <Table
         title={() => "Scanned devices"}
         columns={hostColumns}
+        dataSource={!tableData.length ? [] : [tableData[0]]}
         expandable={{
-          expandedRowRender: expandedRowRender(true),
-          expandedRowKeys: [tableData[0]?.key],
           showExpandColumn: false,
+          expandedRowRender: nestedTableRender(true),
+          expandedRowKeys: [tableData[0]?.key],
         }}
-        dataSource={tableData.length > 0 ? [tableData[0]] : []}
         bordered={true}
-        locale={{ emptyText: <Spin size="large" /> }}
         pagination={false}
+        locale={{ emptyText: <Spin size="large" /> }}
       />
 
       {tableData.slice(1).map((host) => (
@@ -80,15 +65,15 @@ const ScanGridTable: React.FC = () => {
           <Table
             key={host.key}
             columns={hostColumns}
-            showHeader={false}
-            expandable={{
-              expandedRowRender: expandedRowRender(false),
-              expandedRowKeys: tableData.map((host) => host.key),
-              showExpandColumn: false,
-            }}
             dataSource={[host]}
+            expandable={{
+              showExpandColumn: false,
+              expandedRowRender: nestedTableRender(false),
+              expandedRowKeys: tableData.map((host) => host.key),
+            }}
             bordered={true}
             pagination={false}
+            showHeader={false}
           />
         </>
       ))}
