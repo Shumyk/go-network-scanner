@@ -2,7 +2,7 @@ import { HostType } from "./dataTableObject";
 import { ScanDTO } from "./dataTransferObject";
 import { merge } from "./merger";
 import { sort } from "./sorter";
-import Storage from "../storage";
+import Storage from "../common/storage";
 
 class ScannedDataListener {
   private static _instance: ScannedDataListener;

@@ -1,4 +1,4 @@
-import { HostType } from "./table/dataTableObject";
+import { HostType } from "../table/dataTableObject";
 
 const SCANNED = "scanned";
 const CONFIGURED = "configured";

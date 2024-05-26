@@ -3,8 +3,8 @@ import { pink } from "@mui/material/colors";
 import { ThemeConfig } from "antd";
 
 class Themes {
-  public mui: Theme;
-  public antd: ThemeConfig;
+  public readonly mui: Theme;
+  public readonly antd: ThemeConfig;
 
   constructor() {
     this.mui = createTheme({

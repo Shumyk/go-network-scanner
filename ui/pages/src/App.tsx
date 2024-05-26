@@ -5,36 +5,14 @@ import Inputs from "./input/Inputs";
 import { ThemeProvider } from "@mui/material";
 import ScanGridTable from "./table/ScanGridTable";
 import { ConfigProvider } from "antd";
-import themes from "./themes";
-import Storage from "./storage";
+import themes from "./common/themes";
+import Storage from "./common/storage";
+import setupEvents from "./common/Events";
 
 function App() {
   const [configured, setConfigured] = React.useState(Storage.isConfigured());
 
-  const disableKeyReload = (e: KeyboardEvent) => {
-    if (isF5(e) || isCtrlR(e) || isCtrlShiftR(e) || isCmdR(e)) {
-      e.preventDefault();
-      return;
-    }
-
-    function isF5(event: KeyboardEvent): boolean {
-      return event.key === "F5";
-    }
-    function isCtrlR(event: KeyboardEvent): boolean {
-      return event.ctrlKey && event.key === "r";
-    }
-    function isCtrlShiftR(event: KeyboardEvent): boolean {
-      return event.ctrlKey && event.shiftKey && event.key === "R";
-    }
-    function isCmdR(event: KeyboardEvent): boolean {
-      return event.metaKey && event.key === "r";
-    }
-  };
-
-  useEffect(() => {
-    window.addEventListener("keydown", disableKeyReload);
-    return () => window.removeEventListener("keydown", disableKeyReload);
-  }, []);
+  useEffect(() => setupEvents(), []);
 
   return (
     <div className="App">

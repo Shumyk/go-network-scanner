@@ -4,7 +4,7 @@ import "./ScanGridTable.css";
 import { sampleData } from "./dataGenerator";
 import { hostColumns, serviceColumns } from "./columnDefinition";
 import { HostType } from "./dataTableObject";
-import Storage from "../storage";
+import Storage from "../common/storage";
 import ScannedDataListener from "./ScannedDataListener";
 
 const ScanGridTable: React.FC = () => {
