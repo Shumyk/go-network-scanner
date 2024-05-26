@@ -6,14 +6,10 @@ import { ThemeProvider } from "@mui/material";
 import ScanGridTable from "./table/ScanGridTable";
 import { ConfigProvider } from "antd";
 import themes from "./themes";
+import Storage from "./storage";
 
 function App() {
-  const parseConfigured = (): boolean =>
-    sessionStorage.getItem("configured") === "true";
-
-  const [configured, setConfigured] = React.useState<boolean>(
-    parseConfigured()
-  );
+  const [configured, setConfigured] = React.useState(Storage.isConfigured());
 
   const disableKeyReload = (e: KeyboardEvent) => {
     if (isF5(e) || isCtrlR(e) || isCtrlShiftR(e) || isCmdR(e)) {
@@ -47,7 +43,7 @@ function App() {
           <Inputs
             onConfigured={() => {
               setConfigured(true);
-              sessionStorage.setItem("configured", "true");
+              Storage.configured();
             }}
           />
         </ThemeProvider>

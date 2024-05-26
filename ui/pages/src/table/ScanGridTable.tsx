@@ -7,15 +7,10 @@ import { sampleData } from "./dataGenerator";
 import { hostColumns, serviceColumns } from "./columnDefinition";
 import { HostType } from "./dataTableObject";
 import { ScanDTO } from "./dataTransferObject";
+import Storage from "../storage";
 
 const ScanGridTable: React.FC = () => {
-  const parseScanned = (): HostType[] => {
-    const scanned = sessionStorage.getItem("scanned");
-    if (!scanned) return [];
-    return JSON.parse(scanned).map((host: HostType) => HostType.assign(host));
-  };
-
-  const [tableData, setTableData] = useState<HostType[]>(parseScanned());
+  const [tableData, setTableData] = useState<HostType[]>(Storage.scanned());
 
   const addScannedDevice = useCallback(
     (json: string): void => {
@@ -26,7 +21,7 @@ const ScanGridTable: React.FC = () => {
       const sorted: HostType[] = sort(merged);
       setTableData(sorted);
 
-      sessionStorage.setItem("scanned", JSON.stringify(sorted));
+      Storage.setScanned(sorted);
     },
     [tableData, setTableData]
   );
