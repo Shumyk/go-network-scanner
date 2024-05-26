@@ -50,14 +50,14 @@ const hostColumns: TableColumnsType<HostType> = [
     dataIndex: "firstDiscovered",
     key: "firstDiscovered",
     align: "center",
-    width: 170,
+    width: 180,
   },
   {
     title: "Last seen",
     dataIndex: "lastDiscovered",
     key: "lastDiscovered",
     align: "center",
-    width: 171, // ideal to fit date time, plus 1 for margin
+    width: 181, // ideal to fit date time, plus 1 for margin
   },
 ];
 
@@ -113,14 +113,14 @@ const serviceColumns = (): TableColumnsType<ServiceType> => {
       dataIndex: "firstDiscovered",
       key: "firstDiscovered",
       align: "center",
-      width: 170,
+      width: 180,
     },
     {
       title: "Last seen",
       dataIndex: "lastDiscovered",
       key: "lastDiscovered",
       align: "center",
-      width: 170,
+      width: 180,
     },
   ];
 };

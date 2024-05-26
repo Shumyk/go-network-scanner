@@ -27,12 +27,15 @@ const ScanGridTable: React.FC = () => {
     window.addScannedDevice = (device) => {
       addScannedDevice(device);
     };
-  
+
     // TODO: remove found/lost classes after 8 seconds.
     // TODO: add proxy to the backend.
     // TODO: remove scannedAt
 
-    setTimeout(() => addScannedDevice(JSON.stringify(sampleData())), 10000);
+    // For local development, trigger sample data event after 10 seconds.
+    // @ts-ignore
+    window.webui &&
+      setTimeout(() => addScannedDevice(JSON.stringify(sampleData())), 10000);
   }, [addScannedDevice]);
 
   const expandedRowRender = (showHeader: boolean) => {
@@ -64,9 +67,7 @@ const ScanGridTable: React.FC = () => {
         }}
         dataSource={tableData.length > 0 ? [tableData[0]] : []}
         bordered={true}
-        locale={{
-          emptyText: <Spin size="large" tip="Scanning..." />,
-        }}
+        locale={{ emptyText: <Spin size="large" /> }}
         pagination={false}
       />
 

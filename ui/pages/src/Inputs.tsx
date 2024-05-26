@@ -56,7 +56,7 @@ const Inputs: FC<{ onConfigured: () => void }> = ({
     };
     console.log(data);
     // @ts-ignore
-    window.webui.bootstrap(JSON.stringify(data));
+    window.webui?.bootstrap(JSON.stringify(data));
 
     onConfigured();
   }
