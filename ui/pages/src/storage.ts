@@ -5,10 +5,10 @@ const CONFIGURED = "configured";
 
 abstract class Storage {
   public static isConfigured(): boolean {
-    return localStorage.getItem(CONFIGURED) === "true";
+    return sessionStorage.getItem(CONFIGURED) === "true";
   }
   public static configured(): void {
-    localStorage.setItem(CONFIGURED, "true");
+    sessionStorage.setItem(CONFIGURED, "true");
   }
 
   public static setScanned(data: HostType[]): void {
