@@ -13,6 +13,19 @@ const UNKNOWN = "unknown";
 type TypeStatus = "found" | "lost" | "online" | "offline" | "unknown";
 
 class HostType {
+  static assign(host: HostType): HostType {
+    return new this(
+      host.key,
+      host.ip,
+      host.os,
+      host.hostnameLabel,
+      host.customLabel,
+      host.status,
+      host.services.map((s) => ServiceType.assign(s)),
+      host.firstDiscovered,
+      host.lastDiscovered
+    );
+  }
   static of(host: HostDTO): HostType {
     return new this(
       host.ip, // Use a unique identifier for the key
@@ -60,6 +73,17 @@ class HostType {
 }
 
 class ServiceType {
+  static assign(service: ServiceType): ServiceType {
+    return new this(
+      service.key,
+      service.ip,
+      service.port,
+      service.banner,
+      service.firstDiscovered,
+      service.lastDiscovered,
+      service.status
+    );
+  }
   static of(service: ServiceDTO, status: TypeStatus = UNKNOWN): ServiceType {
     return new this(
       service.ip + ":" + service.port,

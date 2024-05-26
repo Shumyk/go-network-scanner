@@ -9,7 +9,13 @@ import { HostType } from "./dataTableObject";
 import { ScanDTO } from "./dataTransferObject";
 
 const ScanGridTable: React.FC = () => {
-  const [tableData, setTableData] = useState<HostType[]>([]);
+  const parseScanned = (): HostType[] => {
+    const scanned = sessionStorage.getItem("scanned");
+    if (!scanned) return [];
+    return JSON.parse(scanned).map((host: HostType) => HostType.assign(host));
+  };
+
+  const [tableData, setTableData] = useState<HostType[]>(parseScanned());
 
   const addScannedDevice = useCallback(
     (json: string): void => {
@@ -17,7 +23,10 @@ const ScanGridTable: React.FC = () => {
       console.log("Received scanned devices", scan);
 
       const merged: HostType[] = merge(tableData, scan.data);
-      setTableData(sort(merged));
+      const sorted: HostType[] = sort(merged);
+      setTableData(sorted);
+
+      sessionStorage.setItem("scanned", JSON.stringify(sorted));
     },
     [tableData, setTableData]
   );
@@ -28,13 +37,12 @@ const ScanGridTable: React.FC = () => {
       addScannedDevice(device);
     };
 
-    // TODO: remove found/lost classes after 8 seconds.
     // TODO: add proxy to the backend.
     // TODO: remove scannedAt
 
-    // For local development, trigger sample data event after 10 seconds.
+    // For development, trigger sample data event after 10 seconds.
     // @ts-ignore
-    window.webui &&
+    !window.webui &&
       setTimeout(() => addScannedDevice(JSON.stringify(sampleData())), 10000);
   }, [addScannedDevice]);
 
