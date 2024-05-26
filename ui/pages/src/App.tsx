@@ -2,20 +2,10 @@ import React, { useEffect } from "react";
 
 import "./App.css";
 import Inputs from "./input/Inputs";
-import { ThemeProvider, createTheme } from "@mui/material";
-import { pink } from "@mui/material/colors";
+import { ThemeProvider } from "@mui/material";
 import ScanGridTable from "./table/ScanGridTable";
 import { ConfigProvider } from "antd";
-
-// TODO: move out this
-const theme = createTheme({
-  palette: {
-    mode: "dark",
-    primary: {
-      main: pink[200],
-    },
-  },
-});
+import themes from "./themes";
 
 function App() {
   const parseConfigured = (): boolean =>
@@ -53,7 +43,7 @@ function App() {
   return (
     <div className="App">
       {!configured && (
-        <ThemeProvider theme={theme}>
+        <ThemeProvider theme={themes.mui}>
           <Inputs
             onConfigured={() => {
               setConfigured(true);
@@ -64,21 +54,7 @@ function App() {
       )}
 
       {configured && (
-        <ConfigProvider
-          theme={{
-            token: {
-              colorTextBase: "#ffffff",
-              colorBgBase: "#614b9e",
-              colorPrimary: "#eb2f96",
-              colorInfo: "#e271af",
-            },
-            components: {
-              Table: {
-                borderColor: "#ccc1ec",
-              },
-            },
-          }}
-        >
+        <ConfigProvider theme={themes.antd}>
           <ScanGridTable />
         </ConfigProvider>
       )}
