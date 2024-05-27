@@ -31,10 +31,13 @@ func (c *ConfigRepo) Upsert(config *api.Config) (int, error) {
 		c.db,
 		queryConfigUpsert,
 		sql.Named("name", config.Name),
-		sql.Named("enableProxy", config.EnableProxy),
 		sql.Named("ipRange1", config.IPRange1),
 		sql.Named("ipRange2", config.IPRange2),
 		sql.Named("ipRange3", config.IPRange3),
+		sql.Named("enableProxy", config.EnableProxy),
+		sql.Named("proxy1", config.Proxy1),
+		sql.Named("proxy2", config.Proxy2),
+		sql.Named("proxy3", config.Proxy3),
 	)
 }
 
