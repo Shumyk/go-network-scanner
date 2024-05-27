@@ -12,7 +12,7 @@ import (
 
 // Worker is the interface that all workers must implement.
 type Worker interface {
-	Do()
+	Do() *api.ScannedResultsDTO
 }
 
 // worker is the main struct that does the scanning and emits events.
@@ -22,13 +22,12 @@ type worker struct {
 }
 
 // Do triggers the nmap scan and processes the results.
-func (w *worker) Do() {
+func (w *worker) Do() *api.ScannedResultsDTO {
 	scanResult := w.nmap.Scan()
 	scannedAt := time.Now()
 
 	dto := api.ScannedResultsDTO{
-		Data:      []api.HostDTO{},
-		ScannedAt: api.DateTimeFrom(scannedAt),
+		Data: []api.HostDTO{},
 	}
 
 	for i := range scanResult.Hosts {
@@ -46,7 +45,7 @@ func (w *worker) Do() {
 		}
 		dto.Data = append(dto.Data, *hostDTO)
 	}
-	events.Emit(api.EventNmapScans, dto)
+	return &dto
 }
 
 func processHost(ip string, h *lib.Host) *api.Host {

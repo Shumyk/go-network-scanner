@@ -31,7 +31,7 @@ func (l *Listener) Listen(i ...any) {
 		)
 		return
 	}
-	s, ok := i[0].(api.ScannedResultsDTO)
+	s, ok := i[0].(*api.ScannedResultsDTO)
 	if !ok {
 		log.Error(
 			"failed to cast",
@@ -40,5 +40,5 @@ func (l *Listener) Listen(i ...any) {
 		)
 		return
 	}
-	go l.ui.addScan(&s)
+	go l.ui.addScan(s)
 }

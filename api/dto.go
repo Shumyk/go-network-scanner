@@ -10,15 +10,25 @@ func (dt DateTime) MarshalText() ([]byte, error) {
 
 // ScannedResultsDTO is the data transfer object for scanned results.
 type ScannedResultsDTO struct {
-	ScannedAt DateTime  `json:"scannedAt"`
-	Data      []HostDTO `json:"data"`
+	Data []HostDTO `json:"data"`
+}
+
+// MergeResults merges multiple scanned results into one.
+func MergeResults(results []*ScannedResultsDTO) *ScannedResultsDTO {
+	// Merge results
+	m := &ScannedResultsDTO{
+		Data: []HostDTO{},
+	}
+	for _, r := range results {
+		m.Data = append(m.Data, r.Data...)
+	}
+	return m
 }
 
 // HostDTO is the data transfer object for scanned results.
 type HostDTO struct {
 	FirstDiscovered DateTime `json:"firstDiscovered"`
 	LastDiscovered  DateTime `json:"lastDiscovered"`
-	ScannedAt       DateTime `json:"scannedAt"`
 
 	IP            string `json:"ip"`
 	OS            string `json:"os"`
@@ -37,7 +47,6 @@ func HostDTOFrom(h *Host, scannedAt time.Time) *HostDTO {
 	return &HostDTO{
 		FirstDiscovered: DateTimeFrom(h.FirstDiscovered),
 		LastDiscovered:  DateTimeFrom(h.LastSeen),
-		ScannedAt:       DateTimeFrom(scannedAt),
 
 		IP:            h.IP,
 		OS:            h.OsType,
@@ -52,7 +61,6 @@ func HostDTOFrom(h *Host, scannedAt time.Time) *HostDTO {
 type ScanDTO struct {
 	FirstDiscovered DateTime `json:"firstDiscovered"`
 	LastDiscovered  DateTime `json:"lastDiscovered"`
-	ScannedAt       DateTime `json:"scannedAt"`
 
 	IP     string `json:"ip"`
 	Banner string `json:"banner"`
@@ -64,7 +72,6 @@ func ScanDTOFrom(s *Scan, scannedAt time.Time) *ScanDTO {
 	return &ScanDTO{
 		FirstDiscovered: DateTimeFrom(s.FirstDiscovered),
 		LastDiscovered:  DateTimeFrom(s.LastSeen),
-		ScannedAt:       DateTimeFrom(scannedAt),
 
 		IP:     s.IP,
 		Banner: s.ServiceBanner,

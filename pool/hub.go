@@ -1,9 +1,11 @@
 package pool
 
 import (
+	"go-network-scanner/api"
 	log "log/slog"
 	"time"
 
+	"github.com/kataras/go-events"
 	"github.com/sourcegraph/conc/pool"
 )
 
@@ -34,9 +36,10 @@ func (h *Hub) start() {
 }
 
 func (h *Hub) cycle() {
-	p := pool.New().WithMaxGoroutines(len(h.workers))
+	p := pool.NewWithResults[*api.ScannedResultsDTO]().
+		WithMaxGoroutines(len(h.workers))
 	for _, w := range h.workers {
 		p.Go(w.Do)
 	}
-	p.Wait()
+	events.Emit(api.EventNmapScans, api.MergeResults(p.Wait()))
 }

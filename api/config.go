@@ -3,6 +3,7 @@ package api
 
 import (
 	"slices"
+	"strings"
 	"time"
 )
 
@@ -51,14 +52,14 @@ func EmptyConfig() Config {
 func ConfigOf(dto *ConfDTO) *Config {
 	return &Config{
 		CreatedAt:   time.Now(),
-		Name:        dto.SessionName,
-		IPRange1:    dto.IPRange1,
-		IPRange2:    dto.IPRange2,
-		IPRange3:    dto.IPRange3,
+		Name:        strings.TrimSpace(dto.SessionName),
+		IPRange1:    strings.TrimSpace(dto.IPRange1),
+		IPRange2:    strings.TrimSpace(dto.IPRange2),
+		IPRange3:    strings.TrimSpace(dto.IPRange3),
 		EnableProxy: dto.EnableProxy,
-		Proxy1:      dto.Proxy1,
-		Proxy2:      dto.Proxy2,
-		Proxy3:      dto.Proxy3,
+		Proxy1:      strings.TrimSpace(dto.Proxy1),
+		Proxy2:      strings.TrimSpace(dto.Proxy2),
+		Proxy3:      strings.TrimSpace(dto.Proxy3),
 	}
 }
 

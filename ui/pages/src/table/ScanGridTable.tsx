@@ -10,9 +10,6 @@ import ScannedDataListener from "./ScannedDataListener";
 const ScanGridTable: React.FC = () => {
   const [tableData, setTableData] = useState<HostType[]>(Storage.scanned());
 
-  // TODO: add proxy to the backend.
-  // TODO: remove scannedAt
-
   useEffect(() => {
     const listener = ScannedDataListener.instance(setTableData);
     // @ts-ignore
