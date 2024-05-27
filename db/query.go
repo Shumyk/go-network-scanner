@@ -7,10 +7,13 @@ const (
 		CREATE TABLE IF NOT EXISTS config
 		(
 			name         TEXT    PRIMARY KEY,
-			enable_proxy BOOLEAN NOT NULL,
 			ip_range1    TEXT    NOT NULL,
 			ip_range2    TEXT,
 			ip_range3    TEXT,
+			enable_proxy BOOLEAN NOT NULL,
+			proxy1 	 	 TEXT,
+			proxy2 	 	 TEXT,
+			proxy3 	 	 TEXT,
 			created_at   DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
 		);
 	`
@@ -46,8 +49,8 @@ const (
 	queryConfigSelectByName = "SELECT name, enable_proxy, ip_range1, ip_range2, ip_range3 FROM config WHERE name = ?;"
 	queryConfigInsert       = "INSERT INTO config (name, enable_proxy, ip_range1, ip_range2, ip_range3) VALUES (?, ?, ?, ?, ?);"
 	queryConfigUpsert       = `
-		INSERT INTO config (name, enable_proxy, ip_range1, ip_range2, ip_range3) VALUES (:name, :enableProxy, :ipRange1, :ipRange2, :ipRange3)
-			ON CONFLICT(name) DO UPDATE SET enable_proxy = :enableProxy, ip_range1 = :ipRange1, ip_range2 = :ipRange2, ip_range3 = :ipRange3;
+		INSERT INTO config (name, enable_proxy, ip_range1, ip_range2, ip_range3, proxy1, proxy2, proxy3) VALUES (:name, :enableProxy, :ipRange1, :ipRange2, :ipRange3, :proxy1, :proxy2, :proxy3)
+			ON CONFLICT(name) DO UPDATE SET enable_proxy = :enableProxy, ip_range1 = :ipRange1, ip_range2 = :ipRange2, ip_range3 = :ipRange3, proxy1 = :proxy1, proxy2 = :proxy2, proxy3 = :proxy3;
 	`
 
 	queryScanSelectAll = "SELECT session, ip, port, first_discovered, last_seen, service_banner FROM scan;"
