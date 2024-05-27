@@ -14,16 +14,20 @@ const ScanGridTable: React.FC = () => {
   // TODO: remove scannedAt
 
   useEffect(() => {
-    const listener = ScannedDataListener.instance(tableData, setTableData);
-    listener.bind();
+    const listener = ScannedDataListener.instance(setTableData);
+    // @ts-ignore
+    window.addScannedDevice = (json) => listener.process(tableData, json);
 
     // For development, trigger sample data event after 10 seconds.
     // @ts-ignore
     !window.webui &&
-      setTimeout(() => listener.process(JSON.stringify(sampleData())), 10000);
+      setTimeout(
+        () => listener.process(tableData, JSON.stringify(sampleData())),
+        10000
+      );
 
     // @ts-ignore
-    return () => listener.unbind();
+    return () => (window.addScannedDevice = undefined);
   }, [tableData, setTableData]);
 
   const nestedTableRender = (showHeader: boolean) => {
