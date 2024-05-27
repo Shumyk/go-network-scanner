@@ -130,6 +130,7 @@ const Inputs: FC<{ onConfigured: () => void }> = ({
             <Grid item xs={5}>
               <InputIpRange
                 id={2}
+                value={ipRange2}
                 onChange={(e) => setIpRange2(e.target.value)}
                 onKeyDown={focusNext}
               />
@@ -150,6 +151,7 @@ const Inputs: FC<{ onConfigured: () => void }> = ({
             <Grid item xs={5}>
               <InputIpRange
                 id={3}
+                value={ipRange3}
                 onChange={(e) => setIpRange3(e.target.value)}
                 onKeyDown={focusNext}
               />

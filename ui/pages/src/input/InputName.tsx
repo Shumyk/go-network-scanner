@@ -22,7 +22,7 @@ const InputName = ({
       label={type[0].toUpperCase() + type.slice(1) + " Name"}
       helperText={helperText}
       variant="outlined"
-      inputRef={(input) => focus && input?.focus()}
+      autoFocus={focus}
       fullWidth
       required
       onChange={onChange}
