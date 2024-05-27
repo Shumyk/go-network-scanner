@@ -6,8 +6,6 @@ import (
 	"time"
 )
 
-const empStr = ""
-
 // ConfDTO represents a configuration data transfer object sent from UI.
 type ConfDTO struct {
 	DatabaseName string
@@ -37,11 +35,14 @@ type Config struct {
 // EmptyConfig returns a Config with empty fields.
 func EmptyConfig() Config {
 	return Config{
-		Name:        empStr,
+		Name:        "",
 		EnableProxy: false,
-		IPRange1:    empStr,
-		IPRange2:    empStr,
-		IPRange3:    empStr,
+		IPRange1:    "",
+		IPRange2:    "",
+		IPRange3:    "",
+		Proxy1:      "",
+		Proxy2:      "",
+		Proxy3:      "",
 		CreatedAt:   time.Time{},
 	}
 }
@@ -61,12 +62,26 @@ func ConfigOf(dto *ConfDTO) *Config {
 	}
 }
 
+// IPRange represents an IP range and its proxy.
+type IPRange struct {
+	IPRange string
+	Proxy   string
+}
+
 // IPRanges returns the non-empty IP ranges.
-func (c *Config) IPRanges() []string {
+func (c *Config) IPRanges() []*IPRange {
 	return slices.DeleteFunc(
-		[]string{c.IPRange1, c.IPRange2, c.IPRange3},
-		func(ip string) bool {
-			return ip == empStr
+		[]*IPRange{
+			{c.IPRange1, c.Proxy1},
+			{c.IPRange2, c.Proxy2},
+			{c.IPRange3, c.Proxy3},
+		},
+		func(ip *IPRange) bool {
+			if !c.EnableProxy {
+				//nolint:govet // It is used but not here.
+				ip.Proxy = ""
+			}
+			return ip.IPRange == ""
 		},
 	)
 }

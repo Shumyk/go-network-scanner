@@ -9,6 +9,7 @@
         "gocyclo",
         "golangci",
         "gosimple",
+        "govet",
         "Hostnames",
         "kataras",
         "nolint",

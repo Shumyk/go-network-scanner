@@ -20,8 +20,8 @@ func NewWorkers(c *api.Config) []Worker {
 	log.Debug("Creating workers", log.Any("ipRanges", ipRanges))
 
 	workers := make([]Worker, len(ipRanges))
-	for x, ip := range ipRanges {
-		workers[x] = newWorker(ip, c.EnableProxy)
+	for x, el := range ipRanges {
+		workers[x] = newWorker(el.IPRange, el.Proxy)
 	}
 
 	log.Debug(
@@ -32,10 +32,9 @@ func NewWorkers(c *api.Config) []Worker {
 	return workers
 }
 
-func newWorker(ipRange string, proxy bool) Worker {
+func newWorker(ipRange, proxy string) Worker {
 	return &worker{
-		enableSocks: proxy,
-		nmap:        nmap.NewScanner(ipRange),
-		log:         util.LoggerWith("worker", log.String("range", ipRange)),
+		nmap: nmap.NewScanner(ipRange, proxy),
+		log:  util.LoggerWith("worker", log.String("range", ipRange)),
 	}
 }

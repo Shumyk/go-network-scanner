@@ -19,8 +19,6 @@ type Worker interface {
 type worker struct {
 	nmap nmap.Scanner
 	log  *log.Logger
-
-	enableSocks bool
 }
 
 // Do triggers the nmap scan and processes the results.

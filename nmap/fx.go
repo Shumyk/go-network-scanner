@@ -10,22 +10,24 @@ import (
 )
 
 // NewScanner creates a new Scanner.
-func NewScanner(ipRange string) Scanner {
+func NewScanner(ipRange, proxy string) Scanner {
 	return &scanner{
 		ip:      ipRange,
-		scanner: newNmapScanner(ipRange),
+		scanner: newNmapScanner(ipRange, proxy),
 	}
 }
 
-func newNmapScanner(ipRange string) scanRunner {
+func newNmapScanner(ipRange, proxy string) scanRunner {
 	scanner, err := nmap.NewScanner(
 		context.Background(),
 		nmap.WithTargets(ipRange),
 		nmap.WithServiceInfo(),
 		nmap.WithOSDetection(),
 		nmap.WithTimingTemplate(nmap.TimingAggressive),
-		// nmap.WithProxies("socks4://todo:port"),
 	)
+	if proxy != "" {
+		scanner.AddOptions(nmap.WithProxies("socks4://" + proxy))
+	}
 	if err != nil {
 		log.Error(
 			"Error creating scanner",
