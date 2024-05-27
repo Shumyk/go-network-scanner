@@ -1,4 +1,4 @@
-import { OsIcon, renderIcon } from "./OsIcon";
+import { OsIcon, renderIcon } from "./Icons";
 import { TableColumnsType } from "antd";
 import { HostType, ServiceType } from "./dataTableObject";
 
