@@ -6,8 +6,6 @@ import (
 	"github.com/pkg/errors"
 )
 
-const zeroID = 0
-
 type (
 	scanFunc      func(...any) error
 	mapper[T any] func(scanFunc) (T, error)
@@ -65,11 +63,11 @@ func upsert(
 ) (int, error) {
 	result, err := db.Exec(query, args...)
 	if err != nil {
-		return zeroID, errors.Wrap(err, "failed to upsert")
+		return 0, errors.Wrap(err, "failed to upsert")
 	}
 	rowsAffected, err := result.RowsAffected()
 	if err != nil {
-		return zeroID, errors.Wrap(err, "failed to get last insert ID")
+		return 0, errors.Wrap(err, "failed to get last insert ID")
 	}
 	return int(rowsAffected), nil
 }
