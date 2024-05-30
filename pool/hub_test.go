@@ -33,11 +33,6 @@ func TestStart(t *testing.T) {
 		wantCalls int
 	}{
 		{
-			"no workers",
-			[]Worker{},
-			0,
-		},
-		{
 			"one worker",
 			[]Worker{
 				&workerMock{},
@@ -65,4 +60,10 @@ func TestStart(t *testing.T) {
 			assert.Equal(t, tt.wantCalls, int(called.Load()))
 		})
 	}
+}
+
+func TestStartWithNoWorkers(t *testing.T) {
+	noWorkers := []Worker{}
+	hub := NewHub(noWorkers)
+	assert.Panics(t, func() { hub.start() })
 }
