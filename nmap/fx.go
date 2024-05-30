@@ -29,11 +29,7 @@ func newNmapScanner(ipRange, proxy string) scanRunner {
 		scanner.AddOptions(nmap.WithProxies("socks4://" + proxy))
 	}
 	if err != nil {
-		log.Error(
-			"Error creating scanner",
-			log.Any("err", err),
-			log.String("ip", ipRange),
-		)
+		log.Error("Error creating scanner", log.Any("err", err))
 		panic(err)
 	}
 	return scanner
