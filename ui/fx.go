@@ -20,11 +20,11 @@ func NewUIListener(ui *UI) api.Listener {
 func NewWebUI() *UI {
 	log.Info("Creating UI")
 
-	w := webui.NewWindow()
+	w := uiWindow{webui.NewWindow()}
 	ui := &UI{&w, make(chan *api.ConfDTO)}
 	ui.window.SetRootFolder("ui/pages/build")
 
-	webui.Bind(*ui.window, "bootstrap", ui.bootstrap)
+	webui.Bind(ui.window.Webui(), "bootstrap", ui.bootstrap)
 
 	return ui
 }

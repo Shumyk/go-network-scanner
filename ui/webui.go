@@ -14,7 +14,7 @@ type uiListener interface {
 
 // UI represents the user interface.
 type UI struct {
-	window *webui.Window
+	window window
 	Conf   chan *api.ConfDTO
 }
 
@@ -26,8 +26,10 @@ func (u *UI) Run() {
 			"Install a chromium-based browser for an optimized experience",
 			log.Any("err", err),
 		)
-		if u.window.Show(indexHTML) != nil {
+		showErr := u.window.Show(indexHTML)
+		if showErr != nil {
 			log.Error("Failed to show window", log.Any("err", err))
+			panic(showErr)
 		}
 	}
 	webui.Wait()
@@ -58,6 +60,7 @@ func (u *UI) bootstrap(e webui.Event) webui.Void {
 	conf, err := webui.GetArg[api.ConfDTO](e)
 	if err != nil {
 		log.Error("Failed to get config for bootstrap", log.Any("err", err))
+		panic(err)
 	}
 	log.Info("Got config", log.Any("conf", conf))
 	u.Conf <- &conf

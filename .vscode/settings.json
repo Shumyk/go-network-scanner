@@ -17,7 +17,8 @@
         "slogtest",
         "sourcegraph",
         "stretchr",
-        "Ullaakut"
+        "Ullaakut",
+        "wrapcheck"
     ],
     "go.lintTool": "golangci-lint",
     "go.lintFlags": [
