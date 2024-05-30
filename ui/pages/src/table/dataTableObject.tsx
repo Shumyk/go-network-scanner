@@ -90,13 +90,17 @@ class ServiceType implements Type {
       service.status
     );
   }
-  static of(service: ServiceDTO, status: TypeStatus = UNKNOWN): ServiceType {
+  static of(
+    service: ServiceDTO,
+    status: TypeStatus = UNKNOWN,
+    firstDiscovered?: string
+  ): ServiceType {
     return new this(
       service.ip + ":" + service.port,
       service.ip,
       service.port,
       service.banner,
-      service.firstDiscovered,
+      firstDiscovered || service.firstDiscovered,
       service.lastDiscovered,
       status
     );

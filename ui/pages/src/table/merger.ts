@@ -63,9 +63,9 @@ function mergeServices(prevHost: HostType, newHost: HostDTO): HostType {
   // # Processing functions.
   function processNewService(newService: ServiceDTO) {
     const prevService = findByPort(prevHost.services, newService);
-    const newStatus = presentStatusTransition(prevService);
+    const newStatus: TypeStatus = presentStatusTransition(prevService);
 
-    merged.services.push(ServiceType.of(newService, newStatus));
+    merged.services.push(ServiceType.of(newService, newStatus, prevService?.firstDiscovered));
   }
   function processLostService(prevService: ServiceType) {
     const newService = findByPort(newHost.services, prevService);

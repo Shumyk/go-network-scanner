@@ -1,6 +1,7 @@
 package pool
 
 import (
+	"go-network-scanner/api"
 	"sync"
 	"sync/atomic"
 	"testing"
@@ -17,10 +18,12 @@ type workerMock struct {
 	called bool
 }
 
-func (w *workerMock) Do() {
+func (w *workerMock) Do() *api.ScannedResultsDTO {
 	wg.Done()
 	called.Add(1)
 	w.called = true
+
+	return &api.ScannedResultsDTO{}
 }
 
 func TestStart(t *testing.T) {
