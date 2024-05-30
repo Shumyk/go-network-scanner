@@ -2,10 +2,18 @@ package api
 
 import "time"
 
+// DateTime is a custom type for time.Time
+// that serializes to a string in the format "2006-01-02 15:04:05".
 type DateTime time.Time
 
+// MarshalText serializes a DateTime to a string.
 func (dt DateTime) MarshalText() ([]byte, error) {
 	return []byte(time.Time(dt).Format(time.DateTime)), nil
+}
+
+// DateTimeFrom creates a DateTime from a time.Time.
+func DateTimeFrom(t time.Time) DateTime {
+	return DateTime(t)
 }
 
 // ScannedResultsDTO is the data transfer object for scanned results.
@@ -15,7 +23,6 @@ type ScannedResultsDTO struct {
 
 // MergeResults merges multiple scanned results into one.
 func MergeResults(results []*ScannedResultsDTO) *ScannedResultsDTO {
-	// Merge results
 	m := &ScannedResultsDTO{
 		Data: []HostDTO{},
 	}
@@ -38,12 +45,8 @@ type HostDTO struct {
 	Services []ScanDTO `json:"services"`
 }
 
-func DateTimeFrom(t time.Time) DateTime {
-	return DateTime(t)
-}
-
 // HostDTOFrom converts a Host to a HostDTO.
-func HostDTOFrom(h *Host, scannedAt time.Time) *HostDTO {
+func HostDTOFrom(h *Host) *HostDTO {
 	return &HostDTO{
 		FirstDiscovered: DateTimeFrom(h.FirstDiscovered),
 		LastDiscovered:  DateTimeFrom(h.LastSeen),
@@ -68,7 +71,7 @@ type ScanDTO struct {
 }
 
 // ScanDTOFrom creates a ScanDTO from a Scan.
-func ScanDTOFrom(s *Scan, scannedAt time.Time) *ScanDTO {
+func ScanDTOFrom(s *Scan) *ScanDTO {
 	return &ScanDTO{
 		FirstDiscovered: DateTimeFrom(s.FirstDiscovered),
 		LastDiscovered:  DateTimeFrom(s.LastSeen),
