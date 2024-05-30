@@ -12,6 +12,7 @@ type scanRunner interface {
 	Run() (result *nmap.Run, warnings *[]string, err error)
 }
 
+// Scanner is the interface that wraps the Scan method.
 type Scanner interface {
 	Scan() *nmap.Run
 }
