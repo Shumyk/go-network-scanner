@@ -14,7 +14,7 @@ const (
 
 // Listener listens for events and propagates them to the UI.
 type Listener struct {
-	ui *UI
+	ui uiListener
 }
 
 // Topic returns the event topic.

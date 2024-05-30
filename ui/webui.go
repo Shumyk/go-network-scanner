@@ -8,20 +8,25 @@ import (
 	"github.com/webui-dev/go-webui/v2"
 )
 
+type uiListener interface {
+	addScan(s *api.ScannedResultsDTO)
+}
+
 // UI represents the user interface.
 type UI struct {
 	window *webui.Window
 	Conf   chan *api.ConfDTO
 }
 
-// 192.168.0.0/24
-
+// Run starts the user interface.
 func (u *UI) Run() {
 	log.Info("Running UI")
 	if err := u.window.ShowBrowser(indexHTML, webui.ChromiumBased); err != nil {
-		log.Warn("Install a chromium-based browser for an optimized experience", log.Any("err", err))
-		err := u.window.Show(indexHTML)
-		if err != nil {
+		log.Warn(
+			"Install a chromium-based browser for an optimized experience",
+			log.Any("err", err),
+		)
+		if u.window.Show(indexHTML) != nil {
 			log.Error("Failed to show window", log.Any("err", err))
 		}
 	}

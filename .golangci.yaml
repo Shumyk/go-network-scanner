@@ -50,7 +50,7 @@ linters-settings:
         severity: warning
         disabled: false
         arguments:
-          - allowStrs: '""'
+          - allowStrs: '"err"'
             allowInts: "0,1"
   staticcheck:
     checks: ["all"]
