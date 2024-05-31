@@ -58,7 +58,7 @@ class HostType implements Type {
     );
   }
 
-  icon: string = "computer.png";
+  icon: string = "computer";
   constructor(
     public key: React.Key,
     public ip: string,
@@ -106,7 +106,7 @@ class ServiceType implements Type {
     );
   }
 
-  icon: string = "service.png";
+  icon: string = "service";
   constructor(
     public key: React.Key,
     public ip: string,

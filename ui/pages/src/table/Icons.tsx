@@ -1,33 +1,36 @@
-import { Image, Tooltip } from "antd";
 import { Type } from "./dataTableObject";
+import {
+  WindowsIcon,
+  LinuxIcon,
+  AppleIcon,
+  OperativeSystemIcon,
+  ComputerIcon,
+  ServiceIcon,
+} from "./Svg";
 
 const OsIcon = ({ os }: { os: string }) => {
-  let image = "/operative-system.png";
   if (os.includes("Windows")) {
-    image = "/windows.png";
+    return <WindowsIcon os={os} />;
   }
   if (os.includes("Linux")) {
-    image = "/linux.png";
+    return <LinuxIcon os={os} />;
   }
   if (os.includes("macOS") || os.includes("iOS")) {
-    image = "/apple.png";
+    return <AppleIcon os={os} />;
   }
-  return (
-    <Tooltip title={os} placement="top" color="#e271af">
-      <Image src={image} width={35} preview={false} />
-    </Tooltip>
-  );
-};
-
-const IconCell = ({ src }: { src: string }) => {
-  return <Image src={`/${src}`} width={35} preview={false} />;
+  return <OperativeSystemIcon os={os} />;
 };
 
 const renderIcon = (type: Type) => {
   return {
     props: { className: type.classNames() },
-    children: <IconCell src={type.icon} />,
+    children: icon(),
   };
+
+  function icon() {
+    if (type.icon === "computer") return <ComputerIcon />;
+    else return <ServiceIcon />;
+  }
 };
 
-export { OsIcon, IconCell, renderIcon };
+export { OsIcon, renderIcon };
