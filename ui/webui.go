@@ -21,7 +21,6 @@ type UI struct {
 // Run starts the user interface.
 func (u *UI) Run() {
 	log.Info("Running UI")
-	page := indexPage()
 
 	if err := u.window.ShowBrowser(page, webui.ChromiumBased); err != nil {
 		log.Warn(
@@ -54,11 +53,7 @@ func (u *UI) addScan(s *api.ScannedResultsDTO) {
 }
 
 func (u *UI) bootstrap(e webui.Event) webui.Void {
-	log.Info("Bootstrapping UI",
-		log.Any("event", e),
-		log.Any("event.element", e.Element),
-		log.Any("event.elementType", e.EventType),
-	)
+	log.Info("Bootstrapping UI", log.Any("event", e))
 
 	conf, err := webui.GetArg[api.ConfDTO](e)
 	if err != nil {
