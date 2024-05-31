@@ -9,8 +9,6 @@ import (
 	"github.com/webui-dev/go-webui/v2"
 )
 
-const indexHTML = "index.html"
-
 // NewUIListener creates a new UI listener.
 func NewUIListener(ui *UI) api.Listener {
 	return &Listener{ui}
@@ -22,7 +20,6 @@ func NewWebUI() *UI {
 
 	w := uiWindow{webui.NewWindow()}
 	ui := &UI{&w, make(chan *api.ConfDTO)}
-	ui.window.SetRootFolder("ui/pages/build")
 
 	webui.Bind(ui.window.Webui(), "bootstrap", ui.bootstrap)
 

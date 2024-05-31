@@ -21,12 +21,15 @@ type UI struct {
 // Run starts the user interface.
 func (u *UI) Run() {
 	log.Info("Running UI")
-	if err := u.window.ShowBrowser(indexHTML, webui.ChromiumBased); err != nil {
+	page := indexPage()
+
+	if err := u.window.ShowBrowser(page, webui.ChromiumBased); err != nil {
 		log.Warn(
 			"Install a chromium-based browser for an optimized experience",
 			log.Any("err", err),
 		)
-		showErr := u.window.Show(indexHTML)
+
+		showErr := u.window.Show(page)
 		if showErr != nil {
 			log.Error("Failed to show window", log.Any("err", err))
 			panic(showErr)
