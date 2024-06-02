@@ -8,7 +8,7 @@ require (
 	github.com/pkg/errors v0.9.1
 	github.com/sourcegraph/conc v0.3.0
 	github.com/stretchr/testify v1.9.0
-	github.com/webui-dev/go-webui/v2 v2.4.1
+	github.com/webui-dev/go-webui/v2 v2.4.2-1.0
 	go.uber.org/fx v1.21.1
 	modernc.org/sqlite v1.29.8
 )
